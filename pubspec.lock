@@ -155,14 +155,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_ui:
-    dependency: "direct main"
-    description:
-      name: flutter_ui
-      sha256: "59b92799dae5844abe0123d267df6f3ddfd69c82758d5f1d26825a87cddf8a3f"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.5"
   flutter_web_plugins:
     dependency: transitive
     description: flutter
@@ -309,14 +301,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.4"
-  webview_flutter:
-    dependency: transitive
-    description:
-      name: webview_flutter
-      sha256: "8efed4e19e345cbd29998b4fbba409e20d0e02e90386c84c5e19a0a8f97cbd0c"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.3.24"
 sdks:
   dart: ">=2.19.6 <3.0.0"
   flutter: ">=1.20.0"
