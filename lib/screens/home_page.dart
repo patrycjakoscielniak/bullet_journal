@@ -1,7 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:my_bullet_journal/auth/user_profile.dart';
+
+import 'habit_tracker.dart';
+import 'vision_board_page.dart';
+import 'wishlist_page.dart';
+import 'planner_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -16,13 +20,27 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  var currentIndex = 4;
+  var currentIndex = 2;
   @override
   Widget build(BuildContext context) {
     //debugPrint(AppLocalizations.of(context)!.helloWorld):
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Feature Name'),
+        title: Builder(builder: (context) {
+          if (currentIndex == 0) {
+            return const Text('Log');
+          }
+          if (currentIndex == 1) {
+            return const Text('Wishlist');
+          }
+          if (currentIndex == 2) {
+            return const Text('Planner');
+          }
+          if (currentIndex == 3) {
+            return const Text('Habit Tracker');
+          }
+          return const Text('Vision Board');
+        }),
         actions: [
           IconButton(
               onPressed: () {
@@ -37,15 +55,15 @@ class _HomePageState extends State<HomePage> {
           return const Text('Log');
         }
         if (currentIndex == 1) {
-          return const Text('Wishlist');
+          return const Wishlist();
         }
         if (currentIndex == 2) {
-          return const Text('Calendar');
+          return const Planner();
         }
         if (currentIndex == 3) {
-          return const Text('HabitTracker');
+          return const HabitTracker();
         }
-        return const Text('VisionBoard');
+        return const VisionBoard();
       }),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,

@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:my_bullet_journal/firebase_options.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'auth/auth_gate.dart';
 
@@ -36,8 +37,14 @@ class MyApp extends StatelessWidget {
           surface: Colors.white,
           onSurface: Colors.blueGrey,
         ),
-        appBarTheme: const AppBarTheme(
+        appBarTheme: AppBarTheme(
           centerTitle: true,
+          toolbarTextStyle: GoogleFonts.greatVibes(),
+          titleTextStyle: GoogleFonts.greatVibes(
+              textStyle: const TextStyle(
+            fontSize: 30,
+            fontWeight: FontWeight.w100,
+          )),
         ),
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
             backgroundColor: Colors.white,
