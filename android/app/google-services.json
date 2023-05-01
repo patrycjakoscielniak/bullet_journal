@@ -1,0 +1,190 @@
+{
+  "project_info": {
+    "project_number": "222428272389",
+    "project_id": "bullet-journal-8745",
+    "storage_bucket": "bullet-journal-8745.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:222428272389:android:73542c9c2b15345a6c096c",
+        "android_client_info": {
+          "package_name": "com.example.bullet_journal_1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "222428272389-5djg1m7q1gimls9i0ghpki381j2cp5a6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDONA0A6ogpo3m85eZYNVDZ4no7ZLAw3p4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "222428272389-5djg1m7q1gimls9i0ghpki381j2cp5a6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "222428272389-11oa9tua9snsvb1bnrbv16aegk0pu73n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.patrycjakoscielniak.bulletJournal"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:222428272389:android:791cf0ee42fd573b6c096c",
+        "android_client_info": {
+          "package_name": "com.patrycjakoscielniak.bullet_journal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "222428272389-5djg1m7q1gimls9i0ghpki381j2cp5a6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDONA0A6ogpo3m85eZYNVDZ4no7ZLAw3p4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "222428272389-5djg1m7q1gimls9i0ghpki381j2cp5a6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "222428272389-11oa9tua9snsvb1bnrbv16aegk0pu73n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.patrycjakoscielniak.bulletJournal"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:222428272389:android:dbd00e8f71aab2506c096c",
+        "android_client_info": {
+          "package_name": "com.patrycjakoscielniak.my_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "222428272389-5djg1m7q1gimls9i0ghpki381j2cp5a6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDONA0A6ogpo3m85eZYNVDZ4no7ZLAw3p4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "222428272389-5djg1m7q1gimls9i0ghpki381j2cp5a6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "222428272389-11oa9tua9snsvb1bnrbv16aegk0pu73n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.patrycjakoscielniak.bulletJournal"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:222428272389:android:f5c6c5616046f1c56c096c",
+        "android_client_info": {
+          "package_name": "com.patrycjakoscielniak.my_application"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "222428272389-5djg1m7q1gimls9i0ghpki381j2cp5a6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDONA0A6ogpo3m85eZYNVDZ4no7ZLAw3p4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "222428272389-5djg1m7q1gimls9i0ghpki381j2cp5a6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "222428272389-11oa9tua9snsvb1bnrbv16aegk0pu73n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.patrycjakoscielniak.bulletJournal"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:222428272389:android:1d5b23f0031f851a6c096c",
+        "android_client_info": {
+          "package_name": "com.patrycjakoscielniak.my_bullet_journal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "222428272389-5djg1m7q1gimls9i0ghpki381j2cp5a6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDONA0A6ogpo3m85eZYNVDZ4no7ZLAw3p4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "222428272389-5djg1m7q1gimls9i0ghpki381j2cp5a6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "222428272389-11oa9tua9snsvb1bnrbv16aegk0pu73n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.patrycjakoscielniak.bulletJournal"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
