@@ -2,8 +2,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:my_bullet_journal/firebase_options.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-import 'features/auth/auth_gate.dart';
+import 'auth/auth_gate.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,7 +24,22 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        colorScheme: const ColorScheme(
+          brightness: Brightness.light,
+          primary: Color.fromARGB(255, 160, 117, 217),
+          onPrimary: Colors.white,
+          secondary: Colors.cyan,
+          onSecondary: Colors.white,
+          error: Color.fromARGB(255, 221, 55, 9),
+          onError: Colors.white,
+          background: Colors.white,
+          onBackground: Colors.blueGrey,
+          surface: Colors.white,
+          onSurface: Colors.blueGrey,
+        ),
+        appBarTheme: const AppBarTheme(
+          centerTitle: true,
+        ),
       ),
       home: const AuthGate(),
     );

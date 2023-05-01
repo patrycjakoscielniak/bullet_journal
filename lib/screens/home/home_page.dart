@@ -1,8 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
-import '../auth/user_profile.dart';
+import 'package:my_bullet_journal/auth/user_profile.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({
