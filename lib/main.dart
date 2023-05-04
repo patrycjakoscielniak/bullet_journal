@@ -2,9 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:my_bullet_journal/firebase_options.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-import 'auth/auth_gate.dart';
+import 'app/app.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,44 +13,4 @@ void main() async {
   );
   FirebaseUIAuth.configureProviders([EmailAuthProvider()]);
   runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: const ColorScheme(
-          brightness: Brightness.light,
-          primary: Color.fromARGB(255, 160, 117, 217),
-          onPrimary: Colors.white,
-          secondary: Colors.cyan,
-          onSecondary: Colors.white,
-          error: Color.fromARGB(255, 221, 55, 9),
-          onError: Colors.white,
-          background: Colors.white,
-          onBackground: Colors.blueGrey,
-          surface: Colors.white,
-          onSurface: Colors.blueGrey,
-        ),
-        appBarTheme: AppBarTheme(
-          centerTitle: true,
-          toolbarTextStyle: GoogleFonts.greatVibes(),
-          titleTextStyle: GoogleFonts.greatVibes(
-              textStyle: const TextStyle(
-            fontSize: 30,
-            fontWeight: FontWeight.w100,
-          )),
-        ),
-        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-            backgroundColor: Colors.white,
-            unselectedItemColor: Colors.blueGrey,
-            selectedItemColor: Color.fromARGB(255, 160, 117, 217)),
-      ),
-      home: const AuthGate(),
-    );
-  }
 }
