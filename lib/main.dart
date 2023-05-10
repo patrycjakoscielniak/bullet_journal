@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:my_bullet_journal/firebase_options.dart';
 
 import 'app/app.dart';
+import 'app/core/injection_container.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // configureDependencies();
+  configureDependencies();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
