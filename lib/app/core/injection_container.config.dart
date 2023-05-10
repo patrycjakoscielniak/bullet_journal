@@ -4,7 +4,7 @@
 // InjectableConfigGenerator
 // **************************************************************************
 
-// ignore_for_file: unnecessary_lambdas
+// ignore_for_file: unnecessary_lambdas, unused_local_variable
 // ignore_for_file: lines_longer_than_80_chars
 // coverage:ignore-file
 

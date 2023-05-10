@@ -45,6 +45,9 @@ class MyApp extends StatelessWidget {
             fontWeight: FontWeight.w100,
           )),
         ),
+        floatingActionButtonTheme: const FloatingActionButtonThemeData(
+          backgroundColor: Color.fromARGB(255, 160, 117, 217),
+        ),
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
             backgroundColor: Colors.white,
             unselectedItemColor: Colors.blueGrey,
