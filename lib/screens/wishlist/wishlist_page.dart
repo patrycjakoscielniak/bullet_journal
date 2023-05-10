@@ -3,7 +3,6 @@ import 'package:my_bullet_journal/screens/wishlist/cubit/wishlist_cubit.dart';
 import 'package:my_bullet_journal/screens/wishlist/model/wishlist_item_model.dart';
 import 'package:my_bullet_journal/screens/wishlist/repository/wishlist_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import 'features/add_item.dart';
 import 'features/delete_item.dart';
@@ -49,7 +48,6 @@ class Wishlist extends StatelessWidget {
 
 class _WishlistPageBody extends StatelessWidget {
   const _WishlistPageBody({
-    super.key,
     required this.itemModels,
   });
 
