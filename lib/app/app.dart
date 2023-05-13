@@ -36,6 +36,10 @@ class MyApp extends StatelessWidget {
           surface: Colors.white,
           onSurface: Colors.blueGrey,
         ),
+        textTheme: TextTheme(
+            bodyMedium: GoogleFonts.indieFlower(),
+            titleLarge: GoogleFonts.indieFlower(),
+            labelLarge: GoogleFonts.indieFlower()),
         appBarTheme: AppBarTheme(
           centerTitle: true,
           toolbarTextStyle: GoogleFonts.greatVibes(),

@@ -1,11 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:my_bullet_journal/auth/user_profile.dart';
-import 'package:my_bullet_journal/screens/habit_tracker/habit_tracker_page.dart';
-import 'package:my_bullet_journal/screens/vision_board/vision_board_page.dart';
-import 'package:my_bullet_journal/screens/wishlist/wishlist_page.dart';
 
+import '../habit_tracker/habit_tracker_page.dart';
 import '../planner/planner_page.dart';
+import '../vision_board/vision_board_page.dart';
+import '../wishlist/pages/wishlist_page/wishlist_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({

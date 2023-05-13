@@ -1,3 +1,7 @@
 {
-    "helloWorld": "¡Witaj świecie!"
+    "wishlist": "Lista Życzeń",
+  "log": "Dziennik",
+  "planner": "Planer",
+  "habitTracker": "Traker nawyków",
+  "visionBoard": "Tablica Marzeń"
 }

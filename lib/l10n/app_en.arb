@@ -1,6 +1,7 @@
 {
-  "helloWorld": "Hello World!",
-  "@helloWorld": {
-    "description": "The conventional newborn programmer greeting"
-  }
+  "wishlist": "Wishlist",
+  "log": "Log",
+  "planner": "Planner",
+  "habitTracker": "Habbit Tracker",
+  "visionBoard": "Vision Board"
 }
