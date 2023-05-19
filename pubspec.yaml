@@ -35,7 +35,7 @@ dependencies:
   cloud_firestore: ^4.5.3
   firebase_ui_auth: ^1.2.4
   google_fonts: ^4.0.4
-  intl: ^0.17.0
+  intl: ^0.18.0
   flutter_localizations:
     sdk: flutter
   injectable: ^2.1.1
@@ -52,8 +52,6 @@ dependencies:
   path: ^1.8.2
   path_provider: ^2.0.15
   open_file_plus: ^3.4.1
-  flutter_restart: ^0.0.3
-  flutter_phoenix: ^1.1.1
 
 dev_dependencies:
   flutter_test:
