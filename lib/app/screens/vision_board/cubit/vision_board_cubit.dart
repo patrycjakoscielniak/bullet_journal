@@ -24,7 +24,7 @@ class VisionBoardCubit extends Cubit<VisionBoardState> {
       _visionBoardRepository.uploadImage(image);
     } catch (error) {
       emit(VisionBoardState(
-        items: [],
+        items: const [],
         errorMessage: error.toString(),
       ));
     }

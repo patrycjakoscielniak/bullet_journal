@@ -13,6 +13,7 @@ class VisionBoardRepository {
         .collection('users')
         .doc(userId)
         .collection('vision_board')
+        .orderBy('onCreated', descending: false)
         .snapshots()
         .map((querySnapshot) {
       return querySnapshot.docs.map((doc) {
@@ -27,7 +28,10 @@ class VisionBoardRepository {
     Reference imageToUploadRef = folderRef.child(image.name);
     UploadTask uploadTask = imageToUploadRef.putFile(File(image.path));
     String imageUrl = await (await uploadTask).ref.getDownloadURL();
-    final dataToSend = {'image': imageUrl};
+    final dataToSend = {
+      'image': imageUrl,
+      'onCreated': DateTime.now(),
+    };
     FirebaseFirestore.instance
         .collection('users')
         .doc(userId)
