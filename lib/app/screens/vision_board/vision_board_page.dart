@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_bullet_journal/app/core/enums.dart';
 import 'package:my_bullet_journal/app/screens/vision_board/cubit/vision_board_cubit.dart';
 import 'package:my_bullet_journal/repositories/vision_board_repository.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
