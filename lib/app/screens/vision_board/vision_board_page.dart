@@ -27,14 +27,13 @@ class _VisionBoardState extends State<VisionBoard> {
         child: BlocBuilder<VisionBoardCubit, VisionBoardState>(
           builder: (context, state) {
             final images = state.items;
-
-            for (final image in images) {
-              allImages.add(image.image);
-            }
-            if (allImages.isEmpty) {
+            if (images == null) {
               return const Center(
                 child: Text('Create your Vision Board'),
               );
+            }
+            for (final image in images) {
+              allImages.add(image.image);
             }
             return Padding(
               padding: const EdgeInsets.only(top: 8.0),
