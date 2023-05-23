@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_bullet_journal/app/screens/wishlist/model/wishlist_item_model.dart';
+import 'package:my_bullet_journal/models/wishlist_item_model.dart';
 import 'package:my_bullet_journal/app/screens/wishlist/pages/wishlist_page/cubit/wishlist_cubit.dart';
 import 'package:my_bullet_journal/repositories/wishlist_repository.dart';
 

@@ -6,13 +6,13 @@ import 'package:meta/meta.dart';
 import 'package:my_bullet_journal/app/core/enums.dart';
 import 'package:my_bullet_journal/repositories/vision_board_repository.dart';
 
-import '../model/vision_board_model.dart';
+import '../../../../models/vision_board_model.dart';
 
 part 'vision_board_state.dart';
 
 class VisionBoardCubit extends Cubit<VisionBoardState> {
   VisionBoardCubit(this._visionBoardRepository)
-      : super(const VisionBoardState());
+      : super(const VisionBoardState(items: []));
 
   final VisionBoardRepository _visionBoardRepository;
 
@@ -23,18 +23,25 @@ class VisionBoardCubit extends Cubit<VisionBoardState> {
       _visionBoardRepository.uploadImage(image);
       emit(const VisionBoardState(
         status: Status.saved,
+        items: [],
       ));
     } catch (error) {
       emit(VisionBoardState(
         errorMessage: error.toString(),
         status: Status.error,
+        items: const [],
       ));
     }
+  }
+
+  Future<void> deleteImage({required String docID}) async {
+    await _visionBoardRepository.deleteImage(id: docID);
   }
 
   Future<void> start() async {
     emit(const VisionBoardState(
       status: Status.loading,
+      items: [],
     ));
 
     _streamSubscription =
@@ -48,6 +55,7 @@ class VisionBoardCubit extends Cubit<VisionBoardState> {
             emit(VisionBoardState(
               status: Status.error,
               errorMessage: error.toString(),
+              items: const [],
             ));
           });
   }

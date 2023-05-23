@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_bullet_journal/app/screens/vision_board/cubit/vision_board_cubit.dart';
 
-import '../cubit/wishlist_cubit.dart';
-import '../model/wishlist_item_model.dart';
-
-class DeleteItem extends StatelessWidget {
-  const DeleteItem({
+class DeleteImage extends StatelessWidget {
+  const DeleteImage({
     super.key,
-    required this.itemModel,
+    required this.id,
   });
 
-  final WishlistItemModel itemModel;
+  final String id;
 
   @override
   Widget build(BuildContext context) {
@@ -34,11 +32,11 @@ class DeleteItem extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         TextButton(
-                            key: ValueKey(itemModel.id),
+                            key: ValueKey(id),
                             onPressed: () {
                               context
-                                  .read<WishlistCubit>()
-                                  .deleteItem(documentID: itemModel.id);
+                                  .read<VisionBoardCubit>()
+                                  .deleteImage(docID: id);
                               Navigator.pop(context);
                             },
                             child: const Text('Yes')),
@@ -57,7 +55,10 @@ class DeleteItem extends StatelessWidget {
           },
         );
       },
-      icon: const Icon(Icons.delete),
+      icon: const Icon(
+        Icons.delete,
+        color: Colors.blueGrey,
+      ),
     );
   }
 }

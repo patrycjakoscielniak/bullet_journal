@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:my_bullet_journal/repositories/wishlist_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import '../../../../../screens/wishlist/features/add_item.dart';
+import '../add_item_page/add_item.dart';
 import 'cubit/wishlist_cubit.dart';
 import 'features/delete_item.dart';
-import '../../model/wishlist_item_model.dart';
+import '../../../../../models/wishlist_item_model.dart';
 import 'features/edit_item.dart';
 
 class Wishlist extends StatelessWidget {
@@ -30,6 +29,8 @@ class Wishlist extends StatelessWidget {
           return Scaffold(
             body: _WishlistPageBody(itemModels: itemModels),
             floatingActionButton: FloatingActionButton(
+              backgroundColor: const Color.fromARGB(255, 160, 117, 217),
+              foregroundColor: Colors.white,
               onPressed: () {
                 Navigator.push(
                   context,

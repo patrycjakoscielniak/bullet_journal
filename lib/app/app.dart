@@ -38,8 +38,7 @@ class MyApp extends StatelessWidget {
           )),
         ),
         floatingActionButtonTheme: const FloatingActionButtonThemeData(
-          backgroundColor: Color.fromARGB(255, 160, 117, 217),
-        ),
+            backgroundColor: Colors.white, foregroundColor: Colors.blueGrey),
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
             backgroundColor: Colors.white,
             unselectedItemColor: Colors.blueGrey,

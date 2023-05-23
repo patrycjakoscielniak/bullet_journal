@@ -1,17 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../app/screens/wishlist/model/wishlist_item_model.dart';
+import '../models/wishlist_item_model.dart';
 
 class WishlistRepository {
+  final firebaseRef = FirebaseFirestore.instance
+      .collection('users')
+      .doc(FirebaseAuth.instance.currentUser?.uid)
+      .collection('wishlist');
+
   Stream<List<WishlistItemModel>> getWishlistItemStream() {
-    final userID = FirebaseAuth.instance.currentUser?.uid;
-    return FirebaseFirestore.instance
-        .collection('users')
-        .doc(userID)
-        .collection('wishlist')
-        .snapshots()
-        .map((querySnapshot) {
+    return firebaseRef.snapshots().map((querySnapshot) {
       return querySnapshot.docs.map(
         (doc) {
           return WishlistItemModel(
@@ -30,12 +29,7 @@ class WishlistRepository {
     if (userID == null) {
       throw Exception('User is not logged in');
     }
-    final doc = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(userID)
-        .collection('wishlist')
-        .doc(id)
-        .get();
+    final doc = await firebaseRef.doc(id).get();
     return WishlistItemModel(
       id: doc.id,
       name: doc['name'],
@@ -49,12 +43,7 @@ class WishlistRepository {
     String imageURL,
     String itemURL,
   ) async {
-    final userID = FirebaseAuth.instance.currentUser?.uid;
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(userID)
-        .collection('wishlist')
-        .add(
+    await firebaseRef.add(
       {
         'name': name,
         'image_URL': imageURL,
@@ -64,22 +53,10 @@ class WishlistRepository {
   }
 
   Future<void> update({required String id, required String itemURL}) async {
-    final userID = FirebaseAuth.instance.currentUser?.uid;
-    return FirebaseFirestore.instance
-        .collection('users')
-        .doc(userID)
-        .collection('wishlist')
-        .doc(id)
-        .update({'item_URL': itemURL});
+    return firebaseRef.doc(id).update({'item_URL': itemURL});
   }
 
   Future<void> delete({required String id}) async {
-    final userID = FirebaseAuth.instance.currentUser?.uid;
-    return FirebaseFirestore.instance
-        .collection('users')
-        .doc(userID)
-        .collection('wishlist')
-        .doc(id)
-        .delete();
+    return firebaseRef.doc(id).delete();
   }
 }

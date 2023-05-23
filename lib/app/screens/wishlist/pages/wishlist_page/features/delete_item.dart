@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../model/wishlist_item_model.dart';
+import '../../../../../../models/wishlist_item_model.dart';
 import '../cubit/wishlist_cubit.dart';
 
 class DeleteItem extends StatelessWidget {

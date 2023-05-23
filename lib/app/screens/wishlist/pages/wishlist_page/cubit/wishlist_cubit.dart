@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 
 import '../../../../../../repositories/wishlist_repository.dart';
-import '../../../model/wishlist_item_model.dart';
+import '../../../../../../models/wishlist_item_model.dart';
 
 part 'wishlist_state.dart';
 
