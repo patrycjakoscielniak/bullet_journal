@@ -39,7 +39,10 @@ class VisionBoardCubit extends Cubit<VisionBoardState> {
 
     _streamSubscription =
         _visionBoardRepository.getVisionBoardItemStream().listen((visionBoard) {
-      emit(VisionBoardState(items: visionBoard, status: Status.success));
+      emit(VisionBoardState(
+        items: visionBoard,
+        status: Status.success,
+      ));
     })
           ..onError((error) {
             emit(VisionBoardState(
