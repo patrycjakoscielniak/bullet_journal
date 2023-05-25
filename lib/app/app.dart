@@ -6,18 +6,20 @@ import '../auth/auth_gate.dart';
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  final appPurple = const Color.fromARGB(255, 160, 117, 217);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: const ColorScheme(
+        colorScheme: ColorScheme(
           brightness: Brightness.light,
-          primary: Color.fromARGB(255, 160, 117, 217),
+          primary: appPurple,
           onPrimary: Colors.white,
           secondary: Colors.cyan,
           onSecondary: Colors.white,
-          error: Color.fromARGB(255, 221, 55, 9),
+          error: const Color.fromARGB(255, 221, 55, 9),
           onError: Colors.white,
           background: Colors.white,
           onBackground: Colors.blueGrey,
@@ -25,7 +27,7 @@ class MyApp extends StatelessWidget {
           onSurface: Colors.blueGrey,
         ),
         textTheme: TextTheme(
-            bodyMedium: GoogleFonts.indieFlower(),
+            bodyMedium: GoogleFonts.courgette(),
             titleLarge: GoogleFonts.indieFlower(),
             labelLarge: GoogleFonts.indieFlower()),
         appBarTheme: AppBarTheme(
@@ -37,12 +39,12 @@ class MyApp extends StatelessWidget {
             fontWeight: FontWeight.w100,
           )),
         ),
-        floatingActionButtonTheme: const FloatingActionButtonThemeData(
-            backgroundColor: Colors.white, foregroundColor: Colors.blueGrey),
-        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+            backgroundColor: appPurple, foregroundColor: Colors.white),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
             backgroundColor: Colors.white,
             unselectedItemColor: Colors.blueGrey,
-            selectedItemColor: Color.fromARGB(255, 160, 117, 217)),
+            selectedItemColor: appPurple),
       ),
       home: const AuthGate(),
     );

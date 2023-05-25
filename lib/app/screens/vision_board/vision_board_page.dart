@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:my_bullet_journal/app/core/enums.dart';
 import 'package:my_bullet_journal/app/screens/vision_board/cubit/vision_board_cubit.dart';
 import 'package:my_bullet_journal/repositories/vision_board_repository.dart';
@@ -95,8 +96,11 @@ class _VisionBoardState extends State<VisionBoard> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Center(
-            child: Text('Create your Vision Board'),
+          Center(
+            child: Text(
+              'Create your Vision Board',
+              style: GoogleFonts.satisfy(),
+            ),
           ),
           ElevatedButton(
               onPressed: () async {
@@ -234,6 +238,8 @@ class _VisionBoardState extends State<VisionBoard> {
                 pickedID.clear();
               });
             },
+            backgroundColor: Colors.white,
+            foregroundColor: Colors.blueGrey,
             child: const Icon(Icons.delete),
           );
         },
@@ -257,6 +263,8 @@ class _VisionBoardState extends State<VisionBoard> {
               });
             });
           },
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.blueGrey,
           child: const Icon(Icons.add_a_photo),
         );
       },

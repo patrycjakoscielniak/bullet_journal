@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:my_bullet_journal/repositories/wishlist_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -89,7 +90,10 @@ class _WishlistPageBody extends StatelessWidget {
                     ),
                     Expanded(
                       child: Center(
-                        child: Text(itemModel.name),
+                        child: Text(
+                          itemModel.name,
+                          style: GoogleFonts.indieFlower(),
+                        ),
                       ),
                     ),
                     EditItem(
