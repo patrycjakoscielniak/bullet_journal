@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
           brightness: Brightness.light,
           primary: appPurple,
           onPrimary: Colors.white,
-          secondary: Colors.cyan,
+          secondary: Colors.blueGrey,
           onSecondary: Colors.white,
           error: const Color.fromARGB(255, 221, 55, 9),
           onError: Colors.white,
@@ -27,14 +27,17 @@ class MyApp extends StatelessWidget {
           onSurface: Colors.blueGrey,
         ),
         textTheme: TextTheme(
-            bodyMedium: GoogleFonts.courgette(),
+            bodyMedium: GoogleFonts.indieFlower(),
             titleLarge: GoogleFonts.indieFlower(),
             labelLarge: GoogleFonts.indieFlower()),
         appBarTheme: AppBarTheme(
+          backgroundColor: Colors.white,
+          foregroundColor: appPurple,
           centerTitle: true,
           toolbarTextStyle: GoogleFonts.greatVibes(),
           titleTextStyle: GoogleFonts.greatVibes(
-              textStyle: const TextStyle(
+              textStyle: TextStyle(
+            color: appPurple,
             fontSize: 30,
             fontWeight: FontWeight.w100,
           )),

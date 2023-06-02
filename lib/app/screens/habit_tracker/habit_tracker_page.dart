@@ -12,8 +12,8 @@ class HabitTracker extends StatefulWidget {
 
 class _HabitTrackerState extends State<HabitTracker> {
   final gregType = CalendarType.GREGORIAN;
-  final done = Icon(Icons.check_box_outlined);
-  final undone = Icon(Icons.check_box_outline_blank);
+  final done = const Icon(Icons.check_box_outlined);
+  final undone = const Icon(Icons.check_box_outline_blank);
   bool isSelected = false;
 
   @override

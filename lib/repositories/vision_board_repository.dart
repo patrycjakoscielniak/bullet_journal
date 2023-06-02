@@ -19,7 +19,10 @@ class VisionBoardRepository {
         .snapshots()
         .map((querySnapshot) {
       return querySnapshot.docs.map((doc) {
-        return VisionBoardModel(image: doc.data()['image'], id: doc.id);
+        return VisionBoardModel(
+            image: doc.data()['image'],
+            id: doc.id,
+            onCreated: doc.data()['onCreated']);
       }).toList();
     });
   }

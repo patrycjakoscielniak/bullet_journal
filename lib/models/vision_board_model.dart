@@ -4,7 +4,7 @@ class VisionBoardModel {
   VisionBoardModel({
     required this.image,
     required this.id,
-    this.onCreated,
+    required this.onCreated,
   });
   final String image;
   final String id;

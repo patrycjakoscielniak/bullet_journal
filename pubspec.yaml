@@ -57,6 +57,8 @@ dependencies:
   flutter_event_calendar: ^1.0.0
   cr_calendar: ^1.1.0
   syncfusion_flutter_calendar: ^21.2.6
+  dio: ^5.1.2
+  calendar_view: ^1.0.3
 
 dev_dependencies:
   flutter_test:
