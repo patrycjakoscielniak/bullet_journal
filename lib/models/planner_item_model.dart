@@ -1,26 +1,26 @@
-class HolidaysModel {
-  HolidaysModel({
-    required this.year,
-    required this.month,
-    required this.day,
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+class PlannerModel {
+  PlannerModel({
+    this.notes,
+    required this.startTime,
+    required this.endTime,
     required this.eventName,
+    required this.id,
+    required this.isAllDay,
   });
-  final int year;
-  final int month;
-  final int day;
+  final bool isAllDay;
+  final String? notes;
+  final String id;
+  final Timestamp startTime;
+  final Timestamp endTime;
   final String eventName;
 
   DateTime get start {
-    return DateTime(year, month, day);
+    return startTime.toDate();
   }
 
   DateTime get end {
-    return DateTime(year, month, day);
+    return endTime.toDate();
   }
-
-  HolidaysModel.fromJson(Map<String, dynamic> json)
-      : eventName = json['name'],
-        year = json['date']['datetime']['year'],
-        month = json['date']['datetime']['month'],
-        day = json['date']['datetime']['day'];
 }

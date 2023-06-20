@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:my_bullet_journal/repositories/wishlist_repository.dart';
 
 import 'cubit/add_page_cubit.dart';
@@ -22,16 +21,6 @@ class _AddItemState extends State<AddItem> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Add Item',
-          style: GoogleFonts.tangerine(
-              textStyle: const TextStyle(
-            fontWeight: FontWeight.w800,
-            fontSize: 35,
-          )),
-        ),
-      ),
       body: BlocProvider(
         create: (context) => AddItemPageCubit(WishlistRepository()),
         child: BlocListener<AddItemPageCubit, AddItemPageState>(
@@ -49,7 +38,7 @@ class _AddItemState extends State<AddItem> {
           child: BlocBuilder<AddItemPageCubit, AddItemPageState>(
             builder: (context, state) {
               return Padding(
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.only(right: 10, left: 10, top: 20),
                 child: ListView(
                   children: [
                     TextField(
@@ -58,10 +47,8 @@ class _AddItemState extends State<AddItem> {
                           itemName = newValue;
                         });
                       },
-                      decoration: const InputDecoration(
-                        label: Text('Name'),
-                        hintText: 'Trench Coat',
-                      ),
+                      textAlign: TextAlign.center,
+                      decoration: const InputDecoration(hintText: 'New Item'),
                     ),
                     const SizedBox(height: 10),
                     TextField(
@@ -70,10 +57,9 @@ class _AddItemState extends State<AddItem> {
                           imageURL = newValue;
                         });
                       },
-                      decoration: const InputDecoration(
-                        label: Text('Image URL Adress'),
-                        hintText: 'http:// ... .jpg ',
-                      ),
+                      textAlign: TextAlign.center,
+                      decoration:
+                          const InputDecoration(hintText: 'Image URL Adress'),
                     ),
                     const SizedBox(height: 10),
                     TextField(
@@ -82,29 +68,45 @@ class _AddItemState extends State<AddItem> {
                           itemURL = newValue;
                         });
                       },
-                      decoration: const InputDecoration(
-                        label: Text('Item URL Adress'),
-                        hintText: 'http:// ... ',
-                      ),
+                      textAlign: TextAlign.center,
+                      decoration:
+                          const InputDecoration(hintText: 'Item URL Adress'),
                     ),
-                    const SizedBox(height: 10),
-                    ElevatedButton(
-                      onPressed: itemName.isEmpty || imageURL.isEmpty
-                          ? null
-                          : () {
-                              context.read<AddItemPageCubit>().addItem(
-                                    itemName,
-                                    imageURL,
-                                    itemURL,
-                                  );
-                            },
-                      child: const Text('Add'),
-                    )
                   ],
                 ),
               );
             },
           ),
+        ),
+      ),
+      bottomSheet: Padding(
+        padding: const EdgeInsets.only(bottom: 30, right: 15, left: 15),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                'Close',
+              ),
+            ),
+            TextButton(
+              onPressed: itemName.isEmpty || imageURL.isEmpty
+                  ? null
+                  : () {
+                      context.read<AddItemPageCubit>().addItem(
+                            itemName,
+                            imageURL,
+                            itemURL,
+                          );
+                    },
+              child: const Text(
+                'Add',
+              ),
+            )
+          ],
         ),
       ),
     );

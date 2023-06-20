@@ -3,11 +3,11 @@ part of 'planner_cubit.dart';
 @immutable
 class PlannerState {
   const PlannerState({
-    this.holidaysResults = const [],
+    this.appointments = const [],
     this.errorMessage,
     this.status = Status.initial,
   });
-  final List<HolidaysModel> holidaysResults;
+  final List<PlannerModel> appointments;
   final String? errorMessage;
   final Status status;
 }

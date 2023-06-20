@@ -19,8 +19,6 @@ class VisionBoard extends StatefulWidget {
 }
 
 class _VisionBoardState extends State<VisionBoard> {
-  List<String> pickedID = [];
-  List<String> pickedImage = [];
   XFile? pickedFile;
 
   @override
@@ -33,11 +31,11 @@ class _VisionBoardState extends State<VisionBoard> {
             ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text(state.errorMessage.toString())));
           }
-        },
-        builder: (context, state) {
           if (state.status == Status.loading) {
             const CircularProgressIndicator();
           }
+        },
+        builder: (context, state) {
           final images = state.items;
           if (images.isNotEmpty) {
             return Builder(builder: (context) {

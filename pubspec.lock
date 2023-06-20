@@ -201,14 +201,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.1"
-  cr_calendar:
-    dependency: "direct main"
-    description:
-      name: cr_calendar
-      sha256: "06805da9a39ca46ca7beed8fccdd848819ac96e89582a2bddd5db5cab4a0e250"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.0"
   cross_file:
     dependency: transitive
     description:
@@ -249,14 +241,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.1.2"
-  drag_select_grid_view:
-    dependency: "direct main"
-    description:
-      name: drag_select_grid_view
-      sha256: "2d9fff9404fe7a689fa35e81950f908a7c4e2efd28e86ab10cbc767c6e69d7d7"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.6.1"
   email_validator:
     dependency: transitive
     description:
@@ -430,14 +414,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "8.1.2"
-  flutter_event_calendar:
+  flutter_colorpicker:
     dependency: "direct main"
     description:
-      name: flutter_event_calendar
-      sha256: f5b6f22ae01c24a1fc3f6432d3080130bb40efc976e53941b5f6422b6a4f9d64
+      name: flutter_colorpicker
+      sha256: "458a6ed8ea480eb16ff892aedb4b7092b2804affd7e046591fb03127e8d8ef8b"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.0"
+    version: "1.0.3"
+  flutter_datetime_picker_plus:
+    dependency: "direct main"
+    description:
+      name: flutter_datetime_picker_plus
+      sha256: "46c01682a65d6877b40622df2ca4f13b728e5440a9c83c3992c09724bb4dbd95"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.1"
   flutter_expandable_fab:
     dependency: "direct main"
     description:
@@ -459,14 +451,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_multi_select_items:
-    dependency: "direct dev"
-    description:
-      name: flutter_multi_select_items
-      sha256: d30af6dbf64c38c296110a9512eef91b196a185cca056cd1eb32614e5fa91d1c
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.4.2"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -637,14 +621,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
-  jiffy:
-    dependency: transitive
-    description:
-      name: jiffy
-      sha256: "9d1ea8fa2955d62d3fd5f83317db4d565350deea13d7884212aa7d0ddb1c9982"
-      url: "https://pub.dev"
-    source: hosted
-    version: "6.1.0"
   js:
     dependency: transitive
     description:
@@ -717,6 +693,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
+  omni_datetime_picker:
+    dependency: "direct main"
+    description:
+      name: omni_datetime_picker
+      sha256: c70ca19eba89b7ed3663ae8eab2e7922c12b443826cf06c841a7f0a19e22870d
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.7"
   open_file_plus:
     dependency: "direct main"
     description:
@@ -869,30 +853,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.0"
-  scoped_model:
-    dependency: transitive
-    description:
-      name: scoped_model
-      sha256: "8dacc77cb5de78d5e159d54cab883847491a73dfaa3d28c52f4ec8b0be32645b"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.0"
-  scrollable_positioned_list:
-    dependency: transitive
-    description:
-      name: scrollable_positioned_list
-      sha256: "1b54d5f1329a1e263269abc9e2543d90806131aa14fe7c6062a8054d57249287"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.3.8"
-  shamsi_date:
-    dependency: transitive
-    description:
-      name: shamsi_date
-      sha256: "5df195a0b7794b7d4a8dc9321244400147896def157b7530c5b8a2f9cfc6a7a4"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.15.0"
   shelf:
     dependency: transitive
     description:
@@ -1187,5 +1147,5 @@ packages:
     source: hosted
     version: "3.1.2"
 sdks:
-  dart: ">=3.0.0-0 <4.0.0"
-  flutter: ">=3.7.0-0"
+  dart: ">=3.0.0 <4.0.0"
+  flutter: ">=3.10.0"

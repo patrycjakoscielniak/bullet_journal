@@ -29,7 +29,9 @@ class MyApp extends StatelessWidget {
         textTheme: TextTheme(
             bodyMedium: GoogleFonts.indieFlower(),
             titleLarge: GoogleFonts.indieFlower(),
-            labelLarge: GoogleFonts.indieFlower()),
+            labelLarge: GoogleFonts.amaticSc(
+                textStyle: const TextStyle(
+                    fontSize: 23, fontWeight: FontWeight.w600))),
         appBarTheme: AppBarTheme(
           backgroundColor: Colors.white,
           foregroundColor: appPurple,
@@ -42,6 +44,13 @@ class MyApp extends StatelessWidget {
             fontWeight: FontWeight.w100,
           )),
         ),
+        inputDecorationTheme: InputDecorationTheme(
+          labelStyle: GoogleFonts.amaticSc(
+                textStyle: const TextStyle(
+                    fontWeight: FontWeight.w400, fontSize: 21)),
+            hintStyle: GoogleFonts.amaticSc(
+                textStyle: const TextStyle(
+                    fontWeight: FontWeight.w400, fontSize: 21))),
         floatingActionButtonTheme: FloatingActionButtonThemeData(
             backgroundColor: appPurple, foregroundColor: Colors.white),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(

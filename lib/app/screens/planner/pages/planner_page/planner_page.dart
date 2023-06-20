@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_bullet_journal/app/data/planner_remote_data_source.dart';
-import 'package:my_bullet_journal/app/screens/planner/cubit/planner_cubit.dart';
 import 'package:my_bullet_journal/repositories/planner_repository.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+import '../add/add.dart';
+import 'cubit/planner_cubit.dart';
 
 class Planner extends StatefulWidget {
   const Planner({
@@ -15,7 +16,8 @@ class Planner extends StatefulWidget {
 }
 
 class _PlannerState extends State<Planner> {
-  List<Appointment> appointments = [];
+  List<Appointment> events = [];
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -24,22 +26,36 @@ class _PlannerState extends State<Planner> {
         ..start(),
       child: BlocBuilder<PlannerCubit, PlannerState>(
         builder: (context, state) {
-          for (final model in state.holidaysResults) {
-            appointments.add(Appointment(
-                subject: model.eventName,
-                startTime: model.start,
-                endTime: model.end,
-                color: Colors.blueGrey,
-                isAllDay: true));
+          final tasks = state.appointments;
+          events.clear();
+
+          for (final task in tasks) {
+            events.add(Appointment(
+                notes: task.notes,
+                subject: task.eventName,
+                startTime: task.start,
+                endTime: task.end,
+                isAllDay: task.isAllDay,
+                color: Colors.lightBlueAccent));
           }
+
           return Scaffold(
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const AddEvent()));
+              },
+              mini: true,
+              child: const Icon(Icons.add),
+            ),
             body: SfCalendar(
               viewNavigationMode: ViewNavigationMode.snap,
               view: CalendarView.month,
               monthViewSettings: const MonthViewSettings(
-                showAgenda: true,
-              ),
-              dataSource: DataSource(appointments),
+                  showAgenda: true,
+                  appointmentDisplayMode:
+                      MonthAppointmentDisplayMode.appointment),
+              dataSource: DataSource(events),
               showNavigationArrow: true,
               showDatePickerButton: true,
               firstDayOfWeek: 1,
@@ -47,12 +63,9 @@ class _PlannerState extends State<Planner> {
               allowedViews: const [
                 CalendarView.day,
                 CalendarView.workWeek,
+                CalendarView.week,
                 CalendarView.month,
-                CalendarView.schedule,
               ],
-              onLongPress: (calendarLongPressDetails) {
-                //add event
-              },
             ),
           );
         },
