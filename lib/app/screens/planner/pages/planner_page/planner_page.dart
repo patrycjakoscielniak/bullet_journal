@@ -68,6 +68,8 @@ class _PlannerState extends State<Planner> {
               viewNavigationMode: ViewNavigationMode.snap,
               view: CalendarView.month,
               monthViewSettings: const MonthViewSettings(
+                  dayFormat: 'EEE',
+                  agendaItemHeight: 40,
                   showAgenda: true,
                   appointmentDisplayMode:
                       MonthAppointmentDisplayMode.indicator),
