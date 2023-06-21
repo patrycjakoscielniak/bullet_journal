@@ -260,7 +260,7 @@ class _AddEventState extends State<AddEvent> {
               if (value == true) {
                 setState(() {
                   recurrenceRulewithoutEnd =
-                      'FREQ=YEARLY;BYMONTH=${int.parse(DateFormat('M').format(eventStartTime))};BYMONTHDAY=${int.parse(DateFormat('d').format(eventStartTime))}';
+                      'FREQ=YEARLY;BYMONTH=${DateFormat('M').format(eventStartTime)};BYMONTHDAY=${DateFormat('d').format(eventStartTime)}';
                 });
               } else {
                 setState(() {
@@ -296,13 +296,13 @@ class _AddEventState extends State<AddEvent> {
               if (isSelected.elementAt(0) == true) {
                 setState(() {
                   recurrenceRulewithoutEnd =
-                      'FREQ=YEARLY;BYMONTH=${int.parse(DateFormat('M').format(eventStartTime))};BYMONTHDAY=${int.parse(DateFormat('d').format(eventStartTime))}';
+                      'FREQ=YEARLY;BYMONTH=${DateFormat('M').format(eventStartTime)};BYMONTHDAY=${DateFormat('d').format(eventStartTime)}';
                 });
               }
               if (isSelected.elementAt(1) == true) {
                 setState(() {
                   recurrenceRulewithoutEnd =
-                      'FREQ=MONTHLY;BYMONTHDAY=${int.parse(DateFormat('d').format(eventStartTime))}';
+                      'FREQ=MONTHLY;BYMONTHDAY=${DateFormat('d').format(eventStartTime)}';
                 });
               }
               if (isSelected.elementAt(2) == true &&
