@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:my_bullet_journal/app/data/planner_remote_data_source.dart';
 import 'package:my_bullet_journal/repositories/planner_repository.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -62,12 +63,14 @@ class _PlannerState extends State<Planner> {
               child: const Icon(Icons.add),
             ),
             body: SfCalendar(
+              headerStyle: CalendarHeaderStyle(
+                  textStyle: GoogleFonts.amaticSc(fontSize: 25)),
               viewNavigationMode: ViewNavigationMode.snap,
               view: CalendarView.month,
               monthViewSettings: const MonthViewSettings(
                   showAgenda: true,
                   appointmentDisplayMode:
-                      MonthAppointmentDisplayMode.appointment),
+                      MonthAppointmentDisplayMode.indicator),
               dataSource: DataSource(events),
               showNavigationArrow: true,
               showDatePickerButton: true,
