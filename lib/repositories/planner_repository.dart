@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:my_bullet_journal/app/data/planner_remote_data_source.dart';
 import 'package:my_bullet_journal/models/planner_item_model.dart';
 
@@ -32,6 +31,8 @@ class PlannerRepository {
           endTime: doc.data()['endTime'],
           id: doc.id,
           eventName: doc.data()['name'],
+          colorValue: doc.data()['colorValue'],
+          recurrenceRule: doc.data()['recurrenceRule'],
         );
       }).toList();
     });
@@ -43,13 +44,8 @@ class PlannerRepository {
     DateTime startTime,
     DateTime endTime,
     bool isAllDay,
-    Color color,
-    String? freq,
-    int? byMonth,
-    int? byMonthDay,
-    int? count,
-    String? byDay,
-    DateTime? until,
+    int colorValue,
+    String? recurrenceRule,
   ) async {
     await firebaseRef.add(
       {
@@ -58,13 +54,8 @@ class PlannerRepository {
         'startTime': startTime,
         'endTime': endTime,
         'isAllDay': isAllDay,
-        'color': color.toString(),
-        'freq': freq,
-        'byMonth': byMonth,
-        'byMonthDay': byMonthDay,
-        'Count': count,
-        'byDay': byDay,
-        'until': until
+        'colorValue': colorValue,
+        'recurrenceRule': recurrenceRule,
       },
     );
   }

@@ -1,12 +1,12 @@
-import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:my_bullet_journal/repositories/planner_repository.dart';
 
 part 'add_event_state.dart';
 
 class AddEventCubit extends Cubit<AddEventState> {
-  AddEventCubit(this._plannerRepository) : super(AddEventState());
+  AddEventCubit(this._plannerRepository) : super(const AddEventState());
 
   final PlannerRepository _plannerRepository;
 
@@ -16,18 +16,20 @@ class AddEventCubit extends Cubit<AddEventState> {
     DateTime startTime,
     DateTime endTime,
     bool isAllDay,
-    Color color,
-    String? freq,
-    int? byMonth,
-    int? byMonthDay,
-    int? count,
-    String? byDay,
-    DateTime? until,
+    int colorValue,
+    String? recurrenceRule,
   ) async {
     try {
-      await _plannerRepository.add(name, notes, startTime, endTime, isAllDay,
-          color, freq, byMonth, byMonthDay, count, byDay, until);
-      emit(AddEventState(isSaved: true));
+      await _plannerRepository.add(
+        name,
+        notes,
+        startTime,
+        endTime,
+        isAllDay,
+        colorValue,
+        recurrenceRule,
+      );
+      emit(const AddEventState(isSaved: true));
     } catch (error) {
       emit(AddEventState(errorMessage: error.toString()));
     }

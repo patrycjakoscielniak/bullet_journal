@@ -4,12 +4,10 @@ import 'package:intl/intl.dart';
 
 var newEvent = '';
 var notes = '';
-var freq = '';
-var byDay = '';
-int? byMonth;
-int? byMonthDay;
-int? count;
-DateTime? until;
+String? recurrenceRulewithoutEnd;
+String? endrecurrenceRule;
+String? recurrenceRule;
+int colorValue = 0xff70e4e7;
 const space = SizedBox(height: 15);
 const empty = SizedBox();
 var recurrenceEndDate = 'Select a date';

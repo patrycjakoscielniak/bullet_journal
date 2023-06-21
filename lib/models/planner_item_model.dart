@@ -8,6 +8,8 @@ class PlannerModel {
     required this.eventName,
     required this.id,
     required this.isAllDay,
+    required this.colorValue,
+    this.recurrenceRule,
   });
   final bool isAllDay;
   final String? notes;
@@ -15,6 +17,8 @@ class PlannerModel {
   final Timestamp startTime;
   final Timestamp endTime;
   final String eventName;
+  final int colorValue;
+  final String? recurrenceRule;
 
   DateTime get start {
     return startTime.toDate();

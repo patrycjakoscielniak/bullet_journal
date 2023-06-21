@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_bullet_journal/app/data/planner_remote_data_source.dart';
 import 'package:my_bullet_journal/repositories/planner_repository.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-import '../add/add.dart';
+import '../add/add_event.dart';
 import 'cubit/planner_cubit.dart';
 
 class Planner extends StatefulWidget {
@@ -30,13 +30,26 @@ class _PlannerState extends State<Planner> {
           events.clear();
 
           for (final task in tasks) {
-            events.add(Appointment(
+            if (task.recurrenceRule == '') {
+              events.add(Appointment(
                 notes: task.notes,
                 subject: task.eventName,
                 startTime: task.start,
                 endTime: task.end,
                 isAllDay: task.isAllDay,
-                color: Colors.lightBlueAccent));
+                color: Color(task.colorValue),
+              ));
+            } else {
+              events.add(Appointment(
+                notes: task.notes,
+                subject: task.eventName,
+                startTime: task.start,
+                endTime: task.end,
+                isAllDay: task.isAllDay,
+                color: Color(task.colorValue),
+                recurrenceRule: task.recurrenceRule,
+              ));
+            }
           }
 
           return Scaffold(

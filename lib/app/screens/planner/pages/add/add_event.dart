@@ -83,20 +83,22 @@ class _AddEventState extends State<AddEvent> {
                     onPressed: newEvent.isEmpty
                         ? null
                         : () {
+                            setState(() {
+                              if (endrecurrenceRule != '') {
+                                recurrenceRule =
+                                    '$recurrenceRulewithoutEnd;$endrecurrenceRule';
+                              } else {
+                                recurrenceRule = recurrenceRulewithoutEnd;
+                              }
+                            });
                             context.read<AddEventCubit>().addEvent(
-                                  newEvent,
-                                  notes,
-                                  eventStartTime,
-                                  eventEndTime,
-                                  isAllDay,
-                                  currentColor,
-                                  freq,
-                                  byMonth,
-                                  byMonthDay,
-                                  count,
-                                  byDay,
-                                  until,
-                                );
+                                newEvent,
+                                notes,
+                                eventStartTime,
+                                eventEndTime,
+                                isAllDay,
+                                colorValue,
+                                recurrenceRule);
                           },
                     child: const Text(
                       'Add',
@@ -139,6 +141,7 @@ class _AddEventState extends State<AddEvent> {
                     onColorChanged: (color) {
                       setState(() {
                         currentColor = color;
+                        colorValue = color.value;
                       });
                     },
                   ),
@@ -256,11 +259,12 @@ class _AddEventState extends State<AddEvent> {
               });
               if (value == true) {
                 setState(() {
-                  freq = 'YEARLY';
-                  byMonth = int.parse(DateFormat('M').format(eventStartTime));
-                  byMonthDay =
-                      int.parse(DateFormat('d').format(eventStartTime));
-                  byDay = '';
+                  recurrenceRulewithoutEnd =
+                      'FREQ=YEARLY;BYMONTH=${int.parse(DateFormat('M').format(eventStartTime))};BYMONTHDAY=${int.parse(DateFormat('d').format(eventStartTime))}';
+                });
+              } else {
+                setState(() {
+                  recurrenceRulewithoutEnd = '';
                 });
               }
             })
@@ -291,70 +295,61 @@ class _AddEventState extends State<AddEvent> {
               });
               if (isSelected.elementAt(0) == true) {
                 setState(() {
-                  freq = 'YEARLY';
-                  byMonth = int.parse(DateFormat('M').format(eventStartTime));
-                  byMonthDay =
-                      int.parse(DateFormat('d').format(eventStartTime));
-                  byDay = '';
+                  recurrenceRulewithoutEnd =
+                      'FREQ=YEARLY;BYMONTH=${int.parse(DateFormat('M').format(eventStartTime))};BYMONTHDAY=${int.parse(DateFormat('d').format(eventStartTime))}';
                 });
               }
               if (isSelected.elementAt(1) == true) {
                 setState(() {
-                  freq = 'MONTHLY';
-                  byMonth = null;
-                  byMonthDay =
-                      int.parse(DateFormat('d').format(eventStartTime));
-                  byDay = '';
+                  recurrenceRulewithoutEnd =
+                      'FREQ=MONTHLY;BYMONTHDAY=${int.parse(DateFormat('d').format(eventStartTime))}';
                 });
               }
-              if (isSelected.elementAt(2) == true) {
+              if (isSelected.elementAt(2) == true &&
+                  eventStartTime.weekday == 1) {
                 setState(() {
-                  freq = 'WEEKLY';
-                  byMonth = null;
-                  byMonthDay = null;
-                  if (eventStartTime.weekday == 1) {
-                    setState(() {
-                      byDay = 'MO';
-                    });
-                  }
-                  if (eventStartTime.weekday == 2) {
-                    setState(() {
-                      byDay = 'TU';
-                    });
-                  }
-                  if (eventStartTime.weekday == 3) {
-                    setState(() {
-                      byDay = 'WE';
-                    });
-                  }
-                  if (eventStartTime.weekday == 4) {
-                    setState(() {
-                      byDay = 'TH';
-                    });
-                  }
-                  if (eventStartTime.weekday == 5) {
-                    setState(() {
-                      byDay = 'FR';
-                    });
-                  }
-                  if (eventStartTime.weekday == 6) {
-                    setState(() {
-                      byDay = 'SA';
-                    });
-                  }
-                  if (eventStartTime.weekday == 7) {
-                    setState(() {
-                      byDay = 'SU';
-                    });
-                  }
+                  recurrenceRulewithoutEnd = 'FREQ=WEEKLY;BYDAY=MO';
+                });
+              }
+              if (isSelected.elementAt(2) == true &&
+                  eventStartTime.weekday == 2) {
+                setState(() {
+                  recurrenceRulewithoutEnd = 'FREQ=WEEKLY;BYDAY=TU';
+                });
+              }
+              if (isSelected.elementAt(2) == true &&
+                  eventStartTime.weekday == 3) {
+                setState(() {
+                  recurrenceRulewithoutEnd = 'FREQ=WEEKLY;BYDAY=WE';
+                });
+              }
+              if (isSelected.elementAt(2) == true &&
+                  eventStartTime.weekday == 4) {
+                setState(() {
+                  recurrenceRulewithoutEnd = 'FREQ=WEEKLY;BYDAY=TH';
+                });
+              }
+              if (isSelected.elementAt(2) == true &&
+                  eventStartTime.weekday == 5) {
+                setState(() {
+                  recurrenceRulewithoutEnd = 'FREQ=WEEKLY;BYDAY=FR';
+                });
+              }
+              if (isSelected.elementAt(2) == true &&
+                  eventStartTime.weekday == 6) {
+                setState(() {
+                  recurrenceRulewithoutEnd = 'FREQ=WEEKLY;BYDAY=SA';
+                });
+              }
+              if (isSelected.elementAt(2) == true &&
+                  eventStartTime.weekday == 7) {
+                setState(() {
+                  recurrenceRulewithoutEnd = 'FREQ=WEEKLY;BYDAY=SU';
                 });
               }
               if (isSelected.elementAt(3) == true) {
                 setState(() {
-                  freq = 'DAILY';
-                  byDay = '';
-                  byMonth = null;
-                  byMonthDay = null;
+                  recurrenceRulewithoutEnd = 'FREQ=DAILY';
                 });
               }
             },
@@ -390,6 +385,11 @@ class _AddEventState extends State<AddEvent> {
                   setState(() {
                     dropdownValue = value;
                   });
+                  if (value == 'Never') {
+                    setState(() {
+                      endrecurrenceRule = '';
+                    });
+                  }
                 }
               },
             ),
@@ -413,8 +413,7 @@ class _AddEventState extends State<AddEvent> {
                           if (value != null) {
                             setState(() {
                               intDropdownValue = value;
-                              count = value;
-                              until = null;
+                              endrecurrenceRule = 'COUNT=$value';
                             });
                           }
                         }),
@@ -432,8 +431,8 @@ class _AddEventState extends State<AddEvent> {
                           setState(() {
                             recurrenceEndDate =
                                 DateFormat('dd  MMMM yyyy').format(time);
-                            until = time;
-                            count = null;
+                            endrecurrenceRule =
+                                'UNTIL=${DateFormat('yyyyMMddTHHmmss').format(time)}Z';
                           });
                         },
                       );
