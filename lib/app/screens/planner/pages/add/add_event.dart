@@ -8,7 +8,7 @@ import 'package:my_bullet_journal/app/screens/planner/pages/add/cubit/add_event_
 import 'package:my_bullet_journal/repositories/planner_repository.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 
-import 'variables/variables.dart';
+import 'variables/add_page_variables.dart';
 
 class AddEvent extends StatefulWidget {
   const AddEvent({
@@ -53,14 +53,7 @@ class _AddEventState extends State<AddEvent> {
                   space,
                   isEventAllDay(),
                   space,
-                  isAllDay
-                      ? pickAllDayEventDate(context)
-                      : Column(
-                          children: [
-                            pickEventDate(context),
-                            space,
-                          ],
-                        ),
+                  pickEventDate(context),
                   isEventRepeating(),
                   repeat ? setRecurrencePattern(context) : empty,
                   space,
@@ -186,60 +179,44 @@ class _AddEventState extends State<AddEvent> {
     );
   }
 
-  Column pickAllDayEventDate(BuildContext context) {
+  Column pickEventDate(BuildContext context) {
     return Column(
       children: [
         ElevatedButton(
-          style: buttonStyle,
-          onPressed: () {
-            DatePicker.showDatePicker(
-              context,
-              onConfirm: (time) {
+            style: buttonStyle,
+            onPressed: () async {
+              List<DateTime>? dateTimeList = await showOmniDateTimeRangePicker(
+                context: context,
+                isForce2Digits: true,
+                startInitialDate: DateTime.now(),
+                startFirstDate:
+                    DateTime(1600).subtract(const Duration(days: 3652)),
+                startLastDate: DateTime.now().add(
+                  const Duration(days: 3652),
+                ),
+                endInitialDate: DateTime.now(),
+                endFirstDate:
+                    DateTime(1600).subtract(const Duration(days: 3652)),
+                endLastDate: DateTime.now().add(
+                  const Duration(days: 3652),
+                ),
+                borderRadius: BorderRadius.circular(15),
+              );
+              if (dateTimeList != null) {
                 setState(() {
-                  eventStartTime = time;
-                  eventEndTime = time.add(const Duration(hours: 1));
+                  eventStartTime = dateTimeList.first;
                 });
-              },
-            );
-          },
-          child: Text(DateFormat('dd  MMMM').format(eventStartTime)),
-        ),
+                setState(() {
+                  eventEndTime = dateTimeList.last;
+                });
+              }
+            },
+            child: Text(
+                'from ${DateFormat('dd MMM hh : mm').format(eventStartTime)}  to  ${DateFormat('dd MMM hh : mm').format(eventEndTime)}',
+                style: textStyle)),
         space,
       ],
     );
-  }
-
-  ElevatedButton pickEventDate(BuildContext context) {
-    return ElevatedButton(
-        style: buttonStyle,
-        onPressed: () async {
-          List<DateTime>? dateTimeList = await showOmniDateTimeRangePicker(
-            context: context,
-            isForce2Digits: true,
-            startInitialDate: DateTime.now(),
-            startFirstDate: DateTime(1600).subtract(const Duration(days: 3652)),
-            startLastDate: DateTime.now().add(
-              const Duration(days: 3652),
-            ),
-            endInitialDate: DateTime.now(),
-            endFirstDate: DateTime(1600).subtract(const Duration(days: 3652)),
-            endLastDate: DateTime.now().add(
-              const Duration(days: 3652),
-            ),
-            borderRadius: BorderRadius.circular(15),
-          );
-          if (dateTimeList != null) {
-            setState(() {
-              eventStartTime = dateTimeList.first;
-            });
-            setState(() {
-              eventEndTime = dateTimeList.last;
-            });
-          }
-        },
-        child: Text(
-            'from ${DateFormat('dd MMM hh : mm').format(eventStartTime)}  to  ${DateFormat('dd MMM hh : mm').format(eventEndTime)}',
-            style: textStyle));
   }
 
   Row isEventRepeating() {
