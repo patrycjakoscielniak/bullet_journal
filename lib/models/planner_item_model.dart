@@ -10,6 +10,7 @@ class PlannerModel {
     required this.isAllDay,
     required this.colorValue,
     this.recurrenceRule,
+    this.frequency,
   });
   final bool isAllDay;
   final String? notes;
@@ -19,6 +20,7 @@ class PlannerModel {
   final String eventName;
   final int colorValue;
   final String? recurrenceRule;
+  final String? frequency;
 
   DateTime get start {
     return startTime.toDate();

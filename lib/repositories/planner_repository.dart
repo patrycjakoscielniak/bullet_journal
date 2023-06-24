@@ -33,6 +33,7 @@ class PlannerRepository {
           eventName: doc.data()['name'],
           colorValue: doc.data()['colorValue'],
           recurrenceRule: doc.data()['recurrenceRule'],
+          frequency: doc.data()['frequency'],
         );
       }).toList();
     });
@@ -46,6 +47,7 @@ class PlannerRepository {
     bool isAllDay,
     int colorValue,
     String? recurrenceRule,
+    String? frequency,
   ) async {
     await firebaseRef.add(
       {
@@ -56,7 +58,35 @@ class PlannerRepository {
         'isAllDay': isAllDay,
         'colorValue': colorValue,
         'recurrenceRule': recurrenceRule,
+        'frequency': frequency,
       },
     );
+  }
+
+  Future<void> update({
+    required String id,
+    required String eventName,
+    required String? notes,
+    required String? recurrenceRule,
+    required String? frequency,
+    required DateTime startTime,
+    required DateTime endTime,
+    required bool isAllDay,
+    required int colorValue,
+  }) async {
+    return firebaseRef.doc(id).update({
+      'name': eventName,
+      'notes': notes,
+      'startTime': startTime,
+      'endTime': endTime,
+      'isAllDay': isAllDay,
+      'colorValue': colorValue,
+      'recurrenceRule': recurrenceRule,
+      'frequency': frequency,
+    });
+  }
+
+  Future<void> delete({required String id}) async {
+    return firebaseRef.doc(id).delete();
   }
 }

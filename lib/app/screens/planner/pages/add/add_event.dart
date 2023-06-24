@@ -8,7 +8,7 @@ import 'package:my_bullet_journal/app/screens/planner/pages/add/cubit/add_event_
 import 'package:my_bullet_journal/repositories/planner_repository.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 
-import 'variables/add_page_variables.dart';
+import '../../variables/variables.dart';
 
 class AddEvent extends StatefulWidget {
   const AddEvent({
@@ -20,6 +20,21 @@ class AddEvent extends StatefulWidget {
 }
 
 class _AddEventState extends State<AddEvent> {
+  var newEvent = '',
+      notes = '',
+      recurrenceEndDate = 'Select a date',
+      dropdownValue = 'Never',
+      frequency = '';
+
+  String? recurrenceRulewithoutEnd, endrecurrenceRule, recurrenceRule;
+  int colorValue = 0xff70e4e7, intDropdownValue = 1;
+  List<int> intDropdownList = [for (int i = 1; i <= 100; i++) i];
+  Color pickerColor = const Color.fromARGB(255, 160, 117, 217),
+      currentColor = Colors.black;
+  bool repeat = false, isAllDay = false;
+  List<bool> isSelected = [true, false, false, false];
+  var eventStartTime = DateTime.now(),
+      eventEndTime = DateTime.now().add(const Duration(hours: 1));
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -85,13 +100,15 @@ class _AddEventState extends State<AddEvent> {
                               }
                             });
                             context.read<AddEventCubit>().addEvent(
-                                newEvent,
-                                notes,
-                                eventStartTime,
-                                eventEndTime,
-                                isAllDay,
-                                colorValue,
-                                recurrenceRule);
+                                  newEvent,
+                                  notes,
+                                  eventStartTime,
+                                  eventEndTime,
+                                  isAllDay,
+                                  colorValue,
+                                  recurrenceRule,
+                                  frequency,
+                                );
                           },
                     child: const Text(
                       'Add',
@@ -238,10 +255,12 @@ class _AddEventState extends State<AddEvent> {
                 setState(() {
                   recurrenceRulewithoutEnd =
                       'FREQ=YEARLY;BYMONTH=${DateFormat('M').format(eventStartTime)};BYMONTHDAY=${DateFormat('d').format(eventStartTime)}';
+                  frequency = 'Yearly';
                 });
               } else {
                 setState(() {
                   recurrenceRulewithoutEnd = '';
+                  frequency = '';
                 });
               }
             })
@@ -274,10 +293,12 @@ class _AddEventState extends State<AddEvent> {
                 setState(() {
                   recurrenceRulewithoutEnd =
                       'FREQ=YEARLY;BYMONTH=${DateFormat('M').format(eventStartTime)};BYMONTHDAY=${DateFormat('d').format(eventStartTime)}';
+                  frequency = 'Yearly';
                 });
               }
               if (isSelected.elementAt(1) == true) {
                 setState(() {
+                  frequency = 'Monthly';
                   recurrenceRulewithoutEnd =
                       'FREQ=MONTHLY;BYMONTHDAY=${DateFormat('d').format(eventStartTime)}';
                 });
@@ -285,47 +306,55 @@ class _AddEventState extends State<AddEvent> {
               if (isSelected.elementAt(2) == true &&
                   eventStartTime.weekday == 1) {
                 setState(() {
+                  frequency = 'Weekly';
                   recurrenceRulewithoutEnd = 'FREQ=WEEKLY;BYDAY=MO';
                 });
               }
               if (isSelected.elementAt(2) == true &&
                   eventStartTime.weekday == 2) {
                 setState(() {
+                  frequency = 'Weekly';
                   recurrenceRulewithoutEnd = 'FREQ=WEEKLY;BYDAY=TU';
                 });
               }
               if (isSelected.elementAt(2) == true &&
                   eventStartTime.weekday == 3) {
                 setState(() {
+                  frequency = 'Weekly';
                   recurrenceRulewithoutEnd = 'FREQ=WEEKLY;BYDAY=WE';
                 });
               }
               if (isSelected.elementAt(2) == true &&
                   eventStartTime.weekday == 4) {
                 setState(() {
+                  frequency = 'Weekly';
                   recurrenceRulewithoutEnd = 'FREQ=WEEKLY;BYDAY=TH';
                 });
               }
               if (isSelected.elementAt(2) == true &&
                   eventStartTime.weekday == 5) {
                 setState(() {
+                  frequency = 'Weekly';
                   recurrenceRulewithoutEnd = 'FREQ=WEEKLY;BYDAY=FR';
                 });
               }
               if (isSelected.elementAt(2) == true &&
                   eventStartTime.weekday == 6) {
                 setState(() {
+                  frequency = 'Weekly';
                   recurrenceRulewithoutEnd = 'FREQ=WEEKLY;BYDAY=SA';
                 });
               }
               if (isSelected.elementAt(2) == true &&
                   eventStartTime.weekday == 7) {
                 setState(() {
+                  frequency = 'Weekly';
                   recurrenceRulewithoutEnd = 'FREQ=WEEKLY;BYDAY=SU';
                 });
               }
               if (isSelected.elementAt(3) == true) {
                 setState(() {
+                  frequency = 'Daily';
                   recurrenceRulewithoutEnd = 'FREQ=DAILY';
                 });
               }

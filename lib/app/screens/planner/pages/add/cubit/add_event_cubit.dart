@@ -18,6 +18,7 @@ class AddEventCubit extends Cubit<AddEventState> {
     bool isAllDay,
     int colorValue,
     String? recurrenceRule,
+    String? frequency,
   ) async {
     try {
       await _plannerRepository.add(
@@ -28,6 +29,7 @@ class AddEventCubit extends Cubit<AddEventState> {
         isAllDay,
         colorValue,
         recurrenceRule,
+        frequency,
       );
       emit(const AddEventState(isSaved: true));
     } catch (error) {
