@@ -27,7 +27,7 @@ class _PlannerState extends State<Planner> {
       recurrenceRuleWithoutEndText = '',
       recurrenceRuleEndingText = '',
       displayRecurrenceRuleEndDate = 'Select a date',
-      dropdownValueText = '';
+      dropdownValueText = 'Never';
   String? notesText = '', frequencyText = '';
   late Object id;
   late Color color;
@@ -153,6 +153,20 @@ class _PlannerState extends State<Planner> {
         timeDetails = '$startTimeText - $endTimeText';
       }
       color = appointmentDetails.color;
+      final colorValue = color.value;
+      if (appointmentDetails.notes != '') {
+        notesText = appointmentDetails.notes;
+      } else {
+        notesText = '';
+      }
+      if (appointmentDetails.recurrenceRule != null &&
+          appointmentDetails.recurrenceRule!.contains('UNTIL')) {
+        dropdownValueText = 'On date';
+      }
+      if (appointmentDetails.recurrenceRule != null &&
+          appointmentDetails.recurrenceRule!.contains('COUNT')) {
+        dropdownValueText = 'After';
+      }
       if (appointmentDetails.location != '') {
         frequencyText = appointmentDetails.location;
         isEventRecurring = true;
@@ -160,25 +174,7 @@ class _PlannerState extends State<Planner> {
         frequencyText = 'One-time event';
         isEventRecurring = false;
       }
-      if (appointmentDetails.notes != '') {
-        notesText = appointmentDetails.notes;
-      } else {
-        notesText = 'No notes';
-      }
-      if (appointmentDetails.recurrenceRule != null) {
-        if (appointmentDetails.recurrenceRule!.contains('UNTIL')) {
-          dropdownValueText = 'On date';
-        }
-        if (appointmentDetails.recurrenceRule!.contains('COUNT')) {
-          dropdownValueText = 'After';
-        } else {
-          dropdownValueText = 'Never';
-        }
-        isEventRecurring = true;
-      } else {
-        isEventRecurring = false;
-        dropdownValueText = 'Never';
-      }
+      print(dropdownValueText);
       if (appointmentDetails.location == '') {
         recurrenceType = [true, false, false, false];
         recurrenceRuleWithoutEndText = '';
@@ -497,7 +493,9 @@ class _PlannerState extends State<Planner> {
                             minHeight: 50,
                           ),
                           decoration: containerDecoration,
-                          child: Text(notesText!, style: textStyle),
+                          child: Text(
+                              (notesText != '') ? notesText! : 'No notes',
+                              style: textStyle),
                         ),
                       ),
                       Padding(
@@ -520,6 +518,7 @@ class _PlannerState extends State<Planner> {
                                     builder: (context) => EditEventPage(
                                           id: eventId,
                                           color: color,
+                                          colorValue: colorValue,
                                           eventName: subjectText,
                                           eventStartTime: startTime,
                                           eventEndTime: endTime,

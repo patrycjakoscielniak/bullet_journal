@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:intl/intl.dart';
+import 'package:my_bullet_journal/app/app.dart';
 import 'package:my_bullet_journal/app/core/enums.dart';
 import 'package:my_bullet_journal/app/data/planner_remote_data_source.dart';
+import 'package:my_bullet_journal/app/screens/home/home_page.dart';
 import 'package:my_bullet_journal/app/screens/planner/pages/edit/cubit/edit_event_cubit.dart';
 import 'package:my_bullet_journal/app/screens/planner/pages/planner_page/planner_page.dart';
 import 'package:my_bullet_journal/repositories/planner_repository.dart';
@@ -18,6 +21,7 @@ class EditEventPage extends StatefulWidget {
     required this.color,
     required this.id,
     required this.dropdownValue,
+    required this.colorValue,
     required this.recurrenceRuleWithoutEnd,
     required this.recurrenceRuleEndingText,
     required this.displayRecurrenceRuleEndDate,
@@ -39,7 +43,7 @@ class EditEventPage extends StatefulWidget {
       recurrenceRuleEndingText,
       displayRecurrenceRuleEndDate;
 
-  int dropdownInt;
+  int dropdownInt, colorValue;
   Color color;
   DateTime eventStartTime, eventEndTime;
   DateTime? recurrenceRuleEndDate;
@@ -116,8 +120,8 @@ class _EditEventPageState extends State<EditEventPage> {
                 children: [
                   TextButton(
                     onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const Planner()));
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pop();
                     },
                     child: const Text('Close'),
                   ),
@@ -154,7 +158,34 @@ class _EditEventPageState extends State<EditEventPage> {
 
   IconButton editColor() {
     return IconButton(
-      onPressed: () {},
+      onPressed: () {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                content: SingleChildScrollView(
+                  child: ColorPicker(
+                    paletteType: PaletteType.hslWithSaturation,
+                    pickerColor: widget.color,
+                    onColorChanged: (color) {
+                      setState(() {
+                        widget.color = color;
+                        widget.colorValue = color.value;
+                      });
+                    },
+                  ),
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Save'),
+                  )
+                ],
+              );
+            });
+      },
       icon: const Icon(Icons.color_lens),
       color: widget.color,
     );
