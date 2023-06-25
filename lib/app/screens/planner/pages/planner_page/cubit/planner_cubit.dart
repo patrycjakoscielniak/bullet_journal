@@ -15,18 +15,6 @@ class PlannerCubit extends Cubit<PlannerState> {
 
   StreamSubscription? _streamSubscription;
 
-  Future<void> deleteEvent({required String documentID}) async {
-    try {
-      await _plannerRepository.delete(id: documentID);
-      emit(const PlannerState(status: Status.deleted));
-    } catch (error) {
-      emit(PlannerState(
-        errorMessage: error.toString(),
-        status: Status.error,
-      ));
-    }
-  }
-
   Future<void> start() async {
     emit(const PlannerState(status: Status.loading));
 

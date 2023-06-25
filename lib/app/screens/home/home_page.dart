@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:my_bullet_journal/auth/user_profile.dart';
 
-import '../planner/pages/planner_page/planner_page.dart';
+import '../planner/pages/planner_page/page/planner_page.dart';
 import '../vision_board/vision_board_page.dart';
 import '../wishlist/pages/wishlist_page/wishlist_page.dart';
 

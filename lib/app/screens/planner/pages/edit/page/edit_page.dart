@@ -7,13 +7,10 @@ import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:intl/intl.dart';
 import 'package:my_bullet_journal/app/app.dart';
 import 'package:my_bullet_journal/app/core/enums.dart';
-import 'package:my_bullet_journal/app/data/planner_remote_data_source.dart';
 import 'package:my_bullet_journal/app/screens/planner/pages/edit/cubit/edit_event_cubit.dart';
-import 'package:my_bullet_journal/app/screens/planner/pages/planner_page/planner_page.dart';
-import 'package:my_bullet_journal/repositories/planner_repository.dart';
+import 'package:my_bullet_journal/app/screens/planner/pages/planner_page/page/planner_page.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
-
-import '../../variables/variables.dart';
+import '../../../variables/variables.dart';
 
 class EditEventPage extends StatefulWidget {
   EditEventPage({
@@ -59,68 +56,59 @@ class _EditEventPageState extends State<EditEventPage> {
   @override
   Widget build(BuildContext context) {
     final colorValue = widget.colorValue;
-    return BlocProvider(
-      create: (context) => EditEventCubit(
-          PlannerRepository(remoteDataSource: HolidaysRemoteDioDataSource())),
-      child: BlocConsumer<EditEventCubit, EditEventState>(
-        listener: (context, state) {
-          if (state.status == Status.updated) {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => const Planner()));
-          }
-          if (state.status == Status.error) {
-            ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text(state.errorMessage!)));
-          }
-        },
-        builder: (context, state) {
-          return Scaffold(
-            body: Padding(
-              padding: const EdgeInsets.only(
-                right: 50,
-                left: 50,
-                top: 80,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+    return BlocListener<EditEventCubit, EditEventState>(
+      listener: (context, state) {
+        if (state.status == Status.updated) {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => const Planner()));
+        }
+        if (state.status == Status.error) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(state.errorMessage!)));
+        }
+      },
+      child: Scaffold(
+        body: Padding(
+          padding: const EdgeInsets.only(
+            right: 50,
+            left: 50,
+            top: 80,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Row(
                 children: [
-                  Row(
-                    children: [
-                      Expanded(
-                          child: TextField(
-                        textAlign: TextAlign.center,
-                        decoration: InputDecoration(
-                          hintText: widget.eventName,
-                        ),
-                        readOnly: true,
-                      )),
-                      editColor()
-                    ],
-                  ),
-                  space,
-                  isEventAllDay(),
-                  space,
-                  editEventDateTime(context),
-                  space,
-                  isEventRecurring(),
-                  space,
-                  widget.isRecurring ? editRecurrenceRule(context) : space,
-                  editNotes(),
+                  Expanded(
+                      child: TextField(
+                    textAlign: TextAlign.center,
+                    decoration: InputDecoration(
+                      hintText: widget.eventName,
+                    ),
+                    readOnly: true,
+                  )),
+                  editColor()
                 ],
               ),
-            ),
-            bottomSheet: Padding(
-              padding: const EdgeInsets.only(bottom: 30, right: 15, left: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  closePage(context),
-                  saveChanges(context, colorValue)
-                ],
-              ),
-            ),
-          );
-        },
+              space,
+              isEventAllDay(),
+              space,
+              editEventDateTime(context),
+              space,
+              isEventRecurring(),
+              space,
+              widget.isRecurring ? editRecurrenceRule(context) : space,
+              editNotes(),
+            ],
+          ),
+        ),
+        bottomSheet: Padding(
+          padding: const EdgeInsets.only(bottom: 30, right: 15, left: 15),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [closePage(context), saveChanges(context, colorValue)],
+          ),
+        ),
       ),
     );
   }
@@ -217,7 +205,7 @@ class _EditEventPageState extends State<EditEventPage> {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         Text(
-          'Repeat',
+          'Recurring',
           style: textStyle,
           textAlign: TextAlign.center,
         ),

@@ -8,7 +8,7 @@ import 'package:my_bullet_journal/app/screens/planner/pages/add/cubit/add_event_
 import 'package:my_bullet_journal/repositories/planner_repository.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 
-import '../../variables/variables.dart';
+import '../../../variables/variables.dart';
 
 class AddEvent extends StatefulWidget {
   const AddEvent({
