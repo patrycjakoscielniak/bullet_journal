@@ -19,6 +19,7 @@ class AddEventCubit extends Cubit<AddEventState> {
     int colorValue,
     String? recurrenceRule,
     String? frequency,
+    String? recurrenceRuleEnding,
   ) async {
     try {
       await _plannerRepository.add(
@@ -30,6 +31,7 @@ class AddEventCubit extends Cubit<AddEventState> {
         colorValue,
         recurrenceRule,
         frequency,
+        recurrenceRuleEnding,
       );
       emit(const AddEventState(isSaved: true));
     } catch (error) {

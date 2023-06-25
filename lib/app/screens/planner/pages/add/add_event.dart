@@ -26,7 +26,10 @@ class _AddEventState extends State<AddEvent> {
       dropdownValue = 'Never',
       frequency = '';
 
-  String? recurrenceRulewithoutEnd, endrecurrenceRule, recurrenceRule;
+  String? recurrenceRulewithoutEnd,
+      recurrenceRuleEndingDateText,
+      recurrenceRuleEnding,
+      recurrenceRule;
   int colorValue = 0xff70e4e7, intDropdownValue = 1;
   List<int> intDropdownList = [for (int i = 1; i <= 100; i++) i];
   Color pickerColor = const Color.fromARGB(255, 160, 117, 217),
@@ -92,10 +95,12 @@ class _AddEventState extends State<AddEvent> {
                         ? null
                         : () {
                             setState(() {
-                              if (endrecurrenceRule != '') {
+                              if (recurrenceRuleEndingDateText != null &&
+                                  recurrenceRulewithoutEnd != null) {
                                 recurrenceRule =
-                                    '$recurrenceRulewithoutEnd;$endrecurrenceRule';
-                              } else {
+                                    '$recurrenceRulewithoutEnd;$recurrenceRuleEndingDateText';
+                              } else if (recurrenceRulewithoutEnd != null &&
+                                  recurrenceRuleEndingDateText == null) {
                                 recurrenceRule = recurrenceRulewithoutEnd;
                               }
                             });
@@ -108,6 +113,7 @@ class _AddEventState extends State<AddEvent> {
                                   colorValue,
                                   recurrenceRule,
                                   frequency,
+                                  recurrenceRuleEnding,
                                 );
                           },
                     child: const Text(
@@ -391,11 +397,6 @@ class _AddEventState extends State<AddEvent> {
                   setState(() {
                     dropdownValue = value;
                   });
-                  if (value == 'Never') {
-                    setState(() {
-                      endrecurrenceRule = '';
-                    });
-                  }
                 }
               },
             ),
@@ -419,7 +420,8 @@ class _AddEventState extends State<AddEvent> {
                           if (value != null) {
                             setState(() {
                               intDropdownValue = value;
-                              endrecurrenceRule = 'COUNT=$value';
+                              recurrenceRuleEndingDateText = 'COUNT=$value';
+                              recurrenceRuleEnding = 'COUNT=$value';
                             });
                           }
                         }),
@@ -437,8 +439,10 @@ class _AddEventState extends State<AddEvent> {
                           setState(() {
                             recurrenceEndDate =
                                 DateFormat('dd  MMMM yyyy').format(time);
-                            endrecurrenceRule =
+                            recurrenceRuleEndingDateText =
                                 'UNTIL=${DateFormat('yyyyMMddTHHmmss').format(time)}Z';
+                            recurrenceRuleEnding =
+                                'UNTIL=${DateFormat('yyyyMMddTHHmmss').format(time)}';
                           });
                         },
                       );

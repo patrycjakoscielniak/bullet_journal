@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
@@ -6,7 +8,6 @@ import 'package:intl/intl.dart';
 import 'package:my_bullet_journal/app/app.dart';
 import 'package:my_bullet_journal/app/core/enums.dart';
 import 'package:my_bullet_journal/app/data/planner_remote_data_source.dart';
-import 'package:my_bullet_journal/app/screens/home/home_page.dart';
 import 'package:my_bullet_journal/app/screens/planner/pages/edit/cubit/edit_event_cubit.dart';
 import 'package:my_bullet_journal/app/screens/planner/pages/planner_page/planner_page.dart';
 import 'package:my_bullet_journal/repositories/planner_repository.dart';
@@ -18,18 +19,16 @@ class EditEventPage extends StatefulWidget {
   EditEventPage({
     super.key,
     required this.eventName,
-    required this.color,
     required this.id,
     required this.dropdownValue,
     required this.colorValue,
     required this.recurrenceRuleWithoutEnd,
-    required this.recurrenceRuleEndingText,
+    required this.recurrenceRuleEnding,
     required this.displayRecurrenceRuleEndDate,
     required this.frequency,
     required this.dropdownInt,
     required this.eventStartTime,
     required this.eventEndTime,
-    required this.recurrenceRuleEndDate,
     required this.isAllDay,
     required this.isRecurring,
     required this.recurrenceType,
@@ -40,16 +39,13 @@ class EditEventPage extends StatefulWidget {
   String id,
       dropdownValue,
       recurrenceRuleWithoutEnd,
-      recurrenceRuleEndingText,
       displayRecurrenceRuleEndDate;
 
   int dropdownInt, colorValue;
-  Color color;
   DateTime eventStartTime, eventEndTime;
-  DateTime? recurrenceRuleEndDate;
   bool isAllDay, isRecurring;
   List<bool> recurrenceType;
-  String? notes, frequency;
+  String? notes, frequency, recurrenceRuleEnding;
 
   @override
   State<EditEventPage> createState() => _EditEventPageState();
@@ -58,11 +54,11 @@ class EditEventPage extends StatefulWidget {
 class _EditEventPageState extends State<EditEventPage> {
   final space = const SizedBox(height: 15);
   List<int> intDropdownList = [for (int i = 1; i <= 100; i++) i];
-  String? recurrenceRule;
+  String? recurrenceRule, recurrenceRuleEndingText;
 
   @override
   Widget build(BuildContext context) {
-    final colorValue = widget.color.value;
+    final colorValue = widget.colorValue;
     return BlocProvider(
       create: (context) => EditEventCubit(
           PlannerRepository(remoteDataSource: HolidaysRemoteDioDataSource())),
@@ -118,35 +114,8 @@ class _EditEventPageState extends State<EditEventPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text('Close'),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      context.read<EditEventCubit>().updateEvent(
-                            id: widget.id,
-                            eventName: widget.eventName,
-                            notes: widget.notes,
-                            recurrenceRule: (widget.recurrenceRuleWithoutEnd !=
-                                    '')
-                                ? '${widget.recurrenceRuleWithoutEnd};${widget.recurrenceRuleEndingText}'
-                                : recurrenceRule =
-                                    widget.recurrenceRuleWithoutEnd,
-                            frequency: widget.frequency,
-                            startTime: widget.eventStartTime,
-                            endTime: widget.eventEndTime,
-                            isAllDay: widget.isAllDay,
-                            colorValue: colorValue,
-                          );
-                    },
-                    child: const Text(
-                      'Save Changes',
-                    ),
-                  )
+                  closePage(context),
+                  saveChanges(context, colorValue)
                 ],
               ),
             ),
@@ -166,10 +135,9 @@ class _EditEventPageState extends State<EditEventPage> {
                 content: SingleChildScrollView(
                   child: ColorPicker(
                     paletteType: PaletteType.hslWithSaturation,
-                    pickerColor: widget.color,
+                    pickerColor: Color(widget.colorValue),
                     onColorChanged: (color) {
                       setState(() {
-                        widget.color = color;
                         widget.colorValue = color.value;
                       });
                     },
@@ -187,7 +155,7 @@ class _EditEventPageState extends State<EditEventPage> {
             });
       },
       icon: const Icon(Icons.color_lens),
-      color: widget.color,
+      color: Color(widget.colorValue),
     );
   }
 
@@ -403,7 +371,7 @@ class _EditEventPageState extends State<EditEventPage> {
                   });
                   if (value == 'Never') {
                     setState(() {
-                      widget.recurrenceRuleEndingText = '';
+                      recurrenceRuleEndingText = '';
                     });
                   }
                 }
@@ -429,8 +397,7 @@ class _EditEventPageState extends State<EditEventPage> {
                           if (intValue != null) {
                             setState(() {
                               widget.dropdownInt = intValue;
-                              widget.recurrenceRuleEndingText =
-                                  'COUNT=$intValue';
+                              recurrenceRuleEndingText = 'COUNT=$intValue';
                             });
                           }
                         }),
@@ -448,7 +415,7 @@ class _EditEventPageState extends State<EditEventPage> {
                           setState(() {
                             widget.displayRecurrenceRuleEndDate =
                                 DateFormat('dd  MMMM yyyy').format(time);
-                            widget.recurrenceRuleEndingText =
+                            recurrenceRuleEndingText =
                                 'UNTIL=${DateFormat('yyyyMMddTHHmmss').format(time)}Z';
                           });
                         },
@@ -473,6 +440,39 @@ class _EditEventPageState extends State<EditEventPage> {
       textAlign: TextAlign.center,
       decoration: InputDecoration(
           hintText: (widget.notes != '') ? widget.notes : 'Add notes'),
+    );
+  }
+
+  TextButton closePage(BuildContext context) {
+    return TextButton(
+      onPressed: () {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: ((context) => MyApp())));
+      },
+      child: const Text('Close'),
+    );
+  }
+
+  TextButton saveChanges(BuildContext context, int colorValue) {
+    return TextButton(
+      onPressed: () {
+        context.read<EditEventCubit>().updateEvent(
+              id: widget.id,
+              eventName: widget.eventName,
+              notes: widget.notes,
+              recurrenceRule: (widget.recurrenceRuleWithoutEnd != '')
+                  ? '${widget.recurrenceRuleWithoutEnd};${recurrenceRuleEndingText}'
+                  : recurrenceRule = widget.recurrenceRuleWithoutEnd,
+              frequency: widget.frequency,
+              startTime: widget.eventStartTime,
+              endTime: widget.eventEndTime,
+              isAllDay: widget.isAllDay,
+              colorValue: colorValue,
+            );
+      },
+      child: const Text(
+        'Save Changes',
+      ),
     );
   }
 }

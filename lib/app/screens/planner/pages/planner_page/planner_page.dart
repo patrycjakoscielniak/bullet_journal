@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:my_bullet_journal/app/data/planner_remote_data_source.dart';
 import 'package:my_bullet_journal/app/screens/planner/pages/edit/edit_page.dart';
 import 'package:my_bullet_journal/app/screens/planner/variables/variables.dart';
+import 'package:my_bullet_journal/models/planner_item_model.dart';
 import 'package:my_bullet_journal/repositories/planner_repository.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../add/add_event.dart';
@@ -21,39 +22,9 @@ class Planner extends StatefulWidget {
 
 class _PlannerState extends State<Planner> {
   List<Appointment> events = [];
-  String subjectText = '',
-      dateText = '',
-      timeDetails = '',
-      recurrenceRuleWithoutEndText = '',
-      recurrenceRuleEndingText = '',
-      displayRecurrenceRuleEndDate = 'Select a date',
-      dropdownValueText = 'Never';
-  String? notesText = '', frequencyText = '';
-  late Object id;
-  late Color color;
-  late DateTime existingEventStartTime, existingEventEndTime;
-  DateTime? recurrenceRuleEndDate;
-  bool isEventAllDay = false, isEventRecurring = false;
-  int dropdownInt = 1;
-  final List<String> oneDigitMonthDays = [
-        'BYMONTHDAY=1',
-        'BYMONTHDAY=2',
-        'BYMONTHDAY=3',
-        'BYMONTHDAY=4',
-        'BYMONTHDAY=5',
-        'BYMONTHDAY=6',
-        'BYMONTHDAY=7',
-        'BYMONTHDAY=1',
-        'BYMONTHDAY=1',
-      ],
-      twoDigitsMonth = [
-        'BYMONTH=10',
-        'BYMONTH=11',
-        'BYMONTH=12',
-      ];
-  List<bool> recurrenceType = [true, false, false, false],
-      isOneDigitMonthDayList = [],
-      isTwoDigitMonthList = [];
+  List<PlannerModel> plannerEvents = [];
+  String eventId = '';
+  final CalendarController _controller = CalendarController();
 
   @override
   Widget build(BuildContext context) {
@@ -63,10 +34,10 @@ class _PlannerState extends State<Planner> {
         ..start(),
       child: BlocBuilder<PlannerCubit, PlannerState>(
         builder: (context, state) {
-          final tasks = state.appointments;
+          plannerEvents = state.appointments;
           events.clear();
 
-          for (final task in tasks) {
+          for (final task in plannerEvents) {
             if (task.recurrenceRule == '') {
               events.add(Appointment(
                 id: task.id,
@@ -76,7 +47,6 @@ class _PlannerState extends State<Planner> {
                 endTime: task.end,
                 isAllDay: task.isAllDay,
                 color: Color(task.colorValue),
-                location: task.frequency,
               ));
             } else {
               events.add(Appointment(
@@ -87,7 +57,6 @@ class _PlannerState extends State<Planner> {
                 endTime: task.end,
                 isAllDay: task.isAllDay,
                 color: Color(task.colorValue),
-                location: task.frequency,
                 recurrenceRule: task.recurrenceRule,
               ));
             }
@@ -103,6 +72,7 @@ class _PlannerState extends State<Planner> {
               child: const Icon(Icons.add),
             ),
             body: SfCalendar(
+              controller: _controller,
               onTap: calendarTapped,
               headerStyle: CalendarHeaderStyle(
                   textStyle: GoogleFonts.amaticSc(fontSize: 25)),
@@ -125,6 +95,89 @@ class _PlannerState extends State<Planner> {
                 CalendarView.week,
                 CalendarView.month,
               ],
+              appointmentBuilder:
+                  (context, CalendarAppointmentDetails details) {
+                final event = details.appointments.first;
+
+                if (details.isMoreAppointmentRegion) {
+                  return SizedBox(
+                    width: details.bounds.width,
+                    height: details.bounds.height,
+                    child: Text(
+                      '+More',
+                      style: appointmentTextStyle,
+                    ),
+                  );
+                } else if (_controller.view == CalendarView.month) {
+                  return Container(
+                      padding: const EdgeInsets.only(left: 5),
+                      decoration: BoxDecoration(
+                        color: event.color,
+                        shape: BoxShape.rectangle,
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(5),
+                        ),
+                      ),
+                      alignment: Alignment.centerLeft,
+                      child: event.isAllDay
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text('${event.subject}',
+                                    textAlign: TextAlign.start,
+                                    style: appointmentTextStyle),
+                                deleteEvent(context)
+                              ],
+                            )
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 3),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text('${event.subject}',
+                                          style: appointmentTextStyle),
+                                      Text(
+                                          '${DateFormat('hh:mm a').format(event.startTime)} - ${DateFormat('hh:mm a').format(event.endTime)}',
+                                          style: appointmentTextStyle)
+                                    ],
+                                  ),
+                                ),
+                                deleteEvent(context)
+                              ],
+                            ));
+                } else {
+                  return Container(
+                    decoration: BoxDecoration(
+                      color: event.color,
+                      shape: BoxShape.rectangle,
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(3),
+                      ),
+                    ),
+                    width: details.bounds.width,
+                    height: details.bounds.height,
+                    child: event.isAllDay
+                        ? Padding(
+                            padding: const EdgeInsets.only(left: 5),
+                            child: Text(
+                              event.subject,
+                              style: appointmentTextStyle,
+                            ),
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.only(left: 5, top: 2),
+                            child: Text(
+                              event.subject,
+                              style: appointmentTextStyle,
+                            ),
+                          ),
+                  );
+                }
+              },
             ),
           );
         },
@@ -135,307 +188,71 @@ class _PlannerState extends State<Planner> {
   void calendarTapped(CalendarTapDetails details) {
     if (details.targetElement == CalendarElement.appointment ||
         details.targetElement == CalendarElement.agenda) {
-      final Appointment appointmentDetails = details.appointments![0];
-      subjectText = appointmentDetails.subject;
-      final startTime = appointmentDetails.startTime,
-          endTime = appointmentDetails.endTime;
-      dateText = DateFormat('dd MMMM yyyy')
-          .format(appointmentDetails.startTime)
-          .toString();
-      final eventId = appointmentDetails.id.toString();
-      final startTimeText =
-          DateFormat('hh:mm a').format(appointmentDetails.startTime).toString();
-      final endTimeText =
-          DateFormat('hh:mm a').format(appointmentDetails.endTime).toString();
-      if (appointmentDetails.isAllDay) {
+      final tappedAppointment = details.appointments![0];
+      final tappedId = tappedAppointment.id.toString();
+      final event =
+          plannerEvents.where((element) => element.id == tappedId).first;
+      final eventName = event.eventName;
+      eventId = event.id;
+      final startTime = event.start, endTime = event.end;
+      final colorValue = event.colorValue;
+      final recurrenceRule = event.recurrenceRule,
+          recurrenceRuleEnding = event.recurrenceRuleEnding;
+      final color = Color(colorValue);
+      String? notesText;
+      String timeDetails = '',
+          recurrenceRuleWithoutEndText = '',
+          displayRecurrenceRuleEndDate = 'Select a date',
+          dropdownValueText = 'Never';
+      DateTime? recurrenceRuleEndDate;
+      bool isEventRecurring = false;
+      int dropdownInt = 1;
+      List<bool> recurrenceType = [true, false, false, false];
+      final dateText = DateFormat('dd MMMM yyyy').format(startTime).toString(),
+          startTimeText = DateFormat('hh:mm a').format(startTime).toString(),
+          endTimeText = DateFormat('hh:mm a').format(endTime).toString();
+      if (event.isAllDay) {
         timeDetails = 'All day';
       } else {
         timeDetails = '$startTimeText - $endTimeText';
       }
-      color = appointmentDetails.color;
-      final colorValue = color.value;
-      if (appointmentDetails.notes != '') {
-        notesText = appointmentDetails.notes;
-      } else {
-        notesText = '';
+      if (event.notes != '') {
+        notesText = event.notes;
       }
-      if (appointmentDetails.recurrenceRule != null &&
-          appointmentDetails.recurrenceRule!.contains('UNTIL')) {
+      if (event.recurrenceRule != null &&
+          event.recurrenceRule!.contains('UNTIL')) {
         dropdownValueText = 'On date';
-      }
-      if (appointmentDetails.recurrenceRule != null &&
-          appointmentDetails.recurrenceRule!.contains('COUNT')) {
+        recurrenceRuleWithoutEndText =
+            recurrenceRule!.replaceAll('${recurrenceRuleEnding}Z', '');
+        recurrenceRuleEndDate =
+            DateTime.parse(recurrenceRuleEnding!.replaceAll('UNTIL=', ''));
+        displayRecurrenceRuleEndDate =
+            DateFormat('dd  MMMM yyyy').format(recurrenceRuleEndDate);
+      } else if (event.recurrenceRule != null &&
+          event.recurrenceRule!.contains('COUNT')) {
         dropdownValueText = 'After';
+        dropdownInt = int.parse(recurrenceRuleEnding!.replaceAll('COUNT=', ''));
+        recurrenceRuleWithoutEndText =
+            recurrenceRule!.replaceAll(recurrenceRuleEnding, '');
       }
-      if (appointmentDetails.location != '') {
-        frequencyText = appointmentDetails.location;
+      if (recurrenceRule != null && recurrenceRule != '') {
         isEventRecurring = true;
-      } else {
-        frequencyText = 'One-time event';
-        isEventRecurring = false;
-      }
-      print(dropdownValueText);
-      if (appointmentDetails.location == '') {
-        recurrenceType = [true, false, false, false];
-        recurrenceRuleWithoutEndText = '';
-      }
-      if (appointmentDetails.location == 'Yearly') {
-        recurrenceType = [true, false, false, false];
-        recurrenceRuleWithoutEndText =
-            'FREQ=YEARLY;BYMONTH=${DateFormat('M').format(appointmentDetails.startTime)};BYMONTHDAY=${DateFormat('d').format(appointmentDetails.startTime)}';
-        if (appointmentDetails.recurrenceRule!.contains('UNTIL')) {
-          if (appointmentDetails.recurrenceRule!.length == 56) {
-            recurrenceRuleEndDate = DateTime.parse(
-                appointmentDetails.recurrenceRule!.substring(41, 55));
-            displayRecurrenceRuleEndDate =
-                DateFormat('dd  MMMM yyyy').format(recurrenceRuleEndDate!);
-            recurrenceRuleEndingText =
-                appointmentDetails.recurrenceRule!.substring(35, 55);
-          }
-          if (appointmentDetails.recurrenceRule!.length == 57) {
-            recurrenceRuleEndDate = DateTime.parse(
-                appointmentDetails.recurrenceRule!.substring(42, 56));
-            displayRecurrenceRuleEndDate =
-                DateFormat('dd  MMMM yyyy').format(recurrenceRuleEndDate!);
-            recurrenceRuleEndingText =
-                appointmentDetails.recurrenceRule!.substring(36, 56);
-          }
-          if (appointmentDetails.recurrenceRule!.length == 58) {
-            recurrenceRuleEndDate = DateTime.parse(
-                appointmentDetails.recurrenceRule!.substring(43, 57));
-            displayRecurrenceRuleEndDate =
-                DateFormat('dd  MMMM yyyy').format(recurrenceRuleEndDate!);
-            recurrenceRuleEndingText =
-                appointmentDetails.recurrenceRule!.substring(37, 57);
-          }
+        if (recurrenceRule.contains('MONTHLY')) {
+          recurrenceType = [false, true, false, false];
+        } else if (recurrenceRule.contains('WEEKLY')) {
+          recurrenceType = [false, false, true, false];
+        } else if (recurrenceRule.contains('DAILY')) {
+          recurrenceType = [false, false, false, true];
         }
-        if (appointmentDetails.recurrenceRule!.contains('COUNT')) {
-          for (final element in oneDigitMonthDays) {
-            bool isMonthDayOneDigit =
-                appointmentDetails.recurrenceRule!.contains(element);
-            isOneDigitMonthDayList.add(isMonthDayOneDigit);
-          }
-          for (final element in twoDigitsMonth) {
-            bool isMonthTwoDigits =
-                appointmentDetails.recurrenceRule!.contains(element);
-            isTwoDigitMonthList.add(isMonthTwoDigits);
-          }
-          if (appointmentDetails.recurrenceRule!.length == 42) {
-            recurrenceRuleEndingText =
-                appointmentDetails.recurrenceRule!.substring(35);
-            dropdownInt =
-                int.parse(appointmentDetails.recurrenceRule!.substring(41));
-          }
-          if (appointmentDetails.recurrenceRule!.length == 43) {
-            if (isTwoDigitMonthList.contains(true) &&
-                    isOneDigitMonthDayList.contains(true) ||
-                !isTwoDigitMonthList.contains(true) &&
-                    !isOneDigitMonthDayList.contains(true)) {
-              recurrenceRuleEndingText =
-                  appointmentDetails.recurrenceRule!.substring(36);
-              dropdownInt =
-                  int.parse(appointmentDetails.recurrenceRule!.substring(42));
-            }
-            if (!isTwoDigitMonthList.contains(true) &&
-                isOneDigitMonthDayList.contains(true)) {
-              recurrenceRuleEndingText =
-                  appointmentDetails.recurrenceRule!.substring(35);
-              dropdownInt =
-                  int.parse(appointmentDetails.recurrenceRule!.substring(41));
-            }
-          }
-          if (appointmentDetails.recurrenceRule!.length == 44) {
-            if (isTwoDigitMonthList.contains(true) &&
-                    isOneDigitMonthDayList.contains(true) ||
-                !isTwoDigitMonthList.contains(true) &&
-                    !isOneDigitMonthDayList.contains(true)) {
-              recurrenceRuleEndingText =
-                  appointmentDetails.recurrenceRule!.substring(36);
-              dropdownInt =
-                  int.parse(appointmentDetails.recurrenceRule!.substring(42));
-            }
-            if (!isTwoDigitMonthList.contains(true) &&
-                isOneDigitMonthDayList.contains(true)) {
-              recurrenceRuleEndingText =
-                  appointmentDetails.recurrenceRule!.substring(35);
-              dropdownInt =
-                  int.parse(appointmentDetails.recurrenceRule!.substring(41));
-            }
-            if (isTwoDigitMonthList.contains(true) &&
-                !isOneDigitMonthDayList.contains(true)) {
-              recurrenceRuleEndingText =
-                  appointmentDetails.recurrenceRule!.substring(37);
-              dropdownInt =
-                  int.parse(appointmentDetails.recurrenceRule!.substring(43));
-            }
-          }
-          if (appointmentDetails.recurrenceRule!.length == 45) {
-            if (isTwoDigitMonthList.contains(true) &&
-                    isOneDigitMonthDayList.contains(true) ||
-                !isTwoDigitMonthList.contains(true) &&
-                    !isOneDigitMonthDayList.contains(true)) {
-              recurrenceRuleEndingText =
-                  appointmentDetails.recurrenceRule!.substring(36);
-              dropdownInt =
-                  int.parse(appointmentDetails.recurrenceRule!.substring(42));
-            }
+      }
 
-            if (isTwoDigitMonthList.contains(true) &&
-                !isOneDigitMonthDayList.contains(true)) {
-              recurrenceRuleEndingText =
-                  appointmentDetails.recurrenceRule!.substring(37);
-              dropdownInt =
-                  int.parse(appointmentDetails.recurrenceRule!.substring(43));
-            }
-          }
-          if (appointmentDetails.recurrenceRule!.length == 46) {
-            recurrenceRuleEndingText =
-                appointmentDetails.recurrenceRule!.substring(38);
-            dropdownInt =
-                int.parse(appointmentDetails.recurrenceRule!.substring(44));
-          }
-        } else {
-          recurrenceRuleEndingText = '';
-        }
-      }
-      if (appointmentDetails.location == 'Monthly') {
-        recurrenceType = [false, true, false, false];
-        recurrenceRuleWithoutEndText =
-            'FREQ=MONTHLY;BYMONTHDAY=${DateFormat('d').format(appointmentDetails.startTime)}';
-
-        if (appointmentDetails.recurrenceRule!.contains('UNTIL')) {
-          if (appointmentDetails.recurrenceRule!.length == 48) {
-            recurrenceRuleEndDate = DateTime.parse(
-                appointmentDetails.recurrenceRule!.substring(32, 47));
-            displayRecurrenceRuleEndDate =
-                DateFormat('dd  MMMM yyyy').format(recurrenceRuleEndDate!);
-            recurrenceRuleEndingText =
-                appointmentDetails.recurrenceRule!.substring(26, 47);
-          }
-          if (appointmentDetails.recurrenceRule!.length == 49) {
-            recurrenceRuleEndDate = DateTime.parse(
-                appointmentDetails.recurrenceRule!.substring(33, 48));
-            displayRecurrenceRuleEndDate =
-                DateFormat('dd  MMMM yyyy').format(recurrenceRuleEndDate!);
-            recurrenceRuleEndingText =
-                appointmentDetails.recurrenceRule!.substring(27, 48);
-          }
-        }
-        if (appointmentDetails.recurrenceRule!.contains('COUNT')) {
-          for (final element in oneDigitMonthDays) {
-            bool isMonthDayOneDigit =
-                appointmentDetails.recurrenceRule!.contains(element);
-            isOneDigitMonthDayList.add(isMonthDayOneDigit);
-            if (appointmentDetails.recurrenceRule!.length == 33) {
-              recurrenceRuleEndingText =
-                  appointmentDetails.recurrenceRule!.substring(26);
-              dropdownInt =
-                  int.parse(appointmentDetails.recurrenceRule!.substring(32));
-            }
-            if (appointmentDetails.recurrenceRule!.length == 34) {
-              if (isOneDigitMonthDayList.contains(true)) {
-                recurrenceRuleEndingText =
-                    appointmentDetails.recurrenceRule!.substring(26);
-                dropdownInt =
-                    int.parse(appointmentDetails.recurrenceRule!.substring(32));
-              } else {
-                recurrenceRuleEndingText =
-                    appointmentDetails.recurrenceRule!.substring(27);
-                dropdownInt =
-                    int.parse(appointmentDetails.recurrenceRule!.substring(33));
-              }
-            }
-            if (appointmentDetails.recurrenceRule!.length == 35) {
-              if (isOneDigitMonthDayList.contains(true)) {
-                recurrenceRuleEndingText =
-                    appointmentDetails.recurrenceRule!.substring(26);
-                dropdownInt =
-                    int.parse(appointmentDetails.recurrenceRule!.substring(32));
-              } else {
-                recurrenceRuleEndingText =
-                    appointmentDetails.recurrenceRule!.substring(27);
-                dropdownInt =
-                    int.parse(appointmentDetails.recurrenceRule!.substring(33));
-              }
-            }
-            if (appointmentDetails.recurrenceRule!.length == 36) {
-              recurrenceRuleEndingText =
-                  appointmentDetails.recurrenceRule!.substring(27);
-              dropdownInt =
-                  int.parse(appointmentDetails.recurrenceRule!.substring(33));
-            }
-          }
-        } else {
-          recurrenceRuleEndingText = '';
-        }
-      }
-      if (appointmentDetails.location == 'Weekly') {
-        recurrenceType = [false, false, true, false];
-        if (appointmentDetails.recurrenceRule!.contains('UNTIL')) {
-          recurrenceRuleEndDate = DateTime.parse(
-              appointmentDetails.recurrenceRule!.substring(27, 42));
-          displayRecurrenceRuleEndDate =
-              DateFormat('dd  MMMM yyyy').format(recurrenceRuleEndDate!);
-          recurrenceRuleEndingText =
-              appointmentDetails.recurrenceRule!.substring(21, 42);
-        }
-        if (appointmentDetails.recurrenceRule!.contains('COUNT')) {
-          recurrenceRuleEndingText =
-              appointmentDetails.recurrenceRule!.substring(21);
-          dropdownInt =
-              int.parse(appointmentDetails.recurrenceRule!.substring(27));
-        } else {
-          recurrenceRuleEndingText = '';
-        }
-
-        if (appointmentDetails.startTime.weekday == 1) {
-          recurrenceRuleWithoutEndText = 'FREQ=WEEKLY;BYDAY=MO';
-        }
-        if (appointmentDetails.startTime.weekday == 2) {
-          recurrenceRuleWithoutEndText = 'FREQ=WEEKLY;BYDAY=TU';
-        }
-        if (appointmentDetails.startTime.weekday == 3) {
-          recurrenceRuleWithoutEndText = 'FREQ=WEEKLY;BYDAY=WE';
-        }
-        if (appointmentDetails.startTime.weekday == 4) {
-          recurrenceRuleWithoutEndText = 'FREQ=WEEKLY;BYDAY=TH';
-        }
-        if (appointmentDetails.startTime.weekday == 5) {
-          recurrenceRuleWithoutEndText = 'FREQ=WEEKLY;BYDAY=FR';
-        }
-        if (appointmentDetails.startTime.weekday == 6) {
-          recurrenceRuleWithoutEndText = 'FREQ=WEEKLY;BYDAY=SA';
-        }
-        if (appointmentDetails.startTime.weekday == 7) {
-          recurrenceRuleWithoutEndText = 'FREQ=WEEKLY;BYDAY=SU';
-        }
-      }
-      if (appointmentDetails.location == 'Daily') {
-        recurrenceType = [false, false, false, true];
-        recurrenceRuleWithoutEndText = 'FREQ=DAILY';
-        if (appointmentDetails.recurrenceRule!.contains('UNTIL')) {
-          recurrenceRuleEndDate = DateTime.parse(
-              appointmentDetails.recurrenceRule!.substring(17, 32));
-          displayRecurrenceRuleEndDate =
-              DateFormat('dd  MMMM yyyy').format(recurrenceRuleEndDate!);
-          recurrenceRuleEndingText =
-              appointmentDetails.recurrenceRule!.substring(11, 32);
-        }
-        if (appointmentDetails.recurrenceRule!.contains('COUNT')) {
-          dropdownInt =
-              int.parse(appointmentDetails.recurrenceRule!.substring(17));
-          recurrenceRuleEndingText =
-              appointmentDetails.recurrenceRule!.substring(11);
-        } else {
-          recurrenceRuleEndingText = '';
-        }
-      }
+      print(recurrenceType);
       showDialog(
           context: context,
           builder: (context) {
             return SimpleDialog(
               title: Text(
-                subjectText,
+                eventName,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.marckScript(
                     color: color, fontWeight: FontWeight.w400, fontSize: 28),
@@ -460,7 +277,7 @@ class _PlannerState extends State<Planner> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Date:   $dateText', style: textStyle),
+                              Text('Start Date:   $dateText', style: textStyle),
                               Text('Time:   $timeDetails', style: textStyle),
                             ],
                           ),
@@ -477,9 +294,9 @@ class _PlannerState extends State<Planner> {
                           ),
                           decoration: containerDecoration,
                           child: Text(
-                              (frequencyText == 'One-time event')
-                                  ? frequencyText!
-                                  : 'Recurring $frequencyText',
+                              (recurrenceRule == null || recurrenceRule == '')
+                                  ? 'One-time event'
+                                  : 'Recurring ${event.frequency}',
                               style: textStyle),
                         ),
                       ),
@@ -494,7 +311,7 @@ class _PlannerState extends State<Planner> {
                           ),
                           decoration: containerDecoration,
                           child: Text(
-                              (notesText != '') ? notesText! : 'No notes',
+                              (notesText != null) ? notesText : 'No notes',
                               style: textStyle),
                         ),
                       ),
@@ -517,26 +334,23 @@ class _PlannerState extends State<Planner> {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => EditEventPage(
                                           id: eventId,
-                                          color: color,
                                           colorValue: colorValue,
-                                          eventName: subjectText,
+                                          eventName: eventName,
                                           eventStartTime: startTime,
                                           eventEndTime: endTime,
-                                          isAllDay: isEventAllDay,
+                                          isAllDay: event.isAllDay,
                                           isRecurring: isEventRecurring,
                                           dropdownValue: dropdownValueText,
                                           dropdownInt: dropdownInt,
-                                          recurrenceRuleEndDate:
-                                              recurrenceRuleEndDate,
                                           recurrenceRuleWithoutEnd:
                                               recurrenceRuleWithoutEndText,
-                                          recurrenceRuleEndingText:
-                                              recurrenceRuleEndingText,
                                           displayRecurrenceRuleEndDate:
                                               displayRecurrenceRuleEndDate,
-                                          frequency: frequencyText,
+                                          frequency: event.frequency,
                                           notes: notesText,
                                           recurrenceType: recurrenceType,
+                                          recurrenceRuleEnding:
+                                              recurrenceRuleEnding,
                                         )));
                               },
                               child: const Text('Edit',
@@ -552,6 +366,65 @@ class _PlannerState extends State<Planner> {
             );
           });
     }
+  }
+
+  IconButton deleteEvent(BuildContext context) {
+    return IconButton(
+        onPressed: () {
+          showDialog(
+              context: context,
+              builder: (context) {
+                return FractionallySizedBox(
+                  widthFactor: 0.9,
+                  child: Material(
+                    type: MaterialType.transparency,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(15),
+                          decoration: dialogContainerDecoration,
+                          child: Column(
+                            children: [
+                              Text(
+                                'Delete this Event?',
+                                style: textStyle,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text('Close'),
+                                  ),
+                                  TextButton(
+                                      onPressed: () {
+                                        context
+                                            .read<PlannerCubit>()
+                                            .deleteEvent(
+                                                documentID: eventId.toString());
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text('Delete'))
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 60)
+                      ],
+                    ),
+                  ),
+                );
+              });
+        },
+        color: Colors.white,
+        icon: const Icon(
+          Icons.delete_outline,
+        ));
   }
 }
 

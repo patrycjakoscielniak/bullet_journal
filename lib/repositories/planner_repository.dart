@@ -34,6 +34,7 @@ class PlannerRepository {
           colorValue: doc.data()['colorValue'],
           recurrenceRule: doc.data()['recurrenceRule'],
           frequency: doc.data()['frequency'],
+          recurrenceRuleEnding: doc.data()['recurrenceRuleEnding'],
         );
       }).toList();
     });
@@ -48,6 +49,7 @@ class PlannerRepository {
     int colorValue,
     String? recurrenceRule,
     String? frequency,
+    String? recurrenceRuleEnding,
   ) async {
     await firebaseRef.add(
       {
@@ -59,6 +61,7 @@ class PlannerRepository {
         'colorValue': colorValue,
         'recurrenceRule': recurrenceRule,
         'frequency': frequency,
+        'recurrenceRuleEnding': recurrenceRuleEnding,
       },
     );
   }
