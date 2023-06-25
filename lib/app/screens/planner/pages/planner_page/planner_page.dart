@@ -9,7 +9,7 @@ import 'package:my_bullet_journal/models/planner_item_model.dart';
 import 'package:my_bullet_journal/repositories/planner_repository.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../add/add_event.dart';
-import 'cubit/planner_cubit.dart';
+import 'main_cubit/planner_cubit.dart';
 
 class Planner extends StatefulWidget {
   const Planner({
@@ -200,7 +200,7 @@ class _PlannerState extends State<Planner> {
           recurrenceRuleEnding = event.recurrenceRuleEnding;
       final color = Color(colorValue);
       String? notesText;
-      String timeDetails = '',
+      String timeDetails,
           recurrenceRuleWithoutEndText = '',
           displayRecurrenceRuleEndDate = 'Select a date',
           dropdownValueText = 'Never';
@@ -245,8 +245,6 @@ class _PlannerState extends State<Planner> {
           recurrenceType = [false, false, false, true];
         }
       }
-
-      print(recurrenceType);
       showDialog(
           context: context,
           builder: (context) {

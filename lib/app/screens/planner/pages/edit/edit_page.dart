@@ -369,11 +369,6 @@ class _EditEventPageState extends State<EditEventPage> {
                   setState(() {
                     widget.dropdownValue = value;
                   });
-                  if (value == 'Never') {
-                    setState(() {
-                      recurrenceRuleEndingText = '';
-                    });
-                  }
                 }
               },
             ),
@@ -447,7 +442,7 @@ class _EditEventPageState extends State<EditEventPage> {
     return TextButton(
       onPressed: () {
         Navigator.of(context)
-            .push(MaterialPageRoute(builder: ((context) => MyApp())));
+            .push(MaterialPageRoute(builder: ((context) => const MyApp())));
       },
       child: const Text('Close'),
     );
@@ -461,7 +456,7 @@ class _EditEventPageState extends State<EditEventPage> {
               eventName: widget.eventName,
               notes: widget.notes,
               recurrenceRule: (widget.recurrenceRuleWithoutEnd != '')
-                  ? '${widget.recurrenceRuleWithoutEnd};${recurrenceRuleEndingText}'
+                  ? '${widget.recurrenceRuleWithoutEnd};$recurrenceRuleEndingText'
                   : recurrenceRule = widget.recurrenceRuleWithoutEnd,
               frequency: widget.frequency,
               startTime: widget.eventStartTime,
