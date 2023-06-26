@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:my_bullet_journal/auth/user_profile.dart';
 
 import '../planner/pages/planner_page/page/planner_page.dart';
-import '../vision_board/vision_board_page.dart';
+import '../vision_board/page/vision_board_page.dart';
 import '../wishlist/pages/wishlist_page/wishlist_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -20,6 +20,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   var currentIndex = 1;
+  List<Icon> icons = [
+    const Icon(Icons.star_border),
+    const Icon(Icons.event),
+    const Icon(Icons.grid_view)
+  ];
   @override
   Widget build(BuildContext context) {
     //debugPrint(AppLocalizations.of(context)!.helloWorld):
@@ -60,19 +65,12 @@ class _HomePageState extends State<HomePage> {
             currentIndex = newIndex;
           });
         },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.star_border),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.event),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.grid_view),
-            label: '',
-          ),
+        items: [
+          for (int i = 0; i < 3; i++)
+            BottomNavigationBarItem(
+              icon: icons[i],
+              label: '',
+            ),
         ],
       ),
     );

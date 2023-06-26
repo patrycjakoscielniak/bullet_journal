@@ -38,13 +38,8 @@ class VisionBoardRepository {
     firestoreRef.add(dataToSend);
   }
 
-  Future<void> deleteImageFromFirestore({required String url}) async {
+  Future<void> deleteImage({required String url, required String id}) async {
     FirebaseStorage.instance.refFromURL(url).delete();
-  }
-
-  Future<void> deleteImageFromFirebase({
-    required String id,
-  }) async {
     firestoreRef.doc(id).delete();
   }
 }

@@ -34,9 +34,9 @@ class VisionBoardCubit extends Cubit<VisionBoardState> {
     }
   }
 
-  Future<void> deleteImageFromFirestore({required String url}) async {
+  Future<void> deleteImage({required String url, required String docId}) async {
     try {
-      await _visionBoardRepository.deleteImageFromFirestore(url: url);
+      await _visionBoardRepository.deleteImage(url: url, id: docId);
       emit(const VisionBoardState(
         items: [],
         status: Status.deleted,
@@ -47,23 +47,6 @@ class VisionBoardCubit extends Cubit<VisionBoardState> {
         errorMessage: error.toString(),
         status: Status.error,
       ));
-    }
-  }
-
-  Future<void> deleteImageFromFirebase({
-    required String docID,
-  }) async {
-    try {
-      await _visionBoardRepository.deleteImageFromFirebase(id: docID);
-      emit(const VisionBoardState(
-        items: [],
-        status: Status.deleted,
-      ));
-    } catch (error) {
-      emit(VisionBoardState(
-          items: const [],
-          errorMessage: error.toString(),
-          status: Status.error));
     }
   }
 

@@ -62,6 +62,7 @@ dependencies:
   flutter_datetime_picker_plus: ^2.0.1
   omni_datetime_picker: ^1.0.7
   flutter_colorpicker: ^1.0.3
+  context_menus: ^1.0.2
 
 dev_dependencies:
   flutter_test:
