@@ -3,11 +3,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:my_bullet_journal/repositories/wishlist_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../add_item_page/add_item.dart';
-import 'cubit/wishlist_cubit.dart';
-import 'features/delete_item.dart';
-import '../../../../../models/wishlist_item_model.dart';
-import 'features/edit_item.dart';
+import '../../add_item_page/add_item.dart';
+import '../cubit/wishlist_cubit.dart';
+import '../features/delete_item.dart';
+import '../../../../../../models/wishlist_item_model.dart';
+import '../features/edit_item.dart';
 
 class Wishlist extends StatelessWidget {
   const Wishlist({

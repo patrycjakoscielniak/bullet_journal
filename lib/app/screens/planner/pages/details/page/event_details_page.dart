@@ -1,6 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:my_bullet_journal/app/screens/planner/variables/variables.dart';
-
 import '../../edit/page/edit_page.dart';
 import '../features/body.dart';
 import '../features/app_bar.dart';
@@ -67,7 +68,7 @@ class EventDetails extends StatelessWidget {
       ),
       body: EventDetailsPageBody(body: body),
       bottomSheet: BottomAppBar(
-        height: 60,
+        height: Platform.isAndroid ? 60 : 80,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [

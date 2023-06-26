@@ -1,5 +1,7 @@
 // ignore_for_file: must_be_immutable
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
@@ -156,6 +158,9 @@ class _EditEventPageState extends State<EditEventPage> {
           style: textStyle,
         ),
         Switch.adaptive(
+            activeColor:
+                Platform.isAndroid ? Colors.white30 : Color(widget.colorValue),
+            activeTrackColor: Color(widget.colorValue),
             value: widget.isAllDay,
             onChanged: (value) {
               setState(() {
@@ -210,6 +215,9 @@ class _EditEventPageState extends State<EditEventPage> {
           textAlign: TextAlign.center,
         ),
         Switch.adaptive(
+            activeColor:
+                Platform.isAndroid ? Colors.white30 : Color(widget.colorValue),
+            activeTrackColor: Color(widget.colorValue),
             value: widget.isRecurring,
             onChanged: (value) {
               setState(() {
@@ -239,8 +247,9 @@ class _EditEventPageState extends State<EditEventPage> {
           padding: const EdgeInsets.only(top: 15, bottom: 15),
           child: ToggleButtons(
             selectedColor: Colors.white,
-            fillColor: appPurple,
+            fillColor: Color(widget.colorValue),
             borderColor: Colors.blueGrey,
+            selectedBorderColor: Color(widget.colorValue),
             color: Colors.black,
             constraints: const BoxConstraints(minWidth: 67, minHeight: 40),
             onPressed: (newIndex) {
@@ -432,7 +441,10 @@ class _EditEventPageState extends State<EditEventPage> {
         Navigator.of(context)
             .push(MaterialPageRoute(builder: ((context) => const MyApp())));
       },
-      child: const Text('Close'),
+      child: Text(
+        'Close',
+        style: TextStyle(color: Color(widget.colorValue)),
+      ),
     );
   }
 
@@ -453,8 +465,9 @@ class _EditEventPageState extends State<EditEventPage> {
               colorValue: colorValue,
             );
       },
-      child: const Text(
+      child: Text(
         'Save Changes',
+        style: TextStyle(color: Color(widget.colorValue)),
       ),
     );
   }

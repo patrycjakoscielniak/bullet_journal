@@ -43,26 +43,20 @@ dependencies:
   flutter_bloc: ^8.1.2
   url_launcher: ^6.1.11
   meta: ^1.8.0
-  
   staggered_grid_view_flutter: ^0.0.4
   transparent_image: ^2.0.1
-  flutter_wall_layout: ^2.1.1
   firebase_storage: ^11.2.0
   image_picker: ^0.8.7+5
   path: ^1.8.2
   path_provider: ^2.0.15
   open_file_plus: ^3.4.1
-  
   flutter_expandable_fab: ^1.8.0
-  
-  
   syncfusion_flutter_calendar: ^21.2.6
   dio: ^5.1.2
   calendar_view: ^1.0.3
   flutter_datetime_picker_plus: ^2.0.1
   omni_datetime_picker: ^1.0.7
   flutter_colorpicker: ^1.0.3
-  context_menus: ^1.0.2
 
 dev_dependencies:
   flutter_test:

@@ -4,6 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:my_bullet_journal/app/screens/planner/pages/details/cubit/details_page_cubit.dart';
 import 'package:my_bullet_journal/app/screens/planner/pages/edit/cubit/edit_event_cubit.dart';
 import 'package:my_bullet_journal/app/screens/planner/pages/planner_page/cubit/planner_cubit.dart';
+import 'package:my_bullet_journal/app/screens/vision_board/cubit/vision_board_cubit.dart';
+import 'package:my_bullet_journal/repositories/vision_board_repository.dart';
 
 import '../auth/auth_gate.dart';
 import '../repositories/planner_repository.dart';
@@ -27,6 +29,8 @@ class MyApp extends StatelessWidget {
         BlocProvider<DetailsPageCubit>(
             create: (context) => DetailsPageCubit(PlannerRepository(
                 remoteDataSource: HolidaysRemoteDioDataSource()))),
+        BlocProvider<VisionBoardCubit>(
+            create: (context) => VisionBoardCubit(VisionBoardRepository())),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

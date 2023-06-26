@@ -4,7 +4,7 @@ import 'package:my_bullet_journal/auth/user_profile.dart';
 
 import '../planner/pages/planner_page/page/planner_page.dart';
 import '../vision_board/page/vision_board_page.dart';
-import '../wishlist/pages/wishlist_page/wishlist_page.dart';
+import '../wishlist/pages/wishlist_page/page/wishlist_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
