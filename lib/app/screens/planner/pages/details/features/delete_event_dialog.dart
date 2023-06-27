@@ -45,7 +45,11 @@ class DeleteEventDialog extends StatelessWidget {
                                     onPressed: () {
                                       Navigator.of(context).pop();
                                     },
-                                    child: const Text('Close'),
+                                    child: Text(
+                                      'Close',
+                                      style:
+                                          TextStyle(color: Color(colorValue)),
+                                    ),
                                   ),
                                   TextButton(
                                       onPressed: () {
@@ -57,7 +61,11 @@ class DeleteEventDialog extends StatelessWidget {
                                                 builder: (context) =>
                                                     const MyApp()));
                                       },
-                                      child: const Text('Delete'))
+                                      child: Text(
+                                        'Delete',
+                                        style:
+                                            TextStyle(color: Color(colorValue)),
+                                      ))
                                 ],
                               )
                             ],

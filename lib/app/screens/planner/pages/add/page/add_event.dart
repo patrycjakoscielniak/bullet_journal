@@ -30,10 +30,10 @@ class _AddEventState extends State<AddEvent> {
       recurrenceRuleEndingDateText,
       recurrenceRuleEnding,
       recurrenceRule;
-  int colorValue = 0xff70e4e7, intDropdownValue = 1;
+  int colorValue = 4288968153, intDropdownValue = 1;
   List<int> intDropdownList = [for (int i = 1; i <= 100; i++) i];
-  Color pickerColor = const Color.fromARGB(255, 160, 117, 217),
-      currentColor = Colors.black;
+  Color pickerColor = const Color.fromARGB(255, 160, 117, 217);
+
   bool repeat = false, isAllDay = false;
   List<bool> isSelected = [true, false, false, false];
   var eventStartTime = DateTime.now(),
@@ -88,7 +88,10 @@ class _AddEventState extends State<AddEvent> {
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    child: const Text('Close'),
+                    child: Text(
+                      'Close',
+                      style: TextStyle(color: Color(colorValue)),
+                    ),
                   ),
                   TextButton(
                     onPressed: newEvent.isEmpty
@@ -156,7 +159,6 @@ class _AddEventState extends State<AddEvent> {
                     pickerColor: pickerColor,
                     onColorChanged: (color) {
                       setState(() {
-                        currentColor = color;
                         colorValue = color.value;
                       });
                     },
@@ -166,7 +168,7 @@ class _AddEventState extends State<AddEvent> {
                   TextButton(
                     onPressed: () {
                       setState(() {
-                        pickerColor = currentColor;
+                        pickerColor = Color(colorValue);
                       });
                       Navigator.of(context).pop();
                     },
@@ -178,7 +180,7 @@ class _AddEventState extends State<AddEvent> {
       },
       icon: Icon(
         Icons.color_lens,
-        color: currentColor,
+        color: pickerColor,
       ),
     );
   }
