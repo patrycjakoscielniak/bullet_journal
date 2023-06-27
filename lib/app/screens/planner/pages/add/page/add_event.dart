@@ -8,7 +8,8 @@ import 'package:my_bullet_journal/app/screens/planner/pages/add/cubit/add_event_
 import 'package:my_bullet_journal/repositories/planner_repository.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 
-import '../../../variables/variables.dart';
+import '../../../../../core/global_variables.dart';
+import '../../../variables/planner_variables.dart';
 
 class AddEvent extends StatefulWidget {
   const AddEvent({
@@ -191,7 +192,7 @@ class _AddEventState extends State<AddEvent> {
       children: [
         Text(
           'AllDay',
-          style: textStyle,
+          style: mainTextStyle,
         ),
         Switch.adaptive(
             value: isAllDay,
@@ -208,7 +209,7 @@ class _AddEventState extends State<AddEvent> {
     return Column(
       children: [
         ElevatedButton(
-            style: buttonStyle,
+            style: elevatedButtonStyle,
             onPressed: () async {
               List<DateTime>? dateTimeList = await showOmniDateTimeRangePicker(
                 context: context,
@@ -238,7 +239,7 @@ class _AddEventState extends State<AddEvent> {
             },
             child: Text(
                 'from ${DateFormat('dd MMM hh : mm').format(eventStartTime)}  to  ${DateFormat('dd MMM hh : mm').format(eventEndTime)}',
-                style: textStyle)),
+                style: mainTextStyle)),
         space,
       ],
     );
@@ -250,7 +251,7 @@ class _AddEventState extends State<AddEvent> {
       children: [
         Text(
           'Repeat',
-          style: textStyle,
+          style: mainTextStyle,
           textAlign: TextAlign.center,
         ),
         Switch.adaptive(
@@ -369,10 +370,10 @@ class _AddEventState extends State<AddEvent> {
             },
             isSelected: isSelected,
             children: [
-              Text('Yearly', style: textStyle),
-              Text('Monthly', style: textStyle),
-              Text('Weekly', style: textStyle),
-              Text('Daily', style: textStyle)
+              Text('Yearly', style: mainTextStyle),
+              Text('Monthly', style: mainTextStyle),
+              Text('Weekly', style: mainTextStyle),
+              Text('Daily', style: mainTextStyle)
             ],
           ),
         ),
@@ -381,7 +382,7 @@ class _AddEventState extends State<AddEvent> {
           children: [
             Text(
               'End',
-              style: textStyle,
+              style: mainTextStyle,
             ),
             DropdownButton(
               value: dropdownValue,
@@ -391,7 +392,7 @@ class _AddEventState extends State<AddEvent> {
                     value: value,
                     child: Text(
                       value,
-                      style: textStyle,
+                      style: mainTextStyle,
                     ));
               }).toList(),
               onChanged: (value) {
@@ -427,13 +428,13 @@ class _AddEventState extends State<AddEvent> {
                             });
                           }
                         }),
-                    Text('Times', style: textStyle)
+                    Text('Times', style: mainTextStyle)
                   ],
                 ),
               )
             : dropdownValue == 'On date'
                 ? ElevatedButton(
-                    style: buttonStyle,
+                    style: elevatedButtonStyle,
                     onPressed: () {
                       DatePicker.showDatePicker(
                         context,
@@ -451,7 +452,7 @@ class _AddEventState extends State<AddEvent> {
                     },
                     child: Text(
                       recurrenceEndDate,
-                      style: textStyle,
+                      style: mainTextStyle,
                     ))
                 : empty
       ],

@@ -3,10 +3,12 @@ part of 'wishlist_cubit.dart';
 @immutable
 class WishlistState {
   const WishlistState({
-    required this.items,
-    required this.errorMessage,
+    this.items = const [],
+    this.errorMessage,
+    this.status = Status.initial,
   });
 
   final List<WishlistItemModel> items;
-  final String errorMessage;
+  final String? errorMessage;
+  final Status status;
 }

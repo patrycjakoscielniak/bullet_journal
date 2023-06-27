@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_bullet_journal/app/app.dart';
-import '../../../variables/variables.dart';
+import '../../../../../core/global_variables.dart';
+import '../../../variables/planner_variables.dart';
 import '../cubit/details_page_cubit.dart';
 
 class DeleteEventDialog extends StatelessWidget {
@@ -35,7 +36,7 @@ class DeleteEventDialog extends StatelessWidget {
                             children: [
                               Text(
                                 'Delete this Event?',
-                                style: textStyle,
+                                style: mainTextStyle,
                               ),
                               Row(
                                 mainAxisAlignment:

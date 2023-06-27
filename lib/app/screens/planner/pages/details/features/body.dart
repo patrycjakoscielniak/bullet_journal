@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../variables/variables.dart';
+import '../../../variables/planner_variables.dart';
 
 class EventDetailsPageBody extends StatelessWidget {
   const EventDetailsPageBody({

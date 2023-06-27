@@ -12,7 +12,8 @@ import 'package:my_bullet_journal/app/core/enums.dart';
 import 'package:my_bullet_journal/app/screens/planner/pages/edit/cubit/edit_event_cubit.dart';
 import 'package:my_bullet_journal/app/screens/planner/pages/planner_page/page/planner_page.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
-import '../../../variables/variables.dart';
+import '../../../../../core/global_variables.dart';
+import '../../../variables/planner_variables.dart';
 
 class EditEventPage extends StatefulWidget {
   EditEventPage({
@@ -155,7 +156,7 @@ class _EditEventPageState extends State<EditEventPage> {
       children: [
         Text(
           'AllDay',
-          style: textStyle,
+          style: mainTextStyle,
         ),
         Switch.adaptive(
             activeColor:
@@ -173,7 +174,7 @@ class _EditEventPageState extends State<EditEventPage> {
 
   ElevatedButton editEventDateTime(BuildContext context) {
     return ElevatedButton(
-      style: buttonStyle,
+      style: elevatedButtonStyle,
       onPressed: () async {
         List<DateTime>? dateTimeList = await showOmniDateTimeRangePicker(
           context: context,
@@ -201,7 +202,7 @@ class _EditEventPageState extends State<EditEventPage> {
       },
       child: Text(
           'from ${DateFormat('dd MMM hh : mm').format(widget.eventStartTime)}  to  ${DateFormat('dd MMM hh : mm').format(widget.eventEndTime)}',
-          style: textStyle),
+          style: mainTextStyle),
     );
   }
 
@@ -211,7 +212,7 @@ class _EditEventPageState extends State<EditEventPage> {
       children: [
         Text(
           'Recurring',
-          style: textStyle,
+          style: mainTextStyle,
           textAlign: TextAlign.center,
         ),
         Switch.adaptive(
@@ -336,10 +337,10 @@ class _EditEventPageState extends State<EditEventPage> {
             },
             isSelected: widget.recurrenceType,
             children: [
-              Text('Yearly', style: textStyle),
-              Text('Monthly', style: textStyle),
-              Text('Weekly', style: textStyle),
-              Text('Daily', style: textStyle)
+              Text('Yearly', style: mainTextStyle),
+              Text('Monthly', style: mainTextStyle),
+              Text('Weekly', style: mainTextStyle),
+              Text('Daily', style: mainTextStyle)
             ],
           ),
         ),
@@ -348,7 +349,7 @@ class _EditEventPageState extends State<EditEventPage> {
           children: [
             Text(
               'End',
-              style: textStyle,
+              style: mainTextStyle,
             ),
             DropdownButton(
               value: widget.dropdownValue,
@@ -358,7 +359,7 @@ class _EditEventPageState extends State<EditEventPage> {
                     value: value,
                     child: Text(
                       value,
-                      style: textStyle,
+                      style: mainTextStyle,
                     ));
               }).toList(),
               onChanged: (value) {
@@ -393,13 +394,13 @@ class _EditEventPageState extends State<EditEventPage> {
                             });
                           }
                         }),
-                    Text('Times', style: textStyle)
+                    Text('Times', style: mainTextStyle)
                   ],
                 ),
               )
             : widget.dropdownValue == 'On date'
                 ? ElevatedButton(
-                    style: buttonStyle,
+                    style: elevatedButtonStyle,
                     onPressed: () {
                       DatePicker.showDatePicker(
                         context,
@@ -415,7 +416,7 @@ class _EditEventPageState extends State<EditEventPage> {
                     },
                     child: Text(
                       widget.displayRecurrenceRuleEndDate,
-                      style: textStyle,
+                      style: mainTextStyle,
                     ))
                 : empty
       ],

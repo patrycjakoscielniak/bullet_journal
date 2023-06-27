@@ -18,7 +18,6 @@ class EditItem extends StatefulWidget {
 
 class _EditItemState extends State<EditItem> {
   var itemURL = '';
-  var imageURL = '';
 
   @override
   Widget build(BuildContext context) {

@@ -3,9 +3,9 @@ part of 'add_page_cubit.dart';
 @immutable
 class AddItemPageState {
   const AddItemPageState({
-    this.saved = false,
-    this.errorMessage = '',
+    this.status = Status.initial,
+    this.errorMessage,
   });
-  final bool saved;
-  final String errorMessage;
+  final Status status;
+  final String? errorMessage;
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_bullet_journal/repositories/wishlist_repository.dart';
 
+import '../../../../core/enums.dart';
 import 'cubit/add_page_cubit.dart';
 
 class AddItem extends StatefulWidget {
@@ -23,60 +24,55 @@ class _AddItemState extends State<AddItem> {
     return Scaffold(
       body: BlocProvider(
         create: (context) => AddItemPageCubit(WishlistRepository()),
-        child: BlocListener<AddItemPageCubit, AddItemPageState>(
+        child: BlocConsumer<AddItemPageCubit, AddItemPageState>(
           listener: (context, state) {
-            if (state.saved) {
-              Navigator.of(context).pop();
-            }
-            if (state.errorMessage.isNotEmpty) {
+            if (state.status == Status.error) {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text(state.errorMessage),
+                content: Text(state.errorMessage!),
                 duration: const Duration(seconds: 7),
               ));
             }
           },
-          child: BlocBuilder<AddItemPageCubit, AddItemPageState>(
-            builder: (context, state) {
-              return Padding(
-                padding: const EdgeInsets.only(right: 10, left: 10, top: 20),
-                child: ListView(
-                  children: [
-                    TextField(
-                      onChanged: (newValue) {
-                        setState(() {
-                          itemName = newValue;
-                        });
-                      },
-                      textAlign: TextAlign.center,
-                      decoration: const InputDecoration(hintText: 'New Item'),
-                    ),
-                    const SizedBox(height: 10),
-                    TextField(
-                      onChanged: (newValue) {
-                        setState(() {
-                          imageURL = newValue;
-                        });
-                      },
-                      textAlign: TextAlign.center,
-                      decoration:
-                          const InputDecoration(hintText: 'Image URL Adress'),
-                    ),
-                    const SizedBox(height: 10),
-                    TextField(
-                      onChanged: (newValue) {
-                        setState(() {
-                          itemURL = newValue;
-                        });
-                      },
-                      textAlign: TextAlign.center,
-                      decoration:
-                          const InputDecoration(hintText: 'Item URL Adress'),
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
+          builder: (context, state) {
+            return Padding(
+              padding: const EdgeInsets.only(right: 10, left: 10, top: 20),
+              child: ListView(
+                children: [
+                  TextField(
+                    onChanged: (newValue) {
+                      setState(() {
+                        itemName = newValue;
+                      });
+                    },
+                    textAlign: TextAlign.center,
+                    decoration: const InputDecoration(hintText: 'New Item'),
+                  ),
+                  const SizedBox(height: 10),
+                  TextField(
+                    onChanged: (newValue) {
+                      setState(() {
+                        imageURL = newValue;
+                      });
+                    },
+                    textAlign: TextAlign.center,
+                    decoration:
+                        const InputDecoration(hintText: 'Image URL Adress'),
+                  ),
+                  const SizedBox(height: 10),
+                  TextField(
+                    onChanged: (newValue) {
+                      setState(() {
+                        itemURL = newValue;
+                      });
+                    },
+                    textAlign: TextAlign.center,
+                    decoration:
+                        const InputDecoration(hintText: 'Item URL Adress'),
+                  ),
+                ],
+              ),
+            );
+          },
         ),
       ),
       bottomSheet: Padding(
@@ -101,6 +97,7 @@ class _AddItemState extends State<AddItem> {
                             imageURL,
                             itemURL,
                           );
+                      Navigator.of(context).pop();
                     },
               child: const Text(
                 'Add',

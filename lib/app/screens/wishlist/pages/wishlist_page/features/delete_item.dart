@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../../models/wishlist_item_model.dart';
+import '../../../../../core/global_variables.dart';
 import '../cubit/wishlist_cubit.dart';
 
 class DeleteItem extends StatelessWidget {
@@ -19,37 +20,49 @@ class DeleteItem extends StatelessWidget {
         showDialog(
           context: context,
           builder: (BuildContext contex) {
-            return AlertDialog(
-              title: const Center(
-                child: Text(
-                  'Delete Item',
-                ),
-              ),
-              content: SingleChildScrollView(
-                child: ListBody(
+            return FractionallySizedBox(
+              widthFactor: 0.9,
+              child: Material(
+                type: MaterialType.transparency,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    const Text('Are you sure you want to delete item?'),
-                    const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        TextButton(
-                            key: ValueKey(itemModel.id),
-                            onPressed: () {
-                              context
-                                  .read<WishlistCubit>()
-                                  .deleteItem(documentID: itemModel.id);
-                              Navigator.pop(context);
-                            },
-                            child: const Text('Yes')),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: const Text('No'),
-                        )
-                      ],
+                    Container(
+                      padding: const EdgeInsets.all(15),
+                      decoration: dialogContainerDecoration,
+                      child: Column(
+                        children: [
+                          Text(
+                            'Delete this Item?',
+                            style: mainTextStyle,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text(
+                                  'Close',
+                                ),
+                              ),
+                              TextButton(
+                                  onPressed: () {
+                                    context
+                                        .read<WishlistCubit>()
+                                        .deleteItem(documentID: itemModel.id);
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text(
+                                    'Delete',
+                                  ))
+                            ],
+                          )
+                        ],
+                      ),
                     ),
+                    const SizedBox(height: 60)
                   ],
                 ),
               ),

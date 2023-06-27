@@ -1,7 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:my_bullet_journal/app/screens/planner/variables/variables.dart';
+import 'package:my_bullet_journal/app/screens/planner/variables/planner_variables.dart';
+import '../../../../../core/global_variables.dart';
 import '../../edit/page/edit_page.dart';
 import '../features/body.dart';
 import '../features/app_bar.dart';
@@ -49,16 +50,16 @@ class EventDetails extends StatelessWidget {
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Start Date:   $dateText', style: textStyle),
-          Text('Time:   $timeDetails', style: textStyle),
+          Text('Start Date:   $dateText', style: mainTextStyle),
+          Text('Time:   $timeDetails', style: mainTextStyle),
         ],
       ),
       Text(
           (recurrenceRule == null || recurrenceRule == '')
               ? 'One-time event'
               : 'Recurring $frequency',
-          style: textStyle),
-      Text((notes != null) ? notes! : 'No notes', style: textStyle),
+          style: mainTextStyle),
+      Text((notes != null) ? notes! : 'No notes', style: mainTextStyle),
     ];
     return Scaffold(
       appBar: PreferredSize(

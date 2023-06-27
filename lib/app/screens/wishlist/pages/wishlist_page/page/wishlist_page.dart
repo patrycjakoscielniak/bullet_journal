@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:my_bullet_journal/app/screens/wishlist/pages/wishlist_page/features/edit_item.dart';
 import 'package:my_bullet_journal/repositories/wishlist_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../add_item_page/add_item.dart';
 import '../cubit/wishlist_cubit.dart';
+import '../features/add_item_button.dart';
 import '../features/delete_item.dart';
-import '../../../../../../models/wishlist_item_model.dart';
-import '../features/edit_item.dart';
 
 class Wishlist extends StatelessWidget {
   const Wishlist({
@@ -21,92 +19,59 @@ class Wishlist extends StatelessWidget {
       child: BlocBuilder<WishlistCubit, WishlistState>(
         builder: (context, state) {
           final itemModels = state.items;
-
-          if (state.errorMessage.isNotEmpty) {
-            return Center(
-              child: Text('Something went wrong: ${state.errorMessage}'),
-            );
-          }
           return Scaffold(
-            body: _WishlistPageBody(itemModels: itemModels),
-            floatingActionButton: FloatingActionButton(
-              backgroundColor: const Color.fromARGB(255, 160, 117, 217),
-              foregroundColor: Colors.white,
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const AddItem(),
-                  ),
-                );
-              },
-              mini: true,
-              child: const Icon(Icons.add),
+            body: ListView(
+              children: [
+                for (final itemModel in itemModels) ...[
+                  Padding(
+                    padding: const EdgeInsets.all(5),
+                    child: InkWell(
+                      onTap: () {
+                        if (itemModel.itemURL.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Center(
+                                      child:
+                                          Text('URL Address Not Provided'))));
+                        } else {
+                          launchUrl(Uri.parse(
+                              Uri.decodeComponent(itemModel.itemURL)));
+                        }
+                      },
+                      child: Card(
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.all(5),
+                                child: Image.network(
+                                  itemModel.imageURL,
+                                  alignment: Alignment.bottomLeft,
+                                  height: MediaQuery.of(context).size.width *
+                                      (5 / 13),
+                                  width: MediaQuery.of(context).size.width,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Text(
+                                itemModel.name,
+                              ),
+                            ),
+                            EditItem(itemModel: itemModel),
+                            DeleteItem(itemModel: itemModel),
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ],
             ),
+            floatingActionButton: const AddItemButton(),
           );
         },
       ),
-    );
-  }
-}
-
-class _WishlistPageBody extends StatelessWidget {
-  const _WishlistPageBody({
-    required this.itemModels,
-  });
-
-  final List<WishlistItemModel> itemModels;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        for (final itemModel in itemModels) ...[
-          Padding(
-            padding: const EdgeInsets.all(5),
-            child: InkWell(
-              onTap: () {
-                if (itemModel.itemURL.isEmpty) {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content:
-                          Center(child: Text('URL Address Not Provided'))));
-                } else {
-                  launchUrl(Uri.parse(Uri.decodeComponent(itemModel.itemURL)));
-                }
-              },
-              child: Card(
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(5),
-                        child: Image.network(
-                          itemModel.imageURL,
-                          alignment: Alignment.bottomLeft,
-                          height: MediaQuery.of(context).size.width * (5 / 13),
-                          width: MediaQuery.of(context).size.width,
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Center(
-                        child: Text(
-                          itemModel.name,
-                          style: GoogleFonts.indieFlower(),
-                        ),
-                      ),
-                    ),
-                    EditItem(
-                      itemModel: itemModel,
-                    ),
-                    DeleteItem(itemModel: itemModel),
-                  ],
-                ),
-              ),
-            ),
-          )
-        ],
-      ],
     );
   }
 }
