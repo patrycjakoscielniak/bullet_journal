@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
             onSurface: appGrey,
           ),
           textTheme: TextTheme(
-              bodyMedium: GoogleFonts.indieFlower(),
+              bodyMedium: GoogleFonts.gruppo(fontSize: 15),
               titleLarge: GoogleFonts.amaticSc(),
               labelLarge: GoogleFonts.amaticSc(
                   textStyle: const TextStyle(
@@ -80,7 +80,10 @@ class MyApp extends StatelessWidget {
                   textStyle: const TextStyle(
                       fontWeight: FontWeight.w400, fontSize: 21))),
           floatingActionButtonTheme: const FloatingActionButtonThemeData(
-              backgroundColor: appPurple, foregroundColor: Colors.white),
+            backgroundColor: Colors.white,
+            foregroundColor: appGrey,
+            iconSize: 40,
+          ),
           bottomNavigationBarTheme: const BottomNavigationBarThemeData(
               backgroundColor: Colors.white,
               unselectedItemColor: appGrey,

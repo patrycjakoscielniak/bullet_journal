@@ -24,7 +24,7 @@ class _PlannerPageState extends State<PlannerPage> {
   List<Appointment> events = [];
   List<PlannerModel> plannerEvents = [];
   String eventId = '';
-  final CalendarController _controller = CalendarController();
+
   String? notesText;
   String timeDetails = '',
       recurrenceRuleWithoutEndText = '',
@@ -72,7 +72,6 @@ class _PlannerPageState extends State<PlannerPage> {
           }
           return Scaffold(
             body: SfCalendar(
-              controller: _controller,
               onTap: calendarTapped,
               onLongPress: calendarLongPressed,
               headerStyle: CalendarHeaderStyle(
@@ -93,7 +92,6 @@ class _PlannerPageState extends State<PlannerPage> {
               allowedViews: const [
                 CalendarView.day,
                 CalendarView.workWeek,
-                CalendarView.week,
                 CalendarView.month,
               ],
             ),
@@ -103,76 +101,82 @@ class _PlannerPageState extends State<PlannerPage> {
     );
   }
 
-  void calendarTapped(CalendarTapDetails details) {
+  void calendarTapped(
+    CalendarTapDetails details,
+  ) {
     if (details.targetElement == CalendarElement.appointment ||
         details.targetElement == CalendarElement.agenda) {
-      final tappedAppointment = details.appointments![0];
-      final tappedId = tappedAppointment.id.toString();
-      final event =
-          plannerEvents.where((element) => element.id == tappedId).first;
-      final eventName = event.eventName;
-      eventId = event.id;
-      final startTime = event.start, endTime = event.end;
-      final colorValue = event.colorValue;
-      final recurrenceRule = event.recurrenceRule,
-          recurrenceRuleEnding = event.recurrenceRuleEnding;
-      final dateText = DateFormat('dd MMMM yyyy').format(startTime).toString(),
-          startTimeText = DateFormat('hh:mm a').format(startTime).toString(),
-          endTimeText = DateFormat('hh:mm a').format(endTime).toString();
-      if (event.isAllDay) {
-        timeDetails = 'All day';
-      } else {
-        timeDetails = '$startTimeText - $endTimeText';
-      }
-      if (event.notes != '') {
-        notesText = event.notes;
-      }
-      if (recurrenceRule != null && recurrenceRule != '') {
-        isEventRecurring = true;
-        if (recurrenceRule.contains('MONTHLY')) {
-          recurrenceType = [false, true, false, false];
-        } else if (recurrenceRule.contains('WEEKLY')) {
-          recurrenceType = [false, false, true, false];
-        } else if (recurrenceRule.contains('DAILY')) {
-          recurrenceType = [false, false, false, true];
+      final appointments = details.appointments;
+      if (appointments != null && appointments.isNotEmpty) {
+        final tappedAppointment = appointments[0];
+        final tappedId = tappedAppointment.id.toString();
+        final event =
+            plannerEvents.where((element) => element.id == tappedId).first;
+        final eventName = event.eventName;
+        eventId = event.id;
+        final startTime = event.start, endTime = event.end;
+        final colorValue = event.colorValue;
+        final recurrenceRule = event.recurrenceRule,
+            recurrenceRuleEnding = event.recurrenceRuleEnding;
+        final dateText =
+                DateFormat('dd MMMM yyyy').format(startTime).toString(),
+            startTimeText = DateFormat('hh:mm a').format(startTime).toString(),
+            endTimeText = DateFormat('hh:mm a').format(endTime).toString();
+        if (event.isAllDay) {
+          timeDetails = 'All day';
+        } else {
+          timeDetails = '$startTimeText - $endTimeText';
         }
-        if (recurrenceRule.contains('UNTIL')) {
-          dropdownValueText = 'On date';
-          recurrenceRuleWithoutEndText =
-              recurrenceRule.replaceAll('${recurrenceRuleEnding}Z', '');
-          recurrenceRuleEndDate =
-              DateTime.parse(recurrenceRuleEnding!.replaceAll('UNTIL=', ''));
-          displayRecurrenceRuleEndDate =
-              DateFormat('dd  MMMM yyyy').format(recurrenceRuleEndDate!);
-        } else if (recurrenceRule.contains('COUNT')) {
-          dropdownValueText = 'After';
-          dropdownInt =
-              int.parse(recurrenceRuleEnding!.replaceAll('COUNT=', ''));
-          recurrenceRuleWithoutEndText =
-              recurrenceRule.replaceAll(recurrenceRuleEnding, '');
+        if (event.notes != '') {
+          notesText = event.notes;
         }
+        if (recurrenceRule != null && recurrenceRule != '') {
+          isEventRecurring = true;
+          if (recurrenceRule.contains('MONTHLY')) {
+            recurrenceType = [false, true, false, false];
+          } else if (recurrenceRule.contains('WEEKLY')) {
+            recurrenceType = [false, false, true, false];
+          } else if (recurrenceRule.contains('DAILY')) {
+            recurrenceType = [false, false, false, true];
+          }
+          if (recurrenceRule.contains('UNTIL')) {
+            dropdownValueText = 'On date';
+            recurrenceRuleWithoutEndText =
+                recurrenceRule.replaceAll('${recurrenceRuleEnding}Z', '');
+            recurrenceRuleEndDate =
+                DateTime.parse(recurrenceRuleEnding!.replaceAll('UNTIL=', ''));
+            displayRecurrenceRuleEndDate =
+                DateFormat('dd  MMMM yyyy').format(recurrenceRuleEndDate!);
+          } else if (recurrenceRule.contains('COUNT')) {
+            dropdownValueText = 'After';
+            dropdownInt =
+                int.parse(recurrenceRuleEnding!.replaceAll('COUNT=', ''));
+            recurrenceRuleWithoutEndText =
+                recurrenceRule.replaceAll(recurrenceRuleEnding, '');
+          }
+        }
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => EventDetailsPage(
+                  id: eventId,
+                  colorValue: colorValue,
+                  eventName: eventName,
+                  startTime: startTime,
+                  endTime: endTime,
+                  isAllDay: event.isAllDay,
+                  isRecurring: isEventRecurring,
+                  dropdownValue: dropdownValueText,
+                  dropdownInt: dropdownInt,
+                  recurrenceRuleWithoutEnd: recurrenceRuleWithoutEndText,
+                  displayRecurrenceRuleEndDate: displayRecurrenceRuleEndDate,
+                  frequency: event.frequency,
+                  notes: notesText,
+                  recurrenceType: recurrenceType,
+                  recurrenceRuleEnding: recurrenceRuleEnding,
+                  dateText: dateText,
+                  timeDetails: timeDetails,
+                  recurrenceRule: recurrenceRule,
+                )));
       }
-      Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => EventDetailsPage(
-                id: eventId,
-                colorValue: colorValue,
-                eventName: eventName,
-                startTime: startTime,
-                endTime: endTime,
-                isAllDay: event.isAllDay,
-                isRecurring: isEventRecurring,
-                dropdownValue: dropdownValueText,
-                dropdownInt: dropdownInt,
-                recurrenceRuleWithoutEnd: recurrenceRuleWithoutEndText,
-                displayRecurrenceRuleEndDate: displayRecurrenceRuleEndDate,
-                frequency: event.frequency,
-                notes: notesText,
-                recurrenceType: recurrenceType,
-                recurrenceRuleEnding: recurrenceRuleEnding,
-                dateText: dateText,
-                timeDetails: timeDetails,
-                recurrenceRule: recurrenceRule,
-              )));
     }
   }
 

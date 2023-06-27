@@ -70,7 +70,9 @@ class DeleteItem extends StatelessWidget {
           },
         );
       },
-      icon: const Icon(Icons.delete),
+      icon: const Icon(
+        Icons.delete_outline,
+      ),
     );
   }
 }

@@ -84,7 +84,7 @@ class _VisionBoardPageState extends State<VisionBoardPage> {
                 ),
               ),
               floatingActionButtonLocation:
-                  FloatingActionButtonLocation.centerFloat,
+                  FloatingActionButtonLocation.centerDocked,
               floatingActionButton: _deleteMode
                   ? DeleteImage(
                       selectedIdList: _selectedIdList,
@@ -216,13 +216,7 @@ class _VisionBoardPageState extends State<VisionBoardPage> {
           }
         });
       },
-      backgroundColor: Colors.white,
-      foregroundColor: Colors.blueGrey,
-      child: const Icon(
-        Icons.add,
-        size: 40,
-        weight: 20,
-      ),
+      child: const Icon(Icons.add),
     );
   }
 }

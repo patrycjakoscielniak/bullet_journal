@@ -62,7 +62,9 @@ class _EditItemState extends State<EditItem> {
               );
             });
       },
-      icon: const Icon(Icons.edit),
+      icon: const Icon(
+        Icons.edit_outlined,
+      ),
     );
   }
 }

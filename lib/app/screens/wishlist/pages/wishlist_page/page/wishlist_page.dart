@@ -48,7 +48,7 @@ class WishlistPage extends StatelessWidget {
                                   itemModel.imageURL,
                                   alignment: Alignment.bottomLeft,
                                   height: MediaQuery.of(context).size.width *
-                                      (5 / 13),
+                                      (4 / 13),
                                   width: MediaQuery.of(context).size.width,
                                 ),
                               ),
@@ -56,6 +56,7 @@ class WishlistPage extends StatelessWidget {
                             Expanded(
                               child: Text(
                                 itemModel.name,
+                                textAlign: TextAlign.center,
                               ),
                             ),
                             EditItem(itemModel: itemModel),
@@ -68,6 +69,8 @@ class WishlistPage extends StatelessWidget {
                 ],
               ],
             ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
             floatingActionButton: const AddItemButton(),
           );
         },
