@@ -1,9 +1,15 @@
+// ignore_for_file: must_be_immutable
+
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:intl/intl.dart';
+import 'package:my_bullet_journal/app/app.dart';
 import 'package:my_bullet_journal/app/data/planner_remote_data_source.dart';
+
 import 'package:my_bullet_journal/app/screens/planner/pages/add/cubit/add_event_cubit.dart';
 import 'package:my_bullet_journal/repositories/planner_repository.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
@@ -11,17 +17,21 @@ import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 import '../../../../../core/global_variables.dart';
 import '../../../variables/planner_variables.dart';
 
-class AddEvent extends StatefulWidget {
-  const AddEvent({
+class AddEventPage extends StatefulWidget {
+  AddEventPage({
     super.key,
+    required this.eventStartTime,
+    required this.eventEndTime,
   });
 
+  DateTime eventStartTime, eventEndTime;
+
   @override
-  State<AddEvent> createState() => _AddEventState();
+  State<AddEventPage> createState() => _AddEventState();
 }
 
-class _AddEventState extends State<AddEvent> {
-  var newEvent = '',
+class _AddEventState extends State<AddEventPage> {
+  String newEvent = '',
       notes = '',
       recurrenceEndDate = 'Select a date',
       dropdownValue = 'Never',
@@ -31,23 +41,36 @@ class _AddEventState extends State<AddEvent> {
       recurrenceRuleEndingDateText,
       recurrenceRuleEnding,
       recurrenceRule;
-  int colorValue = 4288968153, intDropdownValue = 1;
+  int colorValue = appPurple.value, intDropdownValue = 1;
   List<int> intDropdownList = [for (int i = 1; i <= 100; i++) i];
-  Color pickerColor = const Color.fromARGB(255, 160, 117, 217);
-
+  Color pickerColor = appPurple;
   bool repeat = false, isAllDay = false;
   List<bool> isSelected = [true, false, false, false];
-  var eventStartTime = DateTime.now(),
-      eventEndTime = DateTime.now().add(const Duration(hours: 1));
+
   @override
   Widget build(BuildContext context) {
+    final recurrenceRulePattern = [
+      {
+        'frequency': 'Yearly',
+        'rule':
+            'FREQ=YEARLY;BYMONTH=${DateFormat('M').format(widget.eventStartTime)};BYMONTHDAY=${DateFormat('d').format(widget.eventStartTime)}'
+      },
+      {
+        'frequency': 'Monthly',
+        'rule':
+            'FREQ=MONTHLY;BYMONTHDAY=${DateFormat('d').format(widget.eventStartTime)}'
+      },
+      {},
+      {'frequency': 'Daily', 'rule': 'FREQ=DAILY'},
+    ];
     return BlocProvider(
       create: (context) => AddEventCubit(
           PlannerRepository(remoteDataSource: HolidaysRemoteDioDataSource())),
       child: BlocConsumer<AddEventCubit, AddEventState>(
         listener: (context, state) {
           if (state.isSaved) {
-            Navigator.of(context).pop();
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => const MyApp()));
           }
           if (state.errorMessage.isNotEmpty) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -73,8 +96,10 @@ class _AddEventState extends State<AddEvent> {
                   isEventAllDay(),
                   space,
                   pickEventDate(context),
-                  isEventRepeating(),
-                  repeat ? setRecurrencePattern(context) : empty,
+                  isEventRepeating(recurrenceRulePattern),
+                  repeat
+                      ? setRecurrencePattern(context, recurrenceRulePattern)
+                      : empty,
                   space,
                   addNotes(),
                 ],
@@ -94,36 +119,7 @@ class _AddEventState extends State<AddEvent> {
                       style: TextStyle(color: Color(colorValue)),
                     ),
                   ),
-                  TextButton(
-                    onPressed: newEvent.isEmpty
-                        ? null
-                        : () {
-                            setState(() {
-                              if (recurrenceRuleEndingDateText != null &&
-                                  recurrenceRulewithoutEnd != null) {
-                                recurrenceRule =
-                                    '$recurrenceRulewithoutEnd;$recurrenceRuleEndingDateText';
-                              } else if (recurrenceRulewithoutEnd != null &&
-                                  recurrenceRuleEndingDateText == null) {
-                                recurrenceRule = recurrenceRulewithoutEnd;
-                              }
-                            });
-                            context.read<AddEventCubit>().addEvent(
-                                  newEvent,
-                                  notes,
-                                  eventStartTime,
-                                  eventEndTime,
-                                  isAllDay,
-                                  colorValue,
-                                  recurrenceRule,
-                                  frequency,
-                                  recurrenceRuleEnding,
-                                );
-                          },
-                    child: const Text(
-                      'Add',
-                    ),
-                  )
+                  addEvent(context)
                 ],
               ),
             ),
@@ -195,6 +191,9 @@ class _AddEventState extends State<AddEvent> {
           style: mainTextStyle,
         ),
         Switch.adaptive(
+            activeColor:
+                Platform.isAndroid ? Colors.white30 : Color(colorValue),
+            activeTrackColor: Color(colorValue),
             value: isAllDay,
             onChanged: (value) {
               setState(() {
@@ -214,15 +213,13 @@ class _AddEventState extends State<AddEvent> {
               List<DateTime>? dateTimeList = await showOmniDateTimeRangePicker(
                 context: context,
                 isForce2Digits: true,
-                startInitialDate: DateTime.now(),
-                startFirstDate:
-                    DateTime(1600).subtract(const Duration(days: 3652)),
+                startInitialDate: widget.eventStartTime,
+                startFirstDate: DateTime(1900),
                 startLastDate: DateTime.now().add(
                   const Duration(days: 3652),
                 ),
-                endInitialDate: DateTime.now(),
-                endFirstDate:
-                    DateTime(1600).subtract(const Duration(days: 3652)),
+                endInitialDate: widget.eventEndTime,
+                endFirstDate: DateTime(1900),
                 endLastDate: DateTime.now().add(
                   const Duration(days: 3652),
                 ),
@@ -230,22 +227,22 @@ class _AddEventState extends State<AddEvent> {
               );
               if (dateTimeList != null) {
                 setState(() {
-                  eventStartTime = dateTimeList.first;
+                  widget.eventStartTime = dateTimeList.first;
                 });
                 setState(() {
-                  eventEndTime = dateTimeList.last;
+                  widget.eventEndTime = dateTimeList.last;
                 });
               }
             },
             child: Text(
-                'from ${DateFormat('dd MMM hh : mm').format(eventStartTime)}  to  ${DateFormat('dd MMM hh : mm').format(eventEndTime)}',
+                'from ${DateFormat('dd MMM hh : mm').format(widget.eventStartTime)}  to  ${DateFormat('dd MMM hh : mm').format(widget.eventEndTime)}',
                 style: mainTextStyle)),
         space,
       ],
     );
   }
 
-  Row isEventRepeating() {
+  Row isEventRepeating(recurrenceRulePattern) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
@@ -255,6 +252,9 @@ class _AddEventState extends State<AddEvent> {
           textAlign: TextAlign.center,
         ),
         Switch.adaptive(
+            activeColor:
+                Platform.isAndroid ? Colors.white30 : Color(colorValue),
+            activeTrackColor: Color(colorValue),
             value: repeat,
             onChanged: (value) {
               setState(() {
@@ -262,9 +262,8 @@ class _AddEventState extends State<AddEvent> {
               });
               if (value == true) {
                 setState(() {
-                  recurrenceRulewithoutEnd =
-                      'FREQ=YEARLY;BYMONTH=${DateFormat('M').format(eventStartTime)};BYMONTHDAY=${DateFormat('d').format(eventStartTime)}';
-                  frequency = 'Yearly';
+                  recurrenceRulewithoutEnd = recurrenceRulePattern[1]['rule'];
+                  frequency = recurrenceRulePattern[1]['frequency'];
                 });
               } else {
                 setState(() {
@@ -277,7 +276,7 @@ class _AddEventState extends State<AddEvent> {
     );
   }
 
-  Column setRecurrencePattern(BuildContext context) {
+  Column setRecurrencePattern(BuildContext context, recurrenceRulePattern) {
     return Column(
       children: [
         Padding(
@@ -297,76 +296,23 @@ class _AddEventState extends State<AddEvent> {
                     isSelected[index] = false;
                   }
                 }
+                if (newIndex == 2) {
+                  frequency = 'Weekly';
+                  for (int i = 1; i < byWeekDayValue.length; i++) {
+                    if (widget.eventStartTime.weekday == i) {
+                      setState(() {
+                        recurrenceRulewithoutEnd = byWeekDayValue[i];
+                      });
+                    }
+                  }
+                } else {
+                  setState(() {
+                    recurrenceRulewithoutEnd =
+                        recurrenceRulePattern[newIndex]['rule'];
+                    frequency = recurrenceRulePattern[newIndex]['frequency'];
+                  });
+                }
               });
-              if (isSelected.elementAt(0) == true) {
-                setState(() {
-                  recurrenceRulewithoutEnd =
-                      'FREQ=YEARLY;BYMONTH=${DateFormat('M').format(eventStartTime)};BYMONTHDAY=${DateFormat('d').format(eventStartTime)}';
-                  frequency = 'Yearly';
-                });
-              }
-              if (isSelected.elementAt(1) == true) {
-                setState(() {
-                  frequency = 'Monthly';
-                  recurrenceRulewithoutEnd =
-                      'FREQ=MONTHLY;BYMONTHDAY=${DateFormat('d').format(eventStartTime)}';
-                });
-              }
-              if (isSelected.elementAt(2) == true &&
-                  eventStartTime.weekday == 1) {
-                setState(() {
-                  frequency = 'Weekly';
-                  recurrenceRulewithoutEnd = 'FREQ=WEEKLY;BYDAY=MO';
-                });
-              }
-              if (isSelected.elementAt(2) == true &&
-                  eventStartTime.weekday == 2) {
-                setState(() {
-                  frequency = 'Weekly';
-                  recurrenceRulewithoutEnd = 'FREQ=WEEKLY;BYDAY=TU';
-                });
-              }
-              if (isSelected.elementAt(2) == true &&
-                  eventStartTime.weekday == 3) {
-                setState(() {
-                  frequency = 'Weekly';
-                  recurrenceRulewithoutEnd = 'FREQ=WEEKLY;BYDAY=WE';
-                });
-              }
-              if (isSelected.elementAt(2) == true &&
-                  eventStartTime.weekday == 4) {
-                setState(() {
-                  frequency = 'Weekly';
-                  recurrenceRulewithoutEnd = 'FREQ=WEEKLY;BYDAY=TH';
-                });
-              }
-              if (isSelected.elementAt(2) == true &&
-                  eventStartTime.weekday == 5) {
-                setState(() {
-                  frequency = 'Weekly';
-                  recurrenceRulewithoutEnd = 'FREQ=WEEKLY;BYDAY=FR';
-                });
-              }
-              if (isSelected.elementAt(2) == true &&
-                  eventStartTime.weekday == 6) {
-                setState(() {
-                  frequency = 'Weekly';
-                  recurrenceRulewithoutEnd = 'FREQ=WEEKLY;BYDAY=SA';
-                });
-              }
-              if (isSelected.elementAt(2) == true &&
-                  eventStartTime.weekday == 7) {
-                setState(() {
-                  frequency = 'Weekly';
-                  recurrenceRulewithoutEnd = 'FREQ=WEEKLY;BYDAY=SU';
-                });
-              }
-              if (isSelected.elementAt(3) == true) {
-                setState(() {
-                  frequency = 'Daily';
-                  recurrenceRulewithoutEnd = 'FREQ=DAILY';
-                });
-              }
             },
             isSelected: isSelected,
             children: [
@@ -442,10 +388,10 @@ class _AddEventState extends State<AddEvent> {
                           setState(() {
                             recurrenceEndDate =
                                 DateFormat('dd  MMMM yyyy').format(time);
-                            recurrenceRuleEndingDateText =
-                                'UNTIL=${DateFormat('yyyyMMddTHHmmss').format(time)}Z';
                             recurrenceRuleEnding =
                                 'UNTIL=${DateFormat('yyyyMMddTHHmmss').format(time)}';
+                            recurrenceRuleEndingDateText =
+                                '${recurrenceRuleEnding}Z';
                           });
                         },
                       );
@@ -468,6 +414,40 @@ class _AddEventState extends State<AddEvent> {
       },
       textAlign: TextAlign.center,
       decoration: const InputDecoration(hintText: 'Notes'),
+    );
+  }
+
+  TextButton addEvent(BuildContext context) {
+    return TextButton(
+      onPressed: newEvent.isEmpty
+          ? null
+          : () {
+              setState(() {
+                if (recurrenceRuleEndingDateText != null &&
+                    recurrenceRulewithoutEnd != null) {
+                  recurrenceRule =
+                      '$recurrenceRulewithoutEnd;$recurrenceRuleEndingDateText';
+                } else if (recurrenceRulewithoutEnd != null &&
+                    recurrenceRuleEndingDateText == null) {
+                  recurrenceRule = recurrenceRulewithoutEnd;
+                }
+              });
+              context.read<AddEventCubit>().addEvent(
+                    newEvent,
+                    notes,
+                    widget.eventStartTime,
+                    widget.eventEndTime,
+                    isAllDay,
+                    colorValue,
+                    recurrenceRule,
+                    frequency,
+                    recurrenceRuleEnding,
+                  );
+            },
+      child: Text(
+        'Add',
+        style: TextStyle(color: newEvent.isEmpty ? appGrey : Color(colorValue)),
+      ),
     );
   }
 }

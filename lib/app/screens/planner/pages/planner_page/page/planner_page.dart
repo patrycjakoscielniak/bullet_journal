@@ -3,27 +3,37 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:my_bullet_journal/app/data/planner_remote_data_source.dart';
+import 'package:my_bullet_journal/app/screens/planner/pages/add/page/add_event_page.dart';
 import 'package:my_bullet_journal/app/screens/planner/pages/details/page/event_details_page.dart';
 import 'package:my_bullet_journal/models/planner_item_model.dart';
 import 'package:my_bullet_journal/repositories/planner_repository.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-import '../../add/page/add_event.dart';
 import '../cubit/planner_cubit.dart';
+import '../features/calendar_data_source.dart';
 
-class Planner extends StatefulWidget {
-  const Planner({
+class PlannerPage extends StatefulWidget {
+  const PlannerPage({
     super.key,
   });
 
   @override
-  State<Planner> createState() => _PlannerState();
+  State<PlannerPage> createState() => _PlannerPageState();
 }
 
-class _PlannerState extends State<Planner> {
+class _PlannerPageState extends State<PlannerPage> {
   List<Appointment> events = [];
   List<PlannerModel> plannerEvents = [];
   String eventId = '';
   final CalendarController _controller = CalendarController();
+  String? notesText;
+  String timeDetails = '',
+      recurrenceRuleWithoutEndText = '',
+      displayRecurrenceRuleEndDate = 'Select a date',
+      dropdownValueText = 'Never';
+  DateTime? recurrenceRuleEndDate;
+  bool isEventRecurring = false;
+  int dropdownInt = 1;
+  List<bool> recurrenceType = [true, false, false, false];
 
   @override
   Widget build(BuildContext context) {
@@ -61,17 +71,10 @@ class _PlannerState extends State<Planner> {
             }
           }
           return Scaffold(
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const AddEvent()));
-              },
-              mini: true,
-              child: const Icon(Icons.add),
-            ),
             body: SfCalendar(
               controller: _controller,
               onTap: calendarTapped,
+              onLongPress: calendarLongPressed,
               headerStyle: CalendarHeaderStyle(
                   textStyle: GoogleFonts.amaticSc(fontSize: 25)),
               viewNavigationMode: ViewNavigationMode.snap,
@@ -82,7 +85,7 @@ class _PlannerState extends State<Planner> {
                   showAgenda: true,
                   appointmentDisplayMode:
                       MonthAppointmentDisplayMode.indicator),
-              dataSource: DataSource(events),
+              dataSource: SfCalendarDataSource(events),
               showNavigationArrow: true,
               showDatePickerButton: true,
               firstDayOfWeek: 1,
@@ -113,15 +116,6 @@ class _PlannerState extends State<Planner> {
       final colorValue = event.colorValue;
       final recurrenceRule = event.recurrenceRule,
           recurrenceRuleEnding = event.recurrenceRuleEnding;
-      String? notesText;
-      String timeDetails,
-          recurrenceRuleWithoutEndText = '',
-          displayRecurrenceRuleEndDate = 'Select a date',
-          dropdownValueText = 'Never';
-      DateTime? recurrenceRuleEndDate;
-      bool isEventRecurring = false;
-      int dropdownInt = 1;
-      List<bool> recurrenceType = [true, false, false, false];
       final dateText = DateFormat('dd MMMM yyyy').format(startTime).toString(),
           startTimeText = DateFormat('hh:mm a').format(startTime).toString(),
           endTimeText = DateFormat('hh:mm a').format(endTime).toString();
@@ -133,7 +127,6 @@ class _PlannerState extends State<Planner> {
       if (event.notes != '') {
         notesText = event.notes;
       }
-
       if (recurrenceRule != null && recurrenceRule != '') {
         isEventRecurring = true;
         if (recurrenceRule.contains('MONTHLY')) {
@@ -150,7 +143,7 @@ class _PlannerState extends State<Planner> {
           recurrenceRuleEndDate =
               DateTime.parse(recurrenceRuleEnding!.replaceAll('UNTIL=', ''));
           displayRecurrenceRuleEndDate =
-              DateFormat('dd  MMMM yyyy').format(recurrenceRuleEndDate);
+              DateFormat('dd  MMMM yyyy').format(recurrenceRuleEndDate!);
         } else if (recurrenceRule.contains('COUNT')) {
           dropdownValueText = 'After';
           dropdownInt =
@@ -160,7 +153,7 @@ class _PlannerState extends State<Planner> {
         }
       }
       Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => EventDetails(
+          builder: (context) => EventDetailsPage(
                 id: eventId,
                 colorValue: colorValue,
                 eventName: eventName,
@@ -182,10 +175,20 @@ class _PlannerState extends State<Planner> {
               )));
     }
   }
-}
 
-class DataSource extends CalendarDataSource {
-  DataSource(List<Appointment> source) {
-    appointments = source;
+  void calendarLongPressed(CalendarLongPressDetails details) {
+    if (details.targetElement == CalendarElement.calendarCell) {
+      final choosenDate = details.date;
+      if (choosenDate != null) {
+        final createEventStartTime = choosenDate;
+        final createEventEndTime =
+            createEventStartTime.add(const Duration(hours: 1));
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => AddEventPage(
+                  eventStartTime: createEventStartTime,
+                  eventEndTime: createEventEndTime,
+                )));
+      }
+    }
   }
 }

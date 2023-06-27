@@ -7,8 +7,8 @@ import '../cubit/wishlist_cubit.dart';
 import '../features/add_item_button.dart';
 import '../features/delete_item.dart';
 
-class Wishlist extends StatelessWidget {
-  const Wishlist({
+class WishlistPage extends StatelessWidget {
+  const WishlistPage({
     super.key,
   });
 

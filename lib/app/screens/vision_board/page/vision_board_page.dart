@@ -13,16 +13,16 @@ import 'package:image_picker/image_picker.dart';
 
 import '../features/delete_vision_board_image.dart';
 
-class VisionBoard extends StatefulWidget {
-  const VisionBoard({
+class VisionBoardPage extends StatefulWidget {
+  const VisionBoardPage({
     super.key,
   });
 
   @override
-  State<VisionBoard> createState() => _VisionBoardState();
+  State<VisionBoardPage> createState() => _VisionBoardPageState();
 }
 
-class _VisionBoardState extends State<VisionBoard> {
+class _VisionBoardPageState extends State<VisionBoardPage> {
   XFile? pickedFile;
   bool _deleteMode = false;
   List<int> _selectedIndexList = [];

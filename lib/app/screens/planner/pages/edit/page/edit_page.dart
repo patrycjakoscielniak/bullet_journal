@@ -10,7 +10,6 @@ import 'package:intl/intl.dart';
 import 'package:my_bullet_journal/app/app.dart';
 import 'package:my_bullet_journal/app/core/enums.dart';
 import 'package:my_bullet_journal/app/screens/planner/pages/edit/cubit/edit_event_cubit.dart';
-import 'package:my_bullet_journal/app/screens/planner/pages/planner_page/page/planner_page.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 import '../../../../../core/global_variables.dart';
 import '../../../variables/planner_variables.dart';
@@ -59,11 +58,25 @@ class _EditEventPageState extends State<EditEventPage> {
   @override
   Widget build(BuildContext context) {
     final colorValue = widget.colorValue;
+    final recurrenceRulePattern = [
+      {
+        'frequency': 'Yearly',
+        'rule':
+            'FREQ=YEARLY;BYMONTH=${DateFormat('M').format(widget.eventStartTime)};BYMONTHDAY=${DateFormat('d').format(widget.eventStartTime)}'
+      },
+      {
+        'frequency': 'Monthly',
+        'rule':
+            'FREQ=MONTHLY;BYMONTHDAY=${DateFormat('d').format(widget.eventStartTime)}'
+      },
+      {},
+      {'frequency': 'Daily', 'rule': 'FREQ=DAILY'},
+    ];
     return BlocListener<EditEventCubit, EditEventState>(
       listener: (context, state) {
         if (state.status == Status.updated) {
           Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => const Planner()));
+              .push(MaterialPageRoute(builder: (context) => const MyApp()));
         }
         if (state.status == Status.error) {
           ScaffoldMessenger.of(context)
@@ -98,9 +111,11 @@ class _EditEventPageState extends State<EditEventPage> {
               space,
               editEventDateTime(context),
               space,
-              isEventRecurring(),
+              isEventRecurring(recurrenceRulePattern),
               space,
-              widget.isRecurring ? editRecurrenceRule(context) : space,
+              widget.isRecurring
+                  ? editRecurrenceRule(context, recurrenceRulePattern)
+                  : space,
               editNotes(),
             ],
           ),
@@ -179,13 +194,13 @@ class _EditEventPageState extends State<EditEventPage> {
         List<DateTime>? dateTimeList = await showOmniDateTimeRangePicker(
           context: context,
           isForce2Digits: true,
-          startInitialDate: DateTime.now(),
-          startFirstDate: DateTime(1600).subtract(const Duration(days: 3652)),
+          startInitialDate: widget.eventStartTime,
+          startFirstDate: DateTime(1900),
           startLastDate: DateTime.now().add(
             const Duration(days: 3652),
           ),
-          endInitialDate: DateTime.now(),
-          endFirstDate: DateTime(1600).subtract(const Duration(days: 3652)),
+          endInitialDate: widget.eventEndTime,
+          endFirstDate: DateTime(1900),
           endLastDate: DateTime.now().add(
             const Duration(days: 3652),
           ),
@@ -206,7 +221,7 @@ class _EditEventPageState extends State<EditEventPage> {
     );
   }
 
-  Row isEventRecurring() {
+  Row isEventRecurring(recurrenceRulePattern) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
@@ -227,8 +242,8 @@ class _EditEventPageState extends State<EditEventPage> {
               if (value == true) {
                 setState(() {
                   widget.recurrenceRuleWithoutEnd =
-                      'FREQ=YEARLY;BYMONTH=${DateFormat('M').format(widget.eventStartTime)};BYMONTHDAY=${DateFormat('d').format(widget.eventStartTime)}';
-                  widget.frequency = 'Yearly';
+                      recurrenceRulePattern[1]['rule'];
+                  widget.frequency = recurrenceRulePattern[1]['frequency'];
                 });
               } else {
                 setState(() {
@@ -241,7 +256,7 @@ class _EditEventPageState extends State<EditEventPage> {
     );
   }
 
-  Column editRecurrenceRule(BuildContext context) {
+  Column editRecurrenceRule(BuildContext context, recurrenceRulePattern) {
     return Column(
       children: [
         Padding(
@@ -265,73 +280,21 @@ class _EditEventPageState extends State<EditEventPage> {
                   }
                 }
               });
-              if (widget.recurrenceType.elementAt(0) == true) {
+              if (newIndex == 2) {
+                widget.frequency = 'Weekly';
+                for (int i = 1; i < byWeekDayValue.length; i++) {
+                  if (widget.eventStartTime.weekday == i) {
+                    setState(() {
+                      widget.recurrenceRuleWithoutEnd = byWeekDayValue[i];
+                    });
+                  }
+                }
+              } else {
                 setState(() {
                   widget.recurrenceRuleWithoutEnd =
-                      'FREQ=YEARLY;BYMONTH=${DateFormat('M').format(widget.eventStartTime)};BYMONTHDAY=${DateFormat('d').format(widget.eventStartTime)}';
-                  widget.frequency = 'Yearly';
-                });
-              }
-              if (widget.recurrenceType.elementAt(1) == true) {
-                setState(() {
-                  widget.frequency = 'Monthly';
-                  widget.recurrenceRuleWithoutEnd =
-                      'FREQ=MONTHLY;BYMONTHDAY=${DateFormat('d').format(widget.eventStartTime)}';
-                });
-              }
-              if (widget.recurrenceType.elementAt(2) == true &&
-                  widget.eventStartTime.weekday == 1) {
-                setState(() {
-                  widget.frequency = 'Weekly';
-                  widget.recurrenceRuleWithoutEnd = 'FREQ=WEEKLY;BYDAY=MO';
-                });
-              }
-              if (widget.recurrenceType.elementAt(2) == true &&
-                  widget.eventStartTime.weekday == 2) {
-                setState(() {
-                  widget.frequency = 'Weekly';
-                  widget.recurrenceRuleWithoutEnd = 'FREQ=WEEKLY;BYDAY=TU';
-                });
-              }
-              if (widget.recurrenceType.elementAt(2) == true &&
-                  widget.eventStartTime.weekday == 3) {
-                setState(() {
-                  widget.frequency = 'Weekly';
-                  widget.recurrenceRuleWithoutEnd = 'FREQ=WEEKLY;BYDAY=WE';
-                });
-              }
-              if (widget.recurrenceType.elementAt(2) == true &&
-                  widget.eventStartTime.weekday == 4) {
-                setState(() {
-                  widget.frequency = 'Weekly';
-                  widget.recurrenceRuleWithoutEnd = 'FREQ=WEEKLY;BYDAY=TH';
-                });
-              }
-              if (widget.recurrenceType.elementAt(2) == true &&
-                  widget.eventStartTime.weekday == 5) {
-                setState(() {
-                  widget.frequency = 'Weekly';
-                  widget.recurrenceRuleWithoutEnd = 'FREQ=WEEKLY;BYDAY=FR';
-                });
-              }
-              if (widget.recurrenceType.elementAt(2) == true &&
-                  widget.eventStartTime.weekday == 6) {
-                setState(() {
-                  widget.frequency = 'Weekly';
-                  widget.recurrenceRuleWithoutEnd = 'FREQ=WEEKLY;BYDAY=SA';
-                });
-              }
-              if (widget.recurrenceType.elementAt(2) == true &&
-                  widget.eventStartTime.weekday == 7) {
-                setState(() {
-                  widget.frequency = 'Weekly';
-                  widget.recurrenceRuleWithoutEnd = 'FREQ=WEEKLY;BYDAY=SU';
-                });
-              }
-              if (widget.recurrenceType.elementAt(3) == true) {
-                setState(() {
-                  widget.frequency = 'Daily';
-                  widget.recurrenceRuleWithoutEnd = 'FREQ=DAILY';
+                      recurrenceRulePattern[newIndex]['rule'];
+                  widget.frequency =
+                      recurrenceRulePattern[newIndex]['frequency'];
                 });
               }
             },

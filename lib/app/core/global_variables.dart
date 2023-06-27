@@ -10,3 +10,4 @@ final dialogContainerDecoration = BoxDecoration(
     borderRadius: const BorderRadius.all(Radius.circular(10)));
 final mainTextStyle = GoogleFonts.amaticSc(
     textStyle: const TextStyle(fontWeight: FontWeight.w400, fontSize: 22));
+const space = SizedBox(height: 15), empty = SizedBox();

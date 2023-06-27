@@ -50,13 +50,13 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Builder(builder: (context) {
         if (currentIndex == 0) {
-          return Wishlist();
+          return const WishlistPage();
         }
         if (currentIndex == 1) {
-          return const Planner();
+          return const PlannerPage();
         }
 
-        return const VisionBoard();
+        return const VisionBoardPage();
       }),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,

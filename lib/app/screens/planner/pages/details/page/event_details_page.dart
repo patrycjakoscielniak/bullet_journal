@@ -1,15 +1,14 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:my_bullet_journal/app/screens/planner/variables/planner_variables.dart';
 import '../../../../../core/global_variables.dart';
 import '../../edit/page/edit_page.dart';
 import '../features/body.dart';
 import '../features/app_bar.dart';
 import '../features/delete_event_dialog.dart';
 
-class EventDetails extends StatelessWidget {
-  const EventDetails({
+class EventDetailsPage extends StatelessWidget {
+  const EventDetailsPage({
     super.key,
     required this.eventName,
     required this.id,
