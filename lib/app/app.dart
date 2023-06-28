@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:my_bullet_journal/app/screens/planner/pages/add/cubit/add_event_cubit.dart';
 import 'package:my_bullet_journal/app/screens/planner/pages/details/cubit/details_page_cubit.dart';
 import 'package:my_bullet_journal/app/screens/planner/pages/edit/cubit/edit_event_cubit.dart';
 import 'package:my_bullet_journal/app/screens/planner/pages/planner_page/cubit/planner_cubit.dart';
@@ -29,6 +30,9 @@ class MyApp extends StatelessWidget {
                 remoteDataSource: HolidaysRemoteDioDataSource()))),
         BlocProvider<DetailsPageCubit>(
             create: (context) => DetailsPageCubit(PlannerRepository(
+                remoteDataSource: HolidaysRemoteDioDataSource()))),
+        BlocProvider<AddEventCubit>(
+            create: (context) => AddEventCubit(PlannerRepository(
                 remoteDataSource: HolidaysRemoteDioDataSource()))),
         BlocProvider<VisionBoardCubit>(
             create: (context) => VisionBoardCubit(VisionBoardRepository())),
@@ -60,7 +64,7 @@ class MyApp extends StatelessWidget {
                       fontSize: 23, fontWeight: FontWeight.w600))),
           appBarTheme: AppBarTheme(
             backgroundColor: Colors.white,
-            foregroundColor: appPurple,
+            foregroundColor: appGrey,
             centerTitle: true,
             toolbarTextStyle: GoogleFonts.greatVibes(),
             titleTextStyle: GoogleFonts.greatVibes(

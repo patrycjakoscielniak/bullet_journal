@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:my_bullet_journal/app/core/global_variables.dart';
 import 'package:my_bullet_journal/app/data/planner_remote_data_source.dart';
 import 'package:my_bullet_journal/app/screens/planner/pages/add/page/add_event_page.dart';
 import 'package:my_bullet_journal/app/screens/planner/pages/details/page/event_details_page.dart';
@@ -24,10 +25,10 @@ class _PlannerPageState extends State<PlannerPage> {
   List<Appointment> events = [];
   List<PlannerModel> plannerEvents = [];
   String eventId = '';
+  final _controller = CalendarController();
 
-  String? notesText;
+  String? notesText, recurrencePatternWithoutEndText;
   String timeDetails = '',
-      recurrenceRuleWithoutEndText = '',
       displayRecurrenceRuleEndDate = 'Select a date',
       dropdownValueText = 'Never';
   DateTime? recurrenceRuleEndDate;
@@ -72,6 +73,8 @@ class _PlannerPageState extends State<PlannerPage> {
           }
           return Scaffold(
             body: SfCalendar(
+              controller: _controller,
+              todayHighlightColor: appGrey,
               onTap: calendarTapped,
               onLongPress: calendarLongPressed,
               headerStyle: CalendarHeaderStyle(
@@ -141,7 +144,7 @@ class _PlannerPageState extends State<PlannerPage> {
           }
           if (recurrenceRule.contains('UNTIL')) {
             dropdownValueText = 'On date';
-            recurrenceRuleWithoutEndText =
+            recurrencePatternWithoutEndText =
                 recurrenceRule.replaceAll('${recurrenceRuleEnding}Z', '');
             recurrenceRuleEndDate =
                 DateTime.parse(recurrenceRuleEnding!.replaceAll('UNTIL=', ''));
@@ -151,7 +154,7 @@ class _PlannerPageState extends State<PlannerPage> {
             dropdownValueText = 'After';
             dropdownInt =
                 int.parse(recurrenceRuleEnding!.replaceAll('COUNT=', ''));
-            recurrenceRuleWithoutEndText =
+            recurrencePatternWithoutEndText =
                 recurrenceRule.replaceAll(recurrenceRuleEnding, '');
           }
         }
@@ -166,7 +169,7 @@ class _PlannerPageState extends State<PlannerPage> {
                   isRecurring: isEventRecurring,
                   dropdownValue: dropdownValueText,
                   dropdownInt: dropdownInt,
-                  recurrenceRuleWithoutEnd: recurrenceRuleWithoutEndText,
+                  recurrencePatternWithoutEnd: recurrencePatternWithoutEndText,
                   displayRecurrenceRuleEndDate: displayRecurrenceRuleEndDate,
                   frequency: event.frequency,
                   notes: notesText,

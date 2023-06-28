@@ -71,6 +71,7 @@ class PlannerRepository {
     required String eventName,
     required String? notes,
     required String? recurrenceRule,
+    required String? recurrenceRuleEnding,
     required String? frequency,
     required DateTime startTime,
     required DateTime endTime,
@@ -85,6 +86,7 @@ class PlannerRepository {
       'isAllDay': isAllDay,
       'colorValue': colorValue,
       'recurrenceRule': recurrenceRule,
+      'recurrenceRuleEnding': recurrenceRuleEnding,
       'frequency': frequency,
     });
   }

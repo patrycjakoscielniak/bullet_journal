@@ -1,19 +1,14 @@
 // ignore_for_file: must_be_immutable
 
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:intl/intl.dart';
 import 'package:my_bullet_journal/app/app.dart';
-import 'package:my_bullet_journal/app/data/planner_remote_data_source.dart';
-
 import 'package:my_bullet_journal/app/screens/planner/pages/add/cubit/add_event_cubit.dart';
-import 'package:my_bullet_journal/repositories/planner_repository.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
-
 import '../../../../../core/global_variables.dart';
 import '../../../variables/planner_variables.dart';
 
@@ -31,20 +26,19 @@ class AddEventPage extends StatefulWidget {
 }
 
 class _AddEventState extends State<AddEventPage> {
-  String newEvent = '',
-      notes = '',
-      recurrenceEndDate = 'Select a date',
-      dropdownValue = 'Never',
-      frequency = '';
+  String eventName = '',
+      displayRecurrenceRuleEndDate = 'Select a date',
+      dropdownValue = 'Never';
 
-  String? recurrenceRulewithoutEnd,
-      recurrenceRuleEndingDateText,
+  String? recurrencePattenWithoutEnd,
+      recurrencePattenEnd,
       recurrenceRuleEnding,
-      recurrenceRule;
+      recurrenceRule,
+      frequency,
+      notes;
   int colorValue = appPurple.value, intDropdownValue = 1;
-  List<int> intDropdownList = [for (int i = 1; i <= 100; i++) i];
   Color pickerColor = appPurple;
-  bool repeat = false, isAllDay = false;
+  bool isRecurring = false, isAllDay = false;
   List<bool> isSelected = [true, false, false, false];
 
   @override
@@ -63,69 +57,53 @@ class _AddEventState extends State<AddEventPage> {
       {},
       {'frequency': 'Daily', 'rule': 'FREQ=DAILY'},
     ];
-    return BlocProvider(
-      create: (context) => AddEventCubit(
-          PlannerRepository(remoteDataSource: HolidaysRemoteDioDataSource())),
-      child: BlocConsumer<AddEventCubit, AddEventState>(
-        listener: (context, state) {
-          if (state.isSaved) {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => const MyApp()));
-          }
-          if (state.errorMessage.isNotEmpty) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text(state.errorMessage),
-              duration: const Duration(seconds: 7),
-            ));
-          }
-        },
-        builder: (context, state) {
-          return Scaffold(
-            body: Padding(
-              padding: const EdgeInsets.only(right: 50.0, left: 50, top: 80),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      addEventName(),
-                      chooseEventColor(context),
-                    ],
-                  ),
-                  space,
-                  isEventAllDay(),
-                  space,
-                  pickEventDate(context),
-                  isEventRepeating(recurrenceRulePattern),
-                  repeat
-                      ? setRecurrencePattern(context, recurrenceRulePattern)
-                      : empty,
-                  space,
-                  addNotes(),
-                ],
-              ),
+    return BlocConsumer<AddEventCubit, AddEventState>(
+      listener: (context, state) {
+        if (state.isSaved) {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => const MyApp()));
+        }
+        if (state.errorMessage.isNotEmpty) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(state.errorMessage),
+            duration: const Duration(seconds: 7),
+          ));
+        }
+      },
+      builder: (context, state) {
+        return Scaffold(
+          body: Padding(
+            padding: const EdgeInsets.only(right: 50, left: 50, top: 80),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    addEventName(),
+                    chooseEventColor(context),
+                  ],
+                ),
+                space,
+                isEventAllDay(),
+                space,
+                isAllDay ? space : pickEventDate(context),
+                isEventisRecurringing(recurrenceRulePattern),
+                isRecurring
+                    ? setRecurrencePattern(context, recurrenceRulePattern)
+                    : space,
+                addNotes(),
+              ],
             ),
-            bottomSheet: Padding(
-              padding: const EdgeInsets.only(bottom: 30, right: 15, left: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text(
-                      'Close',
-                      style: TextStyle(color: Color(colorValue)),
-                    ),
-                  ),
-                  addEvent(context)
-                ],
-              ),
+          ),
+          bottomSheet: Padding(
+            padding: const EdgeInsets.only(bottom: 30, right: 15, left: 15),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [ClosePage(colorValue: colorValue), addEvent(context)],
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 
@@ -134,7 +112,7 @@ class _AddEventState extends State<AddEventPage> {
       child: TextField(
         onChanged: (value) {
           setState(() {
-            newEvent = value;
+            eventName = value;
           });
         },
         textAlign: TextAlign.center,
@@ -242,12 +220,12 @@ class _AddEventState extends State<AddEventPage> {
     );
   }
 
-  Row isEventRepeating(recurrenceRulePattern) {
+  Row isEventisRecurringing(recurrenceRulePattern) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         Text(
-          'Repeat',
+          'isRecurring',
           style: mainTextStyle,
           textAlign: TextAlign.center,
         ),
@@ -255,19 +233,19 @@ class _AddEventState extends State<AddEventPage> {
             activeColor:
                 Platform.isAndroid ? Colors.white30 : Color(colorValue),
             activeTrackColor: Color(colorValue),
-            value: repeat,
+            value: isRecurring,
             onChanged: (value) {
               setState(() {
-                repeat = value;
+                isRecurring = value;
               });
               if (value == true) {
                 setState(() {
-                  recurrenceRulewithoutEnd = recurrenceRulePattern[1]['rule'];
+                  recurrencePattenWithoutEnd = recurrenceRulePattern[1]['rule'];
                   frequency = recurrenceRulePattern[1]['frequency'];
                 });
               } else {
                 setState(() {
-                  recurrenceRulewithoutEnd = '';
+                  recurrencePattenWithoutEnd = '';
                   frequency = '';
                 });
               }
@@ -283,7 +261,7 @@ class _AddEventState extends State<AddEventPage> {
           padding: const EdgeInsets.only(top: 15, bottom: 15),
           child: ToggleButtons(
             selectedColor: Colors.white,
-            fillColor: appPurple,
+            fillColor: Color(colorValue),
             borderColor: Colors.blueGrey,
             color: Colors.black,
             constraints: const BoxConstraints(minWidth: 67, minHeight: 40),
@@ -301,13 +279,13 @@ class _AddEventState extends State<AddEventPage> {
                   for (int i = 1; i < byWeekDayValue.length; i++) {
                     if (widget.eventStartTime.weekday == i) {
                       setState(() {
-                        recurrenceRulewithoutEnd = byWeekDayValue[i];
+                        recurrencePattenWithoutEnd = byWeekDayValue[i];
                       });
                     }
                   }
                 } else {
                   setState(() {
-                    recurrenceRulewithoutEnd =
+                    recurrencePattenWithoutEnd =
                         recurrenceRulePattern[newIndex]['rule'];
                     frequency = recurrenceRulePattern[newIndex]['frequency'];
                   });
@@ -369,8 +347,8 @@ class _AddEventState extends State<AddEventPage> {
                           if (value != null) {
                             setState(() {
                               intDropdownValue = value;
-                              recurrenceRuleEndingDateText = 'COUNT=$value';
-                              recurrenceRuleEnding = 'COUNT=$value';
+                              recurrencePattenEnd = 'COUNT=$value';
+                              recurrenceRuleEnding = recurrencePattenEnd;
                             });
                           }
                         }),
@@ -386,18 +364,17 @@ class _AddEventState extends State<AddEventPage> {
                         context,
                         onConfirm: (time) {
                           setState(() {
-                            recurrenceEndDate =
+                            displayRecurrenceRuleEndDate =
                                 DateFormat('dd  MMMM yyyy').format(time);
                             recurrenceRuleEnding =
                                 'UNTIL=${DateFormat('yyyyMMddTHHmmss').format(time)}';
-                            recurrenceRuleEndingDateText =
-                                '${recurrenceRuleEnding}Z';
+                            recurrencePattenEnd = '${recurrenceRuleEnding}Z';
                           });
                         },
                       );
                     },
                     child: Text(
-                      recurrenceEndDate,
+                      displayRecurrenceRuleEndDate,
                       style: mainTextStyle,
                     ))
                 : empty
@@ -419,21 +396,21 @@ class _AddEventState extends State<AddEventPage> {
 
   TextButton addEvent(BuildContext context) {
     return TextButton(
-      onPressed: newEvent.isEmpty
+      onPressed: eventName.isEmpty
           ? null
           : () {
               setState(() {
-                if (recurrenceRuleEndingDateText != null &&
-                    recurrenceRulewithoutEnd != null) {
+                if (recurrencePattenEnd != null &&
+                    recurrencePattenWithoutEnd != null) {
                   recurrenceRule =
-                      '$recurrenceRulewithoutEnd;$recurrenceRuleEndingDateText';
-                } else if (recurrenceRulewithoutEnd != null &&
-                    recurrenceRuleEndingDateText == null) {
-                  recurrenceRule = recurrenceRulewithoutEnd;
+                      '$recurrencePattenWithoutEnd;$recurrencePattenEnd';
+                } else if (recurrencePattenWithoutEnd != null &&
+                    recurrencePattenEnd == null) {
+                  recurrenceRule = recurrencePattenWithoutEnd;
                 }
               });
               context.read<AddEventCubit>().addEvent(
-                    newEvent,
+                    eventName,
                     notes,
                     widget.eventStartTime,
                     widget.eventEndTime,
@@ -446,7 +423,30 @@ class _AddEventState extends State<AddEventPage> {
             },
       child: Text(
         'Add',
-        style: TextStyle(color: newEvent.isEmpty ? appGrey : Color(colorValue)),
+        style:
+            TextStyle(color: eventName.isEmpty ? appGrey : Color(colorValue)),
+      ),
+    );
+  }
+}
+
+class ClosePage extends StatelessWidget {
+  const ClosePage({
+    super.key,
+    required this.colorValue,
+  });
+
+  final int colorValue;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+      child: Text(
+        'Close',
+        style: TextStyle(color: Color(colorValue)),
       ),
     );
   }

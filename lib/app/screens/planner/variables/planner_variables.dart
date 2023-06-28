@@ -18,3 +18,4 @@ final List<String> byWeekDayValue = [
   'FREQ=WEEKLY;BYDAY=SA',
   'FREQ=WEEKLY;BYDAY=SU'
 ];
+List<int> intDropdownList = [for (int i = 1; i <= 100; i++) i];

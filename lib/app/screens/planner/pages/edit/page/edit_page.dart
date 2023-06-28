@@ -1,7 +1,6 @@
 // ignore_for_file: must_be_immutable
 
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
@@ -21,8 +20,9 @@ class EditEventPage extends StatefulWidget {
     required this.id,
     required this.dropdownValue,
     required this.colorValue,
-    required this.recurrenceRuleWithoutEnd,
+    required this.recurrencePatternWithoutEnd,
     required this.recurrenceRuleEnding,
+    required this.recurrenceRule,
     required this.displayRecurrenceRuleEndDate,
     required this.frequency,
     required this.dropdownInt,
@@ -34,30 +34,25 @@ class EditEventPage extends StatefulWidget {
     required this.notes,
   });
 
-  final String eventName;
-  String id,
-      dropdownValue,
-      recurrenceRuleWithoutEnd,
-      displayRecurrenceRuleEndDate;
-
+  final String eventName, id;
+  String dropdownValue, displayRecurrenceRuleEndDate;
   int dropdownInt, colorValue;
   DateTime eventStartTime, eventEndTime;
   bool isAllDay, isRecurring;
   List<bool> recurrenceType;
-  String? notes, frequency, recurrenceRuleEnding;
+  String? notes,
+      frequency,
+      recurrencePatternWithoutEnd,
+      recurrenceRuleEnding,
+      recurrenceRule;
 
   @override
   State<EditEventPage> createState() => _EditEventPageState();
 }
 
 class _EditEventPageState extends State<EditEventPage> {
-  final space = const SizedBox(height: 15);
-  List<int> intDropdownList = [for (int i = 1; i <= 100; i++) i];
-  String? recurrenceRule, recurrenceRuleEndingText;
-
   @override
   Widget build(BuildContext context) {
-    final colorValue = widget.colorValue;
     final recurrenceRulePattern = [
       {
         'frequency': 'Yearly',
@@ -72,7 +67,8 @@ class _EditEventPageState extends State<EditEventPage> {
       {},
       {'frequency': 'Daily', 'rule': 'FREQ=DAILY'},
     ];
-    return BlocListener<EditEventCubit, EditEventState>(
+
+    return BlocConsumer<EditEventCubit, EditEventState>(
       listener: (context, state) {
         if (state.status == Status.updated) {
           Navigator.of(context)
@@ -83,51 +79,57 @@ class _EditEventPageState extends State<EditEventPage> {
               .showSnackBar(SnackBar(content: Text(state.errorMessage!)));
         }
       },
-      child: Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.only(
-            right: 50,
-            left: 50,
-            top: 80,
+      builder: (context, state) {
+        return Scaffold(
+          body: Padding(
+            padding: const EdgeInsets.only(right: 50, left: 50, top: 80),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                        child: TextField(
+                      textAlign: TextAlign.center,
+                      decoration: InputDecoration(
+                        hintText: widget.eventName,
+                      ),
+                      readOnly: true,
+                    )),
+                    editColor()
+                  ],
+                ),
+                space,
+                isEventAllDay(),
+                space,
+                widget.isAllDay ? space : editEventDateTime(context),
+                isEventRecurring(recurrenceRulePattern),
+                widget.isRecurring
+                    ? editRecurrenceRule(context, recurrenceRulePattern)
+                    : space,
+                editNotes(),
+              ],
+            ),
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                      child: TextField(
-                    textAlign: TextAlign.center,
-                    decoration: InputDecoration(
-                      hintText: widget.eventName,
-                    ),
-                    readOnly: true,
-                  )),
-                  editColor()
-                ],
-              ),
-              space,
-              isEventAllDay(),
-              space,
-              editEventDateTime(context),
-              space,
-              isEventRecurring(recurrenceRulePattern),
-              space,
-              widget.isRecurring
-                  ? editRecurrenceRule(context, recurrenceRulePattern)
-                  : space,
-              editNotes(),
-            ],
+          bottomSheet: Padding(
+            padding: const EdgeInsets.only(bottom: 30, right: 15, left: 15),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: ((context) => const MyApp())));
+                  },
+                  child: Text('Close',
+                      style: TextStyle(color: Color(widget.colorValue))),
+                ),
+                saveChanges(context),
+              ],
+            ),
           ),
-        ),
-        bottomSheet: Padding(
-          padding: const EdgeInsets.only(bottom: 30, right: 15, left: 15),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [closePage(context), saveChanges(context, colorValue)],
-          ),
-        ),
-      ),
+        );
+      },
     );
   }
 
@@ -160,8 +162,10 @@ class _EditEventPageState extends State<EditEventPage> {
               );
             });
       },
-      icon: const Icon(Icons.color_lens),
-      color: Color(widget.colorValue),
+      icon: Icon(
+        Icons.color_lens,
+        color: Color(widget.colorValue),
+      ),
     );
   }
 
@@ -241,13 +245,13 @@ class _EditEventPageState extends State<EditEventPage> {
               });
               if (value == true) {
                 setState(() {
-                  widget.recurrenceRuleWithoutEnd =
+                  widget.recurrencePatternWithoutEnd =
                       recurrenceRulePattern[1]['rule'];
                   widget.frequency = recurrenceRulePattern[1]['frequency'];
                 });
               } else {
                 setState(() {
-                  widget.recurrenceRuleWithoutEnd = '';
+                  widget.recurrencePatternWithoutEnd = '';
                   widget.frequency = '';
                 });
               }
@@ -256,7 +260,10 @@ class _EditEventPageState extends State<EditEventPage> {
     );
   }
 
-  Column editRecurrenceRule(BuildContext context, recurrenceRulePattern) {
+  Column editRecurrenceRule(
+    BuildContext context,
+    recurrenceRulePattern,
+  ) {
     return Column(
       children: [
         Padding(
@@ -285,13 +292,13 @@ class _EditEventPageState extends State<EditEventPage> {
                 for (int i = 1; i < byWeekDayValue.length; i++) {
                   if (widget.eventStartTime.weekday == i) {
                     setState(() {
-                      widget.recurrenceRuleWithoutEnd = byWeekDayValue[i];
+                      widget.recurrencePatternWithoutEnd = byWeekDayValue[i];
                     });
                   }
                 }
               } else {
                 setState(() {
-                  widget.recurrenceRuleWithoutEnd =
+                  widget.recurrencePatternWithoutEnd =
                       recurrenceRulePattern[newIndex]['rule'];
                   widget.frequency =
                       recurrenceRulePattern[newIndex]['frequency'];
@@ -353,7 +360,7 @@ class _EditEventPageState extends State<EditEventPage> {
                           if (intValue != null) {
                             setState(() {
                               widget.dropdownInt = intValue;
-                              recurrenceRuleEndingText = 'COUNT=$intValue';
+                              widget.recurrenceRuleEnding = 'COUNT=$intValue';
                             });
                           }
                         }),
@@ -367,12 +374,13 @@ class _EditEventPageState extends State<EditEventPage> {
                     onPressed: () {
                       DatePicker.showDatePicker(
                         context,
+                        currentTime: DateTime.now(),
                         onConfirm: (time) {
                           setState(() {
                             widget.displayRecurrenceRuleEndDate =
                                 DateFormat('dd  MMMM yyyy').format(time);
-                            recurrenceRuleEndingText =
-                                'UNTIL=${DateFormat('yyyyMMddTHHmmss').format(time)}Z';
+                            widget.recurrenceRuleEnding =
+                                'UNTIL=${DateFormat('yyyyMMddTHHmmss').format(time)}';
                           });
                         },
                       );
@@ -399,34 +407,38 @@ class _EditEventPageState extends State<EditEventPage> {
     );
   }
 
-  TextButton closePage(BuildContext context) {
+  TextButton saveChanges(
+    BuildContext context,
+  ) {
     return TextButton(
       onPressed: () {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: ((context) => const MyApp())));
-      },
-      child: Text(
-        'Close',
-        style: TextStyle(color: Color(widget.colorValue)),
-      ),
-    );
-  }
-
-  TextButton saveChanges(BuildContext context, int colorValue) {
-    return TextButton(
-      onPressed: () {
+        setState(() {
+          if (widget.recurrencePatternWithoutEnd != null &&
+              widget.recurrenceRuleEnding != null) {
+            if (widget.recurrenceRuleEnding!.contains('COUNT')) {
+              widget.recurrenceRule =
+                  '${widget.recurrencePatternWithoutEnd};${widget.recurrenceRuleEnding}';
+            }
+            if (widget.recurrenceRuleEnding!.contains('UNTIL')) {
+              widget.recurrenceRule =
+                  '${widget.recurrencePatternWithoutEnd};${widget.recurrenceRuleEnding}Z';
+            }
+          } else if (widget.recurrencePatternWithoutEnd != null &&
+              widget.recurrenceRuleEnding == null) {
+            widget.recurrenceRule = widget.recurrencePatternWithoutEnd;
+          }
+        });
         context.read<EditEventCubit>().updateEvent(
               id: widget.id,
               eventName: widget.eventName,
               notes: widget.notes,
-              recurrenceRule: (widget.recurrenceRuleWithoutEnd != '')
-                  ? '${widget.recurrenceRuleWithoutEnd};$recurrenceRuleEndingText'
-                  : recurrenceRule = widget.recurrenceRuleWithoutEnd,
+              recurrenceRule: widget.recurrenceRule,
               frequency: widget.frequency,
               startTime: widget.eventStartTime,
               endTime: widget.eventEndTime,
               isAllDay: widget.isAllDay,
-              colorValue: colorValue,
+              colorValue: widget.colorValue,
+              recurrenceRuleEnding: widget.recurrenceRuleEnding,
             );
       },
       child: Text(

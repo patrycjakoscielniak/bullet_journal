@@ -16,7 +16,7 @@ class EventDetailsPage extends StatelessWidget {
     required this.dateText,
     required this.dropdownValue,
     required this.colorValue,
-    required this.recurrenceRuleWithoutEnd,
+    required this.recurrencePatternWithoutEnd,
     required this.recurrenceRule,
     required this.recurrenceRuleEnding,
     required this.displayRecurrenceRuleEndDate,
@@ -35,13 +35,16 @@ class EventDetailsPage extends StatelessWidget {
       timeDetails,
       dateText,
       dropdownValue,
-      recurrenceRuleWithoutEnd,
       displayRecurrenceRuleEndDate;
   final int dropdownInt, colorValue;
   final DateTime startTime, endTime;
   final bool isAllDay, isRecurring;
   final List<bool> recurrenceType;
-  final String? notes, frequency, recurrenceRuleEnding, recurrenceRule;
+  final String? notes,
+      frequency,
+      recurrencePatternWithoutEnd,
+      recurrenceRuleEnding,
+      recurrenceRule;
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +90,9 @@ class EventDetailsPage extends StatelessWidget {
                           isRecurring: isRecurring,
                           dropdownValue: dropdownValue,
                           dropdownInt: dropdownInt,
-                          recurrenceRuleWithoutEnd: recurrenceRuleWithoutEnd,
+                          recurrencePatternWithoutEnd:
+                              recurrencePatternWithoutEnd,
+                          recurrenceRule: recurrenceRule,
                           displayRecurrenceRuleEndDate:
                               displayRecurrenceRuleEndDate,
                           frequency: frequency,
