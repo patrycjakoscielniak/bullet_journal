@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:injectable/injectable.dart';
 
+@injectable
 class HolidaysRemoteDioDataSource {
   Future<List<Map<String, dynamic>>?> getHolidays() async {
     final response = await Dio().get<List<dynamic>>(

@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 import 'package:my_bullet_journal/repositories/planner_repository.dart';
 
@@ -6,6 +7,7 @@ import '../../../../../core/enums.dart';
 
 part 'edit_event_state.dart';
 
+@injectable
 class EditEventCubit extends Cubit<EditEventState> {
   EditEventCubit(this._plannerRepository) : super(const EditEventState());
 

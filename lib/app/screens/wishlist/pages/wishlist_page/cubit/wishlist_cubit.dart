@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 import '../../../../../../repositories/wishlist_repository.dart';
 import '../../../../../../models/wishlist_item_model.dart';
 import '../../../../../core/enums.dart';
 part 'wishlist_state.dart';
 
+@injectable
 class WishlistCubit extends Cubit<WishlistState> {
   WishlistCubit(this._wishlistRepository) : super(const WishlistState());
 

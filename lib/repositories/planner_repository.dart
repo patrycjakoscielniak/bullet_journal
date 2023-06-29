@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:injectable/injectable.dart';
 import 'package:my_bullet_journal/app/data/planner_remote_data_source.dart';
 import 'package:my_bullet_journal/models/planner_item_model.dart';
 
+@injectable
 class PlannerRepository {
   PlannerRepository({required this.remoteDataSource});
 

@@ -3,11 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:my_bullet_journal/app/core/global_variables.dart';
-import 'package:my_bullet_journal/app/data/planner_remote_data_source.dart';
+import 'package:my_bullet_journal/app/core/injection_container.dart';
 import 'package:my_bullet_journal/app/screens/planner/pages/add/page/add_event_page.dart';
 import 'package:my_bullet_journal/app/screens/planner/pages/details/page/event_details_page.dart';
 import 'package:my_bullet_journal/models/planner_item_model.dart';
-import 'package:my_bullet_journal/repositories/planner_repository.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../cubit/planner_cubit.dart';
 import '../features/calendar_data_source.dart';
@@ -39,9 +38,9 @@ class _PlannerPageState extends State<PlannerPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => PlannerCubit(
-          PlannerRepository(remoteDataSource: HolidaysRemoteDioDataSource()))
-        ..start(),
+      create: (context) {
+        return getIt<PlannerCubit>()..start();
+      },
       child: BlocBuilder<PlannerCubit, PlannerState>(
         builder: (context, state) {
           plannerEvents = state.appointments;

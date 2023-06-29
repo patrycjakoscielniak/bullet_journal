@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:my_bullet_journal/app/core/injection_container.dart';
 import 'package:my_bullet_journal/app/screens/wishlist/pages/wishlist_page/features/edit_item.dart';
-import 'package:my_bullet_journal/repositories/wishlist_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../cubit/wishlist_cubit.dart';
@@ -15,7 +15,9 @@ class WishlistPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => WishlistCubit(WishlistRepository())..start(),
+      create: (context) {
+        return getIt<WishlistCubit>()..start();
+      },
       child: BlocBuilder<WishlistCubit, WishlistState>(
         builder: (context, state) {
           final itemModels = state.items;

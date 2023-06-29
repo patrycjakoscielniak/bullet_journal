@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_bullet_journal/repositories/wishlist_repository.dart';
-
 import '../../../../../core/enums.dart';
 import '../../../../../core/global_variables.dart';
 import '../cubit/add_page_cubit.dart';
@@ -24,32 +22,29 @@ class _AddItemPageState extends State<AddItemPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocProvider(
-        create: (context) => AddItemPageCubit(WishlistRepository()),
-        child: BlocConsumer<AddItemPageCubit, AddItemPageState>(
-          listener: (context, state) {
-            if (state.status == Status.error) {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text(state.errorMessage!),
-                duration: const Duration(seconds: 7),
-              ));
-            }
-          },
-          builder: (context, state) {
-            return Padding(
-              padding: const EdgeInsets.only(right: 10, left: 10, top: 20),
-              child: ListView(
-                children: [
-                  addItemName(),
-                  space,
-                  addImageUrlAddress(),
-                  space,
-                  addItemURLAddress(),
-                ],
-              ),
-            );
-          },
-        ),
+      body: BlocConsumer<AddItemPageCubit, AddItemPageState>(
+        listener: (context, state) {
+          if (state.status == Status.error) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(state.errorMessage!),
+              duration: const Duration(seconds: 7),
+            ));
+          }
+        },
+        builder: (context, state) {
+          return Padding(
+            padding: const EdgeInsets.only(right: 10, left: 10, top: 20),
+            child: ListView(
+              children: [
+                addItemName(),
+                space,
+                addImageUrlAddress(),
+                space,
+                addItemURLAddress(),
+              ],
+            ),
+          );
+        },
       ),
       bottomSheet: Padding(
         padding: const EdgeInsets.only(bottom: 30, right: 15, left: 15),

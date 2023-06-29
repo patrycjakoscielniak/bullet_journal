@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 import 'package:my_bullet_journal/app/core/enums.dart';
 import 'package:my_bullet_journal/repositories/vision_board_repository.dart';
@@ -10,6 +11,7 @@ import '../../../../models/vision_board_model.dart';
 
 part 'vision_board_state.dart';
 
+@injectable
 class VisionBoardCubit extends Cubit<VisionBoardState> {
   VisionBoardCubit(this._visionBoardRepository)
       : super(const VisionBoardState(items: []));

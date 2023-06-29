@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_bullet_journal/app/core/enums.dart';
+import 'package:my_bullet_journal/app/core/injection_container.dart';
 import 'package:my_bullet_journal/app/screens/vision_board/cubit/vision_board_cubit.dart';
 import 'package:my_bullet_journal/models/vision_board_model.dart';
-import 'package:my_bullet_journal/repositories/vision_board_repository.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_tile.dart';
 import 'package:image_picker/image_picker.dart';
@@ -47,7 +47,9 @@ class _VisionBoardPageState extends State<VisionBoardPage> {
     }
 
     return BlocProvider(
-      create: (context) => VisionBoardCubit(VisionBoardRepository())..start(),
+      create: (context) {
+        return getIt<VisionBoardCubit>()..start();
+      },
       child: BlocConsumer<VisionBoardCubit, VisionBoardState>(
         listener: (context, state) {
           if (state.status == Status.error) {
