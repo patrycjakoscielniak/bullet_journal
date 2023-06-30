@@ -1,8 +1,9 @@
 part of 'edit_event_cubit.dart';
 
-@immutable
-class EditEventState {
-  const EditEventState({this.errorMessage, this.status = Status.success});
-  final String? errorMessage;
-  final Status status;
+@freezed
+class EditEventState with _$EditEventState {
+  factory EditEventState({
+    @Default(Status.initial) Status status,
+    String? errorMessage,
+  }) = _EditEventState;
 }

@@ -7,6 +7,7 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:intl/intl.dart';
 import 'package:my_bullet_journal/app/app.dart';
+import 'package:my_bullet_journal/app/core/enums.dart';
 import 'package:my_bullet_journal/app/screens/planner/pages/add/cubit/add_event_cubit.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 import '../../../../../core/global_variables.dart';
@@ -59,13 +60,13 @@ class _AddEventState extends State<AddEventPage> {
     ];
     return BlocConsumer<AddEventCubit, AddEventState>(
       listener: (context, state) {
-        if (state.isSaved) {
+        if (state.status == Status.saved) {
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (context) => const MyApp()));
         }
-        if (state.errorMessage.isNotEmpty) {
+        if (state.status == Status.error) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(state.errorMessage),
+            content: Text(state.errorMessage!),
             duration: const Duration(seconds: 7),
           ));
         }

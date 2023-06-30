@@ -1,15 +1,16 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
-import 'package:meta/meta.dart';
 import 'package:my_bullet_journal/repositories/planner_repository.dart';
 
 import '../../../../../core/enums.dart';
 
 part 'edit_event_state.dart';
+part 'edit_event_cubit.freezed.dart';
 
 @injectable
 class EditEventCubit extends Cubit<EditEventState> {
-  EditEventCubit(this._plannerRepository) : super(const EditEventState());
+  EditEventCubit(this._plannerRepository) : super(EditEventState());
 
   final PlannerRepository _plannerRepository;
 
@@ -37,7 +38,7 @@ class EditEventCubit extends Cubit<EditEventState> {
           endTime: endTime,
           isAllDay: isAllDay,
           colorValue: colorValue);
-      emit(const EditEventState(status: Status.updated));
+      emit(EditEventState(status: Status.updated));
     } catch (error) {
       emit(EditEventState(
         status: Status.error,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_bullet_journal/app/app.dart';
 import '../../../../../core/global_variables.dart';
-import '../cubit/details_page_cubit.dart';
+import '../cubit/event_details_cubit.dart';
 
 class DeleteEventDialog extends StatelessWidget {
   const DeleteEventDialog({
@@ -54,7 +54,7 @@ class DeleteEventDialog extends StatelessWidget {
                                   TextButton(
                                       onPressed: () {
                                         context
-                                            .read<DetailsPageCubit>()
+                                            .read<EventDetailsCubit>()
                                             .deleteEvent(documentID: id);
                                         Navigator.of(context).push(
                                             MaterialPageRoute(

@@ -1,20 +1,19 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
-import 'package:meta/meta.dart';
 import 'package:my_bullet_journal/app/core/enums.dart';
 import 'package:my_bullet_journal/repositories/vision_board_repository.dart';
-
 import '../../../../models/vision_board_model.dart';
 
 part 'vision_board_state.dart';
+part 'vision_board_cubit.freezed.dart';
 
 @injectable
 class VisionBoardCubit extends Cubit<VisionBoardState> {
-  VisionBoardCubit(this._visionBoardRepository)
-      : super(const VisionBoardState(items: []));
+  VisionBoardCubit(this._visionBoardRepository) : super(VisionBoardState());
 
   final VisionBoardRepository _visionBoardRepository;
 
@@ -23,15 +22,13 @@ class VisionBoardCubit extends Cubit<VisionBoardState> {
   Future<void> addImage(XFile image) async {
     try {
       _visionBoardRepository.uploadImage(image);
-      emit(const VisionBoardState(
+      emit(VisionBoardState(
         status: Status.saved,
-        items: [],
       ));
     } catch (error) {
       emit(VisionBoardState(
         errorMessage: error.toString(),
         status: Status.error,
-        items: const [],
       ));
     }
   }
@@ -39,13 +36,11 @@ class VisionBoardCubit extends Cubit<VisionBoardState> {
   Future<void> deleteImage({required String url, required String docId}) async {
     try {
       await _visionBoardRepository.deleteImage(url: url, id: docId);
-      emit(const VisionBoardState(
-        items: [],
+      emit(VisionBoardState(
         status: Status.deleted,
       ));
     } catch (error) {
       emit(VisionBoardState(
-        items: const [],
         errorMessage: error.toString(),
         status: Status.error,
       ));
@@ -53,9 +48,8 @@ class VisionBoardCubit extends Cubit<VisionBoardState> {
   }
 
   Future<void> start() async {
-    emit(const VisionBoardState(
+    emit(VisionBoardState(
       status: Status.loading,
-      items: [],
     ));
 
     _streamSubscription =
@@ -69,7 +63,6 @@ class VisionBoardCubit extends Cubit<VisionBoardState> {
             emit(VisionBoardState(
               status: Status.error,
               errorMessage: error.toString(),
-              items: const [],
             ));
           });
   }

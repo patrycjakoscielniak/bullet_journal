@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../cubit/add_page_cubit.dart';
+import '../cubit/add_item_page_cubit.dart';
 
 class AddItem extends StatelessWidget {
   const AddItem({

@@ -3,12 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_bullet_journal/app/core/injection_container.dart';
 import 'package:my_bullet_journal/app/screens/planner/pages/add/cubit/add_event_cubit.dart';
-import 'package:my_bullet_journal/app/screens/planner/pages/details/cubit/details_page_cubit.dart';
+import 'package:my_bullet_journal/app/screens/planner/pages/details/cubit/event_details_cubit.dart';
 import 'package:my_bullet_journal/app/screens/planner/pages/edit/cubit/edit_event_cubit.dart';
 import 'package:my_bullet_journal/app/screens/planner/pages/planner_page/cubit/planner_cubit.dart';
 import 'package:my_bullet_journal/app/screens/vision_board/cubit/vision_board_cubit.dart';
-import 'package:my_bullet_journal/app/screens/wishlist/pages/add_item_page/cubit/add_page_cubit.dart';
-import 'package:my_bullet_journal/app/screens/wishlist/pages/wishlist_page/cubit/wishlist_cubit.dart';
+import 'package:my_bullet_journal/app/screens/wishlist/pages/add_item_page/cubit/add_item_page_cubit.dart';
+import 'package:my_bullet_journal/app/screens/wishlist/pages/wishlist_page/cubit/wishlist_page_cubit.dart';
 import '../auth/auth_gate.dart';
 import 'core/global_variables.dart';
 
@@ -21,10 +21,10 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => getIt<PlannerCubit>()),
         BlocProvider(create: (context) => getIt<EditEventCubit>()),
-        BlocProvider(create: (context) => getIt<DetailsPageCubit>()),
+        BlocProvider(create: (context) => getIt<EventDetailsCubit>()),
         BlocProvider(create: (context) => getIt<AddEventCubit>()),
         BlocProvider(create: (context) => getIt<VisionBoardCubit>()),
-        BlocProvider(create: (context) => getIt<WishlistCubit>()),
+        BlocProvider(create: (context) => getIt<WishlistPageCubit>()),
         BlocProvider(create: (context) => getIt<AddItemPageCubit>())
       ],
       child: MaterialApp(

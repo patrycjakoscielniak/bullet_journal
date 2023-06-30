@@ -1,24 +1,24 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
-import 'package:meta/meta.dart';
 import 'package:my_bullet_journal/repositories/planner_repository.dart';
-
 import '../../../../../core/enums.dart';
 
-part 'details_page_state.dart';
+part 'event_details_state.dart';
+part 'event_details_cubit.freezed.dart';
 
 @injectable
-class DetailsPageCubit extends Cubit<DetailsPageState> {
-  DetailsPageCubit(this._plannerRepository) : super(const DetailsPageState());
+class EventDetailsCubit extends Cubit<EventDetailsState> {
+  EventDetailsCubit(this._plannerRepository) : super(EventDetailsState());
 
   final PlannerRepository _plannerRepository;
 
   Future<void> deleteEvent({required String documentID}) async {
     try {
       await _plannerRepository.delete(id: documentID);
-      emit(const DetailsPageState(status: Status.deleted));
+      emit(EventDetailsState(status: Status.deleted));
     } catch (error) {
-      emit(DetailsPageState(
+      emit(EventDetailsState(
         errorMessage: error.toString(),
         status: Status.error,
       ));

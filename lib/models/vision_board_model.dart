@@ -1,12 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class VisionBoardModel {
-  VisionBoardModel({
-    required this.image,
-    required this.id,
-    required this.onCreated,
-  });
-  final String image;
-  final String id;
-  final Timestamp? onCreated;
+part 'vision_board_model.freezed.dart';
+
+@freezed
+class VisionBoardModel with _$VisionBoardModel {
+  const factory VisionBoardModel({
+    required String image,
+    required String id,
+    Timestamp? onCreated,
+  }) = _VisionBoardModel;
 }

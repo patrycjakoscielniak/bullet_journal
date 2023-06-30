@@ -1,13 +1,10 @@
 part of 'planner_cubit.dart';
 
-@immutable
-class PlannerState {
-  const PlannerState({
-    this.appointments = const [],
-    this.errorMessage,
-    this.status = Status.initial,
-  });
-  final List<PlannerModel> appointments;
-  final String? errorMessage;
-  final Status status;
+@freezed
+class PlannerState with _$PlannerState {
+  factory PlannerState({
+    @Default([]) List<PlannerModel> appointments,
+    @Default(Status.initial) Status status,
+    String? errorMessage,
+  }) = _PlannerState;
 }

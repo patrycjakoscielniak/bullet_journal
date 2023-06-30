@@ -1,15 +1,15 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
-import 'package:meta/meta.dart';
-
 import '../../../../../../repositories/wishlist_repository.dart';
 import '../../../../../core/enums.dart';
 
-part 'add_page_state.dart';
+part 'add_item_page_state.dart';
+part 'add_item_page_cubit.freezed.dart';
 
 @injectable
 class AddItemPageCubit extends Cubit<AddItemPageState> {
-  AddItemPageCubit(this._wishlistRepository) : super(const AddItemPageState());
+  AddItemPageCubit(this._wishlistRepository) : super(AddItemPageState());
 
   final WishlistRepository _wishlistRepository;
 
@@ -20,7 +20,7 @@ class AddItemPageCubit extends Cubit<AddItemPageState> {
   ) async {
     try {
       await _wishlistRepository.add(name, imageURL, itemURL);
-      emit(const AddItemPageState(
+      emit(AddItemPageState(
         status: Status.saved,
       ));
     } catch (error) {

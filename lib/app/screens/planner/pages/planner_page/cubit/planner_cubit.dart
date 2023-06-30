@@ -1,24 +1,25 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
-import 'package:meta/meta.dart';
 import 'package:my_bullet_journal/models/planner_item_model.dart';
 import 'package:my_bullet_journal/repositories/planner_repository.dart';
 import '../../../../../core/enums.dart';
 
 part 'planner_state.dart';
+part 'planner_cubit.freezed.dart';
 
 @injectable
 class PlannerCubit extends Cubit<PlannerState> {
-  PlannerCubit(this._plannerRepository) : super(const PlannerState());
+  PlannerCubit(this._plannerRepository) : super(PlannerState());
 
   final PlannerRepository _plannerRepository;
 
   StreamSubscription? _streamSubscription;
 
   Future<void> start() async {
-    emit(const PlannerState(status: Status.loading));
+    emit(PlannerState(status: Status.loading));
 
     _streamSubscription = _plannerRepository
         .getAppointments()

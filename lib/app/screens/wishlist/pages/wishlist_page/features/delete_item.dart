@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../../models/wishlist_item_model.dart';
 import '../../../../../core/global_variables.dart';
-import '../cubit/wishlist_cubit.dart';
+import '../cubit/wishlist_page_cubit.dart';
 
 class DeleteItem extends StatelessWidget {
   const DeleteItem({
@@ -50,7 +50,7 @@ class DeleteItem extends StatelessWidget {
                               TextButton(
                                   onPressed: () {
                                     context
-                                        .read<WishlistCubit>()
+                                        .read<WishlistPageCubit>()
                                         .deleteItem(documentID: itemModel.id);
                                     Navigator.of(context).pop();
                                   },

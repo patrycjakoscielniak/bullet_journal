@@ -1,14 +1,15 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
-import 'package:meta/meta.dart';
 import 'package:my_bullet_journal/repositories/planner_repository.dart';
+import '../../../../../core/enums.dart';
 
 part 'add_event_state.dart';
+part 'add_event_cubit.freezed.dart';
 
 @injectable
 class AddEventCubit extends Cubit<AddEventState> {
-  AddEventCubit(this._plannerRepository) : super(const AddEventState());
+  AddEventCubit(this._plannerRepository) : super(AddEventState());
 
   final PlannerRepository _plannerRepository;
 
@@ -35,9 +36,12 @@ class AddEventCubit extends Cubit<AddEventState> {
         frequency,
         recurrenceRuleEnding,
       );
-      emit(const AddEventState(isSaved: true));
+      emit(AddEventState(status: Status.saved));
     } catch (error) {
-      emit(AddEventState(errorMessage: error.toString()));
+      emit(AddEventState(
+        status: Status.error,
+        errorMessage: error.toString(),
+      ));
     }
   }
 }

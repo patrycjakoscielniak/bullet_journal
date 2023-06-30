@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../core/enums.dart';
 import '../../../../../core/global_variables.dart';
-import '../cubit/add_page_cubit.dart';
+import '../cubit/add_item_page_cubit.dart';
 import '../features/add_item.dart';
 
 class AddItemPage extends StatefulWidget {

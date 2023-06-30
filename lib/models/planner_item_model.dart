@@ -1,28 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class PlannerModel {
-  PlannerModel({
-    this.notes,
-    required this.startTime,
-    required this.endTime,
-    required this.eventName,
-    required this.id,
-    required this.isAllDay,
-    required this.colorValue,
-    this.recurrenceRule,
-    this.recurrenceRuleEnding,
-    this.frequency,
-  });
-  final bool isAllDay;
-  final String? notes;
-  final String id;
-  final Timestamp startTime;
-  final Timestamp endTime;
-  final String eventName;
-  final int colorValue;
-  final String? recurrenceRule;
-  final String? frequency;
-  final String? recurrenceRuleEnding;
+part 'planner_item_model.freezed.dart';
+
+@freezed
+class PlannerModel with _$PlannerModel {
+  const PlannerModel._();
+  factory PlannerModel({
+    required String eventName,
+    required String id,
+    required Timestamp startTime,
+    required Timestamp endTime,
+    required bool isAllDay,
+    required int colorValue,
+    String? notes,
+    String? recurrenceRule,
+    String? frequency,
+    String? recurrenceRuleEnding,
+  }) = _PlannerModel;
 
   DateTime get start {
     return startTime.toDate();

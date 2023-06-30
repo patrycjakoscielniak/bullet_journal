@@ -3,7 +3,7 @@ import 'package:my_bullet_journal/app/core/injection_container.dart';
 import 'package:my_bullet_journal/app/screens/wishlist/pages/wishlist_page/features/edit_item.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../cubit/wishlist_cubit.dart';
+import '../cubit/wishlist_page_cubit.dart';
 import '../features/add_item_button.dart';
 import '../features/delete_item.dart';
 
@@ -16,9 +16,9 @@ class WishlistPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) {
-        return getIt<WishlistCubit>()..start();
+        return getIt<WishlistPageCubit>()..start();
       },
-      child: BlocBuilder<WishlistCubit, WishlistState>(
+      child: BlocBuilder<WishlistPageCubit, WishlistPageState>(
         builder: (context, state) {
           final itemModels = state.items;
           return Scaffold(

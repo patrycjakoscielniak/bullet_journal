@@ -15,17 +15,17 @@ import 'package:my_bullet_journal/app/data/planner_remote_data_source.dart'
     as _i3;
 import 'package:my_bullet_journal/app/screens/planner/pages/add/cubit/add_event_cubit.dart'
     as _i7;
-import 'package:my_bullet_journal/app/screens/planner/pages/details/cubit/details_page_cubit.dart'
-    as _i9;
-import 'package:my_bullet_journal/app/screens/planner/pages/edit/cubit/edit_event_cubit.dart'
+import 'package:my_bullet_journal/app/screens/planner/pages/details/cubit/event_details_cubit.dart'
     as _i10;
+import 'package:my_bullet_journal/app/screens/planner/pages/edit/cubit/edit_event_cubit.dart'
+    as _i9;
 import 'package:my_bullet_journal/app/screens/planner/pages/planner_page/cubit/planner_cubit.dart'
     as _i11;
 import 'package:my_bullet_journal/app/screens/vision_board/cubit/vision_board_cubit.dart'
     as _i12;
-import 'package:my_bullet_journal/app/screens/wishlist/pages/add_item_page/cubit/add_page_cubit.dart'
+import 'package:my_bullet_journal/app/screens/wishlist/pages/add_item_page/cubit/add_item_page_cubit.dart'
     as _i8;
-import 'package:my_bullet_journal/app/screens/wishlist/pages/wishlist_page/cubit/wishlist_cubit.dart'
+import 'package:my_bullet_journal/app/screens/wishlist/pages/wishlist_page/cubit/wishlist_page_cubit.dart'
     as _i13;
 import 'package:my_bullet_journal/repositories/planner_repository.dart' as _i4;
 import 'package:my_bullet_journal/repositories/vision_board_repository.dart'
@@ -53,16 +53,16 @@ extension GetItInjectableX on _i1.GetIt {
         () => _i7.AddEventCubit(gh<_i4.PlannerRepository>()));
     gh.factory<_i8.AddItemPageCubit>(
         () => _i8.AddItemPageCubit(gh<_i6.WishlistRepository>()));
-    gh.factory<_i9.DetailsPageCubit>(
-        () => _i9.DetailsPageCubit(gh<_i4.PlannerRepository>()));
-    gh.factory<_i10.EditEventCubit>(
-        () => _i10.EditEventCubit(gh<_i4.PlannerRepository>()));
+    gh.factory<_i9.EditEventCubit>(
+        () => _i9.EditEventCubit(gh<_i4.PlannerRepository>()));
+    gh.factory<_i10.EventDetailsCubit>(
+        () => _i10.EventDetailsCubit(gh<_i4.PlannerRepository>()));
     gh.factory<_i11.PlannerCubit>(
         () => _i11.PlannerCubit(gh<_i4.PlannerRepository>()));
     gh.factory<_i12.VisionBoardCubit>(
         () => _i12.VisionBoardCubit(gh<_i5.VisionBoardRepository>()));
-    gh.factory<_i13.WishlistCubit>(
-        () => _i13.WishlistCubit(gh<_i6.WishlistRepository>()));
+    gh.factory<_i13.WishlistPageCubit>(
+        () => _i13.WishlistPageCubit(gh<_i6.WishlistRepository>()));
     return this;
   }
 }

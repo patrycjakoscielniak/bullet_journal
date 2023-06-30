@@ -1,13 +1,10 @@
 part of 'vision_board_cubit.dart';
 
-@immutable
-class VisionBoardState {
-  const VisionBoardState(
-      {required this.items,
-      this.errorMessage = '',
-      this.status = Status.initial});
-
-  final List<VisionBoardModel> items;
-  final String errorMessage;
-  final Status status;
+@freezed
+class VisionBoardState with _$VisionBoardState {
+  factory VisionBoardState({
+    @Default([]) List<VisionBoardModel> items,
+    @Default(Status.initial) Status status,
+    String? errorMessage,
+  }) = _VisionBoardState;
 }

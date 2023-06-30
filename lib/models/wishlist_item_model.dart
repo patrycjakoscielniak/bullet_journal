@@ -1,13 +1,13 @@
-class WishlistItemModel {
-  WishlistItemModel({
-    required this.id,
-    required this.name,
-    required this.imageURL,
-    required this.itemURL,
-  });
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  final String id;
-  final String name;
-  final String imageURL;
-  final String itemURL;
+part 'wishlist_item_model.freezed.dart';
+
+@freezed
+class WishlistItemModel with _$WishlistItemModel {
+  const factory WishlistItemModel({
+    required String id,
+    required String name,
+    required String imageURL,
+    required String itemURL,
+  }) = _WishlistItemModel;
 }

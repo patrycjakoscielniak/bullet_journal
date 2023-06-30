@@ -1,11 +1,9 @@
 part of 'add_event_cubit.dart';
 
-@immutable
-class AddEventState {
-  const AddEventState({
-    this.isSaved = false,
-    this.errorMessage = '',
-  });
-  final bool isSaved;
-  final String errorMessage;
+@freezed
+class AddEventState with _$AddEventState {
+  factory AddEventState({
+    @Default(Status.initial) Status status,
+    String? errorMessage,
+  }) = _AddEventState;
 }
