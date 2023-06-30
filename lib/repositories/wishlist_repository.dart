@@ -1,11 +1,16 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
 
 import '../models/wishlist_item_model.dart';
 
 @injectable
 class WishlistRepository {
+  final storageRef = FirebaseStorage.instance.ref().child('wishlist');
   final firebaseRef = FirebaseFirestore.instance
       .collection('users')
       .doc(FirebaseAuth.instance.currentUser?.uid)
@@ -18,7 +23,7 @@ class WishlistRepository {
           return WishlistItemModel(
             id: doc.id,
             name: doc.data()['name'],
-            imageURL: doc.data()['image_URL'],
+            imageURL: doc.data()['image'],
             itemURL: doc.data()['item_URL'],
           );
         },
@@ -26,19 +31,19 @@ class WishlistRepository {
     });
   }
 
-  Future<WishlistItemModel> get({required String id}) async {
-    final userID = FirebaseAuth.instance.currentUser?.uid;
-    if (userID == null) {
-      throw Exception('User is not logged in');
-    }
-    final doc = await firebaseRef.doc(id).get();
-    return WishlistItemModel(
-      id: doc.id,
-      name: doc['name'],
-      imageURL: doc['image_URL'],
-      itemURL: doc['item_URL'],
-    );
-  }
+  // Future<WishlistItemModel> get({required String id}) async {
+  //   final userID = FirebaseAuth.instance.currentUser?.uid;
+  //   if (userID == null) {
+  //     throw Exception('User is not logged in');
+  //   }
+  //   final doc = await firebaseRef.doc(id).get();
+  //   return WishlistItemModel(
+  //     id: doc.id,
+  //     name: doc['name'],
+  //     imageURL: doc['image_URL'],
+  //     itemURL: doc['item_URL'],
+  //   );
+  // }
 
   Future<void> add(
     String name,
@@ -48,10 +53,23 @@ class WishlistRepository {
     await firebaseRef.add(
       {
         'name': name,
-        'image_URL': imageURL,
+        'image': imageURL,
         'item_URL': itemURL,
       },
     );
+  }
+
+  Future<void> addItem(XFile image, String name, String itemURL) async {
+    Reference imageToUploadRef = storageRef.child(image.name);
+    UploadTask uploadTask = imageToUploadRef.putFile(File(image.path));
+    String imageUrl = await (await uploadTask).ref.getDownloadURL();
+    final dataToSend = {
+      'image': imageUrl,
+      'onCreated': DateTime.now(),
+      'name': name,
+      'item_URL': itemURL,
+    };
+    firebaseRef.add(dataToSend);
   }
 
   Future<void> update({required String id, required String itemURL}) async {

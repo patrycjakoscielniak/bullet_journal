@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../../../../core/enums.dart';
 import '../../../../../core/global_variables.dart';
 import '../cubit/add_item_page_cubit.dart';
@@ -18,6 +19,7 @@ class _AddItemPageState extends State<AddItemPage> {
   var itemName = '';
   var imageURL = '';
   var itemURL = '';
+  XFile? itemImage;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +38,21 @@ class _AddItemPageState extends State<AddItemPage> {
             padding: const EdgeInsets.only(right: 10, left: 10, top: 20),
             child: ListView(
               children: [
-                addItemName(),
+                Row(
+                  children: [
+                    Expanded(child: addItemName()),
+                    IconButton(
+                      onPressed: () async {
+                        XFile? file = await ImagePicker()
+                            .pickImage(source: ImageSource.gallery);
+                        setState(() {
+                          itemImage = file;
+                        });
+                      },
+                      icon: const Icon(Icons.add_a_photo_outlined),
+                    )
+                  ],
+                ),
                 space,
                 addImageUrlAddress(),
                 space,
@@ -59,7 +75,12 @@ class _AddItemPageState extends State<AddItemPage> {
                 'Close',
               ),
             ),
-            AddItem(itemName: itemName, imageURL: imageURL, itemURL: itemURL)
+            AddItem(
+              itemName: itemName,
+              imageURL: imageURL,
+              itemURL: itemURL,
+              itemImage: itemImage,
+            )
           ],
         ),
       ),
@@ -74,7 +95,7 @@ class _AddItemPageState extends State<AddItemPage> {
         });
       },
       textAlign: TextAlign.center,
-      decoration: const InputDecoration(hintText: 'New Item'),
+      decoration: const InputDecoration(hintText: 'Item Name'),
     );
   }
 

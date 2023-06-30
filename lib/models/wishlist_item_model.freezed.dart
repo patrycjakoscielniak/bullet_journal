@@ -20,6 +20,7 @@ mixin _$WishlistItemModel {
   String get name => throw _privateConstructorUsedError;
   String get imageURL => throw _privateConstructorUsedError;
   String get itemURL => throw _privateConstructorUsedError;
+  Timestamp? get onCreated => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $WishlistItemModelCopyWith<WishlistItemModel> get copyWith =>
@@ -32,7 +33,12 @@ abstract class $WishlistItemModelCopyWith<$Res> {
           WishlistItemModel value, $Res Function(WishlistItemModel) then) =
       _$WishlistItemModelCopyWithImpl<$Res, WishlistItemModel>;
   @useResult
-  $Res call({String id, String name, String imageURL, String itemURL});
+  $Res call(
+      {String id,
+      String name,
+      String imageURL,
+      String itemURL,
+      Timestamp? onCreated});
 }
 
 /// @nodoc
@@ -52,6 +58,7 @@ class _$WishlistItemModelCopyWithImpl<$Res, $Val extends WishlistItemModel>
     Object? name = null,
     Object? imageURL = null,
     Object? itemURL = null,
+    Object? onCreated = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -70,6 +77,10 @@ class _$WishlistItemModelCopyWithImpl<$Res, $Val extends WishlistItemModel>
           ? _value.itemURL
           : itemURL // ignore: cast_nullable_to_non_nullable
               as String,
+      onCreated: freezed == onCreated
+          ? _value.onCreated
+          : onCreated // ignore: cast_nullable_to_non_nullable
+              as Timestamp?,
     ) as $Val);
   }
 }
@@ -82,7 +93,12 @@ abstract class _$$_WishlistItemModelCopyWith<$Res>
       __$$_WishlistItemModelCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String name, String imageURL, String itemURL});
+  $Res call(
+      {String id,
+      String name,
+      String imageURL,
+      String itemURL,
+      Timestamp? onCreated});
 }
 
 /// @nodoc
@@ -100,6 +116,7 @@ class __$$_WishlistItemModelCopyWithImpl<$Res>
     Object? name = null,
     Object? imageURL = null,
     Object? itemURL = null,
+    Object? onCreated = freezed,
   }) {
     return _then(_$_WishlistItemModel(
       id: null == id
@@ -118,6 +135,10 @@ class __$$_WishlistItemModelCopyWithImpl<$Res>
           ? _value.itemURL
           : itemURL // ignore: cast_nullable_to_non_nullable
               as String,
+      onCreated: freezed == onCreated
+          ? _value.onCreated
+          : onCreated // ignore: cast_nullable_to_non_nullable
+              as Timestamp?,
     ));
   }
 }
@@ -129,7 +150,8 @@ class _$_WishlistItemModel implements _WishlistItemModel {
       {required this.id,
       required this.name,
       required this.imageURL,
-      required this.itemURL});
+      required this.itemURL,
+      this.onCreated});
 
   @override
   final String id;
@@ -139,10 +161,12 @@ class _$_WishlistItemModel implements _WishlistItemModel {
   final String imageURL;
   @override
   final String itemURL;
+  @override
+  final Timestamp? onCreated;
 
   @override
   String toString() {
-    return 'WishlistItemModel(id: $id, name: $name, imageURL: $imageURL, itemURL: $itemURL)';
+    return 'WishlistItemModel(id: $id, name: $name, imageURL: $imageURL, itemURL: $itemURL, onCreated: $onCreated)';
   }
 
   @override
@@ -154,11 +178,14 @@ class _$_WishlistItemModel implements _WishlistItemModel {
             (identical(other.name, name) || other.name == name) &&
             (identical(other.imageURL, imageURL) ||
                 other.imageURL == imageURL) &&
-            (identical(other.itemURL, itemURL) || other.itemURL == itemURL));
+            (identical(other.itemURL, itemURL) || other.itemURL == itemURL) &&
+            (identical(other.onCreated, onCreated) ||
+                other.onCreated == onCreated));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, imageURL, itemURL);
+  int get hashCode =>
+      Object.hash(runtimeType, id, name, imageURL, itemURL, onCreated);
 
   @JsonKey(ignore: true)
   @override
@@ -173,7 +200,8 @@ abstract class _WishlistItemModel implements WishlistItemModel {
       {required final String id,
       required final String name,
       required final String imageURL,
-      required final String itemURL}) = _$_WishlistItemModel;
+      required final String itemURL,
+      final Timestamp? onCreated}) = _$_WishlistItemModel;
 
   @override
   String get id;
@@ -183,6 +211,8 @@ abstract class _WishlistItemModel implements WishlistItemModel {
   String get imageURL;
   @override
   String get itemURL;
+  @override
+  Timestamp? get onCreated;
   @override
   @JsonKey(ignore: true)
   _$$_WishlistItemModelCopyWith<_$_WishlistItemModel> get copyWith =>
