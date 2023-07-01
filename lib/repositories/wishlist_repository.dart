@@ -31,20 +31,6 @@ class WishlistRepository {
     });
   }
 
-  // Future<WishlistItemModel> get({required String id}) async {
-  //   final userID = FirebaseAuth.instance.currentUser?.uid;
-  //   if (userID == null) {
-  //     throw Exception('User is not logged in');
-  //   }
-  //   final doc = await firebaseRef.doc(id).get();
-  //   return WishlistItemModel(
-  //     id: doc.id,
-  //     name: doc['name'],
-  //     imageURL: doc['image_URL'],
-  //     itemURL: doc['item_URL'],
-  //   );
-  // }
-
   Future<void> add(
     String name,
     String imageURL,
@@ -76,7 +62,11 @@ class WishlistRepository {
     return firebaseRef.doc(id).update({'item_URL': itemURL});
   }
 
-  Future<void> delete({required String id}) async {
+  Future<void> deleteFromFirebase({required String id}) async {
     return firebaseRef.doc(id).delete();
+  }
+
+  Future<void> deleteFromStorage({required String url}) async {
+    FirebaseStorage.instance.refFromURL(url).delete();
   }
 }

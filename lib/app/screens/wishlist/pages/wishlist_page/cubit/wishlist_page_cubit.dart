@@ -31,9 +31,27 @@ class WishlistPageCubit extends Cubit<WishlistPageState> {
     }
   }
 
-  Future<void> deleteItem({required String documentID}) async {
+  Future<void> deleteItemFromFirebase({
+    required String documentID,
+  }) async {
     try {
-      _wishlistRepository.delete(id: documentID);
+      _wishlistRepository.deleteFromFirebase(id: documentID);
+      emit(WishlistPageState(
+        status: Status.deleted,
+      ));
+    } catch (error) {
+      emit(WishlistPageState(
+        status: Status.error,
+        errorMessage: error.toString(),
+      ));
+    }
+  }
+
+  Future<void> deleteItemFromStorage({
+    required String url,
+  }) async {
+    try {
+      _wishlistRepository.deleteFromStorage(url: url);
       emit(WishlistPageState(
         status: Status.deleted,
       ));

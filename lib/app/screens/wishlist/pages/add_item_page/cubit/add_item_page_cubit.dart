@@ -14,7 +14,7 @@ class AddItemPageCubit extends Cubit<AddItemPageState> {
 
   final WishlistRepository _wishlistRepository;
 
-  Future<void> addItem(
+  Future<void> addItemwithImageURL(
     String name,
     String imageURL,
     String itemURL,
@@ -32,7 +32,8 @@ class AddItemPageCubit extends Cubit<AddItemPageState> {
     }
   }
 
-  Future<void> add(XFile image, String name, String itemURL) async {
+  Future<void> addItemWithGalleryImage(
+      XFile image, String name, String itemURL) async {
     try {
       await _wishlistRepository.addItem(image, name, itemURL);
       emit(AddItemPageState(status: Status.saved));

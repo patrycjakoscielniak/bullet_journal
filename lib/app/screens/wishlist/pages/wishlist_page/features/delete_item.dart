@@ -49,9 +49,18 @@ class DeleteItem extends StatelessWidget {
                               ),
                               TextButton(
                                   onPressed: () {
+                                    if (itemModel.itemURL
+                                        .contains('firebasestorage')) {
+                                      context
+                                          .read<WishlistPageCubit>()
+                                          .deleteItemFromStorage(
+                                              url: itemModel.itemURL);
+                                    }
                                     context
                                         .read<WishlistPageCubit>()
-                                        .deleteItem(documentID: itemModel.id);
+                                        .deleteItemFromFirebase(
+                                          documentID: itemModel.id,
+                                        );
                                     Navigator.of(context).pop();
                                   },
                                   child: const Text(

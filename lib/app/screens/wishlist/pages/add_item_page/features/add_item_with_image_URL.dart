@@ -4,37 +4,29 @@ import 'package:image_picker/image_picker.dart';
 
 import '../cubit/add_item_page_cubit.dart';
 
-class AddItem extends StatelessWidget {
-  const AddItem({
+class AddItemWithImageURL extends StatelessWidget {
+  const AddItemWithImageURL({
     super.key,
     required this.itemName,
     required this.imageURL,
     required this.itemURL,
-    required this.itemImage,
   });
 
   final String itemName;
   final String imageURL;
   final String itemURL;
-  final XFile? itemImage;
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: itemName.isEmpty || itemImage == null
+      onPressed: itemName.isEmpty || imageURL.isEmpty
           ? null
           : () {
-              if (itemImage != null) {
-                context
-                    .read<AddItemPageCubit>()
-                    .add(itemImage!, itemName, itemURL);
-              }
-
-              // context.read<AddItemPageCubit>().addItem(
-              //       itemName,
-              //       imageURL,
-              //       itemURL,
-              //     );
+              context.read<AddItemPageCubit>().addItemwithImageURL(
+                    itemName,
+                    imageURL,
+                    itemURL,
+                  );
               Navigator.of(context).pop();
             },
       child: const Text(
