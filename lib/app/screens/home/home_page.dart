@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:my_bullet_journal/auth/user_profile.dart';
@@ -27,6 +28,11 @@ class _HomePageState extends State<HomePage> {
   ];
   @override
   Widget build(BuildContext context) {
+    final db = FirebaseFirestore.instance;
+    db
+        .collection('users')
+        .doc(widget.currentUser.uid)
+        .collection('vision_board');
     //debugPrint(AppLocalizations.of(context)!.helloWorld):
     return Scaffold(
       appBar: AppBar(

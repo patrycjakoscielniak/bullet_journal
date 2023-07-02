@@ -27,10 +27,12 @@ import 'package:my_bullet_journal/app/screens/wishlist/pages/add_item_page/cubit
     as _i8;
 import 'package:my_bullet_journal/app/screens/wishlist/pages/wishlist_page/cubit/wishlist_page_cubit.dart'
     as _i13;
-import 'package:my_bullet_journal/repositories/planner_repository.dart' as _i4;
-import 'package:my_bullet_journal/repositories/vision_board_repository.dart'
+import 'package:my_bullet_journal/domain/repositories/planner_repository.dart'
+    as _i4;
+import 'package:my_bullet_journal/domain/repositories/vision_board_repository.dart'
     as _i5;
-import 'package:my_bullet_journal/repositories/wishlist_repository.dart' as _i6;
+import 'package:my_bullet_journal/domain/repositories/wishlist_repository.dart'
+    as _i6;
 
 extension GetItInjectableX on _i1.GetIt {
   // initializes the registration of main-scope dependencies inside of GetIt
@@ -43,10 +45,9 @@ extension GetItInjectableX on _i1.GetIt {
       environment,
       environmentFilter,
     );
-    gh.factory<_i3.HolidaysRemoteDioDataSource>(
-        () => _i3.HolidaysRemoteDioDataSource());
-    gh.factory<_i4.PlannerRepository>(() => _i4.PlannerRepository(
-        remoteDataSource: gh<_i3.HolidaysRemoteDioDataSource>()));
+    gh.factory<_i3.PlannerRemoteDioDataSource>(
+        () => _i3.PlannerRemoteDioDataSource());
+    gh.factory<_i4.PlannerRepository>(() => _i4.PlannerRepository());
     gh.factory<_i5.VisionBoardRepository>(() => _i5.VisionBoardRepository());
     gh.factory<_i6.WishlistRepository>(() => _i6.WishlistRepository());
     gh.factory<_i7.AddEventCubit>(

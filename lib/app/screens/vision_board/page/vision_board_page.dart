@@ -6,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:my_bullet_journal/app/core/enums.dart';
 import 'package:my_bullet_journal/app/core/injection_container.dart';
 import 'package:my_bullet_journal/app/screens/vision_board/cubit/vision_board_cubit.dart';
-import 'package:my_bullet_journal/models/vision_board_model.dart';
+import 'package:my_bullet_journal/domain/models/vision_board_model.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_tile.dart';
 import 'package:image_picker/image_picker.dart';
@@ -107,30 +107,30 @@ class _VisionBoardPageState extends State<VisionBoardPage> {
           Center(
             child: Text(
               'Create your Vision Board',
-              style: GoogleFonts.satisfy(),
+              style: GoogleFonts.greatVibes(fontSize: 25),
             ),
           ),
-          ElevatedButton(
-              onPressed: () async {
-                XFile? file =
-                    await ImagePicker().pickImage(source: ImageSource.gallery);
-                setState(
-                  () {
-                    pickedFile = file;
-                    if (pickedFile != null) {
-                      context.read<VisionBoardCubit>().addImage(pickedFile!);
-                    } else {
-                      return;
-                    }
-                  },
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                shape: const CircleBorder(),
-                fixedSize: const Size(40, 40),
-              ),
-              child: const Icon(Icons.add_a_photo))
         ],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          XFile? file =
+              await ImagePicker().pickImage(source: ImageSource.gallery);
+          setState(
+            () {
+              pickedFile = file;
+              if (pickedFile != null) {
+                context.read<VisionBoardCubit>().addImage(pickedFile!);
+              } else {
+                return;
+              }
+            },
+          );
+        },
+        child: const Icon(
+          Icons.add,
+        ),
       ),
     );
   }

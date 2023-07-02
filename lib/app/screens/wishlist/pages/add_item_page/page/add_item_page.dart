@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:my_bullet_journal/app/screens/wishlist/pages/add_item_page/features/add_item_with_image_URL.dart';
+import 'package:my_bullet_journal/app/screens/wishlist/pages/add_item_page/features/add_item_with_image_url.dart';
 import '../../../../../core/enums.dart';
 import '../../../../../core/global_variables.dart';
 import '../cubit/add_item_page_cubit.dart';

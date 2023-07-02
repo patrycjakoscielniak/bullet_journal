@@ -5,11 +5,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
-import 'package:my_bullet_journal/models/vision_board_model.dart';
+import '../models/vision_board_model.dart';
 
 @injectable
 class VisionBoardRepository {
-  final storageRef = FirebaseStorage.instance.ref().child('images');
+  final storageRef = FirebaseStorage.instance
+      .ref()
+      .child('users')
+      .child(FirebaseAuth.instance.currentUser!.uid)
+      .child('vision_board');
   final firestoreRef = FirebaseFirestore.instance
       .collection('users')
       .doc(FirebaseAuth.instance.currentUser?.uid)

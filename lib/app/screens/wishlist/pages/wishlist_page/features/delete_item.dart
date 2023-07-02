@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../../models/wishlist_item_model.dart';
+import '../../../../../../domain/models/wishlist_item_model.dart';
 import '../../../../../core/global_variables.dart';
 import '../cubit/wishlist_page_cubit.dart';
 

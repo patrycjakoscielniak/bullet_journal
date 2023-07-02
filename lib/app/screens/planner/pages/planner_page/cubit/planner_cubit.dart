@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
-import 'package:my_bullet_journal/models/planner_item_model.dart';
-import 'package:my_bullet_journal/repositories/planner_repository.dart';
+import 'package:my_bullet_journal/domain/repositories/planner_repository.dart';
+import '../../../../../../domain/models/planner_item_model.dart';
 import '../../../../../core/enums.dart';
 
 part 'planner_state.dart';

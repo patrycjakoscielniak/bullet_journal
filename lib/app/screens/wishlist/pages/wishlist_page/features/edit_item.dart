@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_bullet_journal/models/wishlist_item_model.dart';
 import 'package:my_bullet_journal/app/screens/wishlist/pages/wishlist_page/cubit/wishlist_page_cubit.dart';
+
+import '../../../../../../domain/models/wishlist_item_model.dart';
 
 class EditItem extends StatefulWidget {
   const EditItem({
