@@ -74,4 +74,46 @@ void main() {
     });
     group('error', () {});
   });
+  group('start', () {
+    group('success', () {
+      setUp(() {
+        when(() => repository.getVisionBoardItemStream())
+            .thenAnswer((_) => Stream.fromIterable([
+                  [
+                    const VisionBoardModel(id: '1', image: 'image'),
+                    const VisionBoardModel(id: '2', image: 'image2'),
+                  ]
+                ]));
+      });
+      blocTest(
+        'emits Status.loading then Status.success with items',
+        build: () => sut,
+        act: (cubit) => cubit.start(),
+        expect: () => [
+          VisionBoardState(status: Status.loading),
+          VisionBoardState(status: Status.success, items: [
+            const VisionBoardModel(id: '1', image: 'image'),
+            const VisionBoardModel(id: '2', image: 'image2'),
+          ]),
+        ],
+      );
+    });
+    group('error', () {
+      setUp(() {
+        when(() => repository.getVisionBoardItemStream())
+            .thenAnswer((_) => Stream.error(Exception('test-exception-error')));
+      });
+      blocTest(
+        'emits Status.error with errorMessage',
+        build: () => sut,
+        act: (cubit) => cubit.start(),
+        expect: () => [
+          VisionBoardState(status: Status.loading),
+          VisionBoardState(
+              status: Status.error,
+              errorMessage: 'Exception: test-exception-error'),
+        ],
+      );
+    });
+  });
 }

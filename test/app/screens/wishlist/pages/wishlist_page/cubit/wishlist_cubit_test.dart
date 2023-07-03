@@ -153,37 +153,62 @@ void main() {
       );
     });
   });
-  // group('start', () {
-  //   group('success', () {
-  //     setUp(() {
-  //       whenListen(sut, repository.getWishlistItemStream(),
-  //           initialState: WishlistState(status: Status.loading));
-  //     });
-  //     blocTest(
-  //       'emits Status.loading then Status.success with items',
-  //       build: () => sut,
-  //       act: (cubit) => cubit.start(),
-  //       expect: () => [
-  //         WishlistState(status: Status.loading),
-  //         WishlistState(status: Status.success, items: []),
-  //       ],
-  //     );
-  //   });
-  //   group('error', () {
-  //     setUp(() {
-  //       when(() => repository.getWishlistItemStream())
-  //           .thenThrow(Exception('test-exception-error'));
-  //     });
-  //     blocTest(
-  //       'emits Status.error with errorMessage',
-  //       build: () => sut,
-  //       act: (cubit) => cubit.start(),
-  //       expect: () => [
-  //         WishlistState(
-  //             status: Status.error,
-  //             errorMessage: 'Exception: test-exception-error'),
-  //       ],
-  //     );
-  //   });
-  // });
+  group('start', () {
+    group('success', () {
+      setUp(() {
+        when(() => repository.getWishlistItemStream())
+            .thenAnswer((_) => Stream.fromIterable([
+                  [
+                    const WishlistItemModel(
+                        id: '1',
+                        name: 'name',
+                        imageURL: 'imageURL',
+                        itemURL: 'itemURL'),
+                    const WishlistItemModel(
+                        id: '2',
+                        name: 'name2',
+                        imageURL: 'imageURL2',
+                        itemURL: 'itemURL2')
+                  ]
+                ]));
+      });
+      blocTest(
+        'emits Status.loading then Status.success with items',
+        build: () => sut,
+        act: (cubit) => cubit.start(),
+        expect: () => [
+          WishlistState(status: Status.loading),
+          WishlistState(status: Status.success, items: [
+            const WishlistItemModel(
+                id: '1',
+                name: 'name',
+                imageURL: 'imageURL',
+                itemURL: 'itemURL'),
+            const WishlistItemModel(
+                id: '2',
+                name: 'name2',
+                imageURL: 'imageURL2',
+                itemURL: 'itemURL2')
+          ]),
+        ],
+      );
+    });
+    group('error', () {
+      setUp(() {
+        when(() => repository.getWishlistItemStream())
+            .thenAnswer((_) => Stream.error(Exception('error-exception-test')));
+      });
+      blocTest(
+        'emits Status.error with errorMessage',
+        build: () => sut,
+        act: (cubit) => cubit.start(),
+        expect: () => [
+          WishlistState(status: Status.loading),
+          WishlistState(
+              status: Status.error,
+              errorMessage: 'Exception: error-exception-test'),
+        ],
+      );
+    });
+  });
 }

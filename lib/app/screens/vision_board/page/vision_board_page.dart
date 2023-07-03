@@ -106,31 +106,33 @@ class _VisionBoardPageState extends State<VisionBoardPage> {
         children: [
           Center(
             child: Text(
-              'Create your Vision Board',
-              style: GoogleFonts.greatVibes(fontSize: 25),
+              'Create Your Vision Board',
+              style: GoogleFonts.tangerine(
+                  fontSize: 25, fontWeight: FontWeight.w600),
             ),
           ),
+          ElevatedButton(
+              onPressed: () async {
+                XFile? file =
+                    await ImagePicker().pickImage(source: ImageSource.gallery);
+                setState(
+                  () {
+                    pickedFile = file;
+                    if (pickedFile != null) {
+                      context.read<VisionBoardCubit>().addImage(pickedFile!);
+                    } else {
+                      return;
+                    }
+                  },
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.black,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30))),
+              child: const Icon(Icons.add_a_photo_outlined))
         ],
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          XFile? file =
-              await ImagePicker().pickImage(source: ImageSource.gallery);
-          setState(
-            () {
-              pickedFile = file;
-              if (pickedFile != null) {
-                context.read<VisionBoardCubit>().addImage(pickedFile!);
-              } else {
-                return;
-              }
-            },
-          );
-        },
-        child: const Icon(
-          Icons.add,
-        ),
       ),
     );
   }
