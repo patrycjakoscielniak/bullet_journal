@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
-import '../models/wishlist_item_model.dart';
+import '../../data/models/wishlist_item_model.dart';
 
 @injectable
 class WishlistRepository {
@@ -40,6 +40,7 @@ class WishlistRepository {
         'name': name,
         'image': imageURL,
         'item_URL': itemURL,
+        'onCreated': DateTime.now(),
       },
     );
   }

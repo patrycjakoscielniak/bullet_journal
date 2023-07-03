@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'add_item_page_cubit.dart';
+part of 'wishlist_cubit.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,28 +15,30 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-mixin _$AddItemPageState {
+mixin _$WishlistState {
+  List<WishlistItemModel> get items => throw _privateConstructorUsedError;
   Status get status => throw _privateConstructorUsedError;
   String? get errorMessage => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $AddItemPageStateCopyWith<AddItemPageState> get copyWith =>
+  $WishlistStateCopyWith<WishlistState> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $AddItemPageStateCopyWith<$Res> {
-  factory $AddItemPageStateCopyWith(
-          AddItemPageState value, $Res Function(AddItemPageState) then) =
-      _$AddItemPageStateCopyWithImpl<$Res, AddItemPageState>;
+abstract class $WishlistStateCopyWith<$Res> {
+  factory $WishlistStateCopyWith(
+          WishlistState value, $Res Function(WishlistState) then) =
+      _$WishlistStateCopyWithImpl<$Res, WishlistState>;
   @useResult
-  $Res call({Status status, String? errorMessage});
+  $Res call(
+      {List<WishlistItemModel> items, Status status, String? errorMessage});
 }
 
 /// @nodoc
-class _$AddItemPageStateCopyWithImpl<$Res, $Val extends AddItemPageState>
-    implements $AddItemPageStateCopyWith<$Res> {
-  _$AddItemPageStateCopyWithImpl(this._value, this._then);
+class _$WishlistStateCopyWithImpl<$Res, $Val extends WishlistState>
+    implements $WishlistStateCopyWith<$Res> {
+  _$WishlistStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -46,10 +48,15 @@ class _$AddItemPageStateCopyWithImpl<$Res, $Val extends AddItemPageState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? items = null,
     Object? status = null,
     Object? errorMessage = freezed,
   }) {
     return _then(_value.copyWith(
+      items: null == items
+          ? _value.items
+          : items // ignore: cast_nullable_to_non_nullable
+              as List<WishlistItemModel>,
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -63,31 +70,37 @@ class _$AddItemPageStateCopyWithImpl<$Res, $Val extends AddItemPageState>
 }
 
 /// @nodoc
-abstract class _$$_AddItemPageStateCopyWith<$Res>
-    implements $AddItemPageStateCopyWith<$Res> {
-  factory _$$_AddItemPageStateCopyWith(
-          _$_AddItemPageState value, $Res Function(_$_AddItemPageState) then) =
-      __$$_AddItemPageStateCopyWithImpl<$Res>;
+abstract class _$$_WishlistStateCopyWith<$Res>
+    implements $WishlistStateCopyWith<$Res> {
+  factory _$$_WishlistStateCopyWith(
+          _$_WishlistState value, $Res Function(_$_WishlistState) then) =
+      __$$_WishlistStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Status status, String? errorMessage});
+  $Res call(
+      {List<WishlistItemModel> items, Status status, String? errorMessage});
 }
 
 /// @nodoc
-class __$$_AddItemPageStateCopyWithImpl<$Res>
-    extends _$AddItemPageStateCopyWithImpl<$Res, _$_AddItemPageState>
-    implements _$$_AddItemPageStateCopyWith<$Res> {
-  __$$_AddItemPageStateCopyWithImpl(
-      _$_AddItemPageState _value, $Res Function(_$_AddItemPageState) _then)
+class __$$_WishlistStateCopyWithImpl<$Res>
+    extends _$WishlistStateCopyWithImpl<$Res, _$_WishlistState>
+    implements _$$_WishlistStateCopyWith<$Res> {
+  __$$_WishlistStateCopyWithImpl(
+      _$_WishlistState _value, $Res Function(_$_WishlistState) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? items = null,
     Object? status = null,
     Object? errorMessage = freezed,
   }) {
-    return _then(_$_AddItemPageState(
+    return _then(_$_WishlistState(
+      items: null == items
+          ? _value._items
+          : items // ignore: cast_nullable_to_non_nullable
+              as List<WishlistItemModel>,
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -102,8 +115,21 @@ class __$$_AddItemPageStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_AddItemPageState implements _AddItemPageState {
-  _$_AddItemPageState({this.status = Status.initial, this.errorMessage});
+class _$_WishlistState implements _WishlistState {
+  _$_WishlistState(
+      {final List<WishlistItemModel> items = const [],
+      this.status = Status.initial,
+      this.errorMessage})
+      : _items = items;
+
+  final List<WishlistItemModel> _items;
+  @override
+  @JsonKey()
+  List<WishlistItemModel> get items {
+    if (_items is EqualUnmodifiableListView) return _items;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_items);
+  }
 
   @override
   @JsonKey()
@@ -113,39 +139,45 @@ class _$_AddItemPageState implements _AddItemPageState {
 
   @override
   String toString() {
-    return 'AddItemPageState(status: $status, errorMessage: $errorMessage)';
+    return 'WishlistState(items: $items, status: $status, errorMessage: $errorMessage)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_AddItemPageState &&
+            other is _$_WishlistState &&
+            const DeepCollectionEquality().equals(other._items, _items) &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.errorMessage, errorMessage) ||
                 other.errorMessage == errorMessage));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, status, errorMessage);
+  int get hashCode => Object.hash(runtimeType,
+      const DeepCollectionEquality().hash(_items), status, errorMessage);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_AddItemPageStateCopyWith<_$_AddItemPageState> get copyWith =>
-      __$$_AddItemPageStateCopyWithImpl<_$_AddItemPageState>(this, _$identity);
+  _$$_WishlistStateCopyWith<_$_WishlistState> get copyWith =>
+      __$$_WishlistStateCopyWithImpl<_$_WishlistState>(this, _$identity);
 }
 
-abstract class _AddItemPageState implements AddItemPageState {
-  factory _AddItemPageState({final Status status, final String? errorMessage}) =
-      _$_AddItemPageState;
+abstract class _WishlistState implements WishlistState {
+  factory _WishlistState(
+      {final List<WishlistItemModel> items,
+      final Status status,
+      final String? errorMessage}) = _$_WishlistState;
 
+  @override
+  List<WishlistItemModel> get items;
   @override
   Status get status;
   @override
   String? get errorMessage;
   @override
   @JsonKey(ignore: true)
-  _$$_AddItemPageStateCopyWith<_$_AddItemPageState> get copyWith =>
+  _$$_WishlistStateCopyWith<_$_WishlistState> get copyWith =>
       throw _privateConstructorUsedError;
 }

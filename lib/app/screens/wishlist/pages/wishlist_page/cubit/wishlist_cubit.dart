@@ -2,15 +2,15 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
-import '../../../../../../domain/models/wishlist_item_model.dart';
+import '../../../../../../data/models/wishlist_item_model.dart';
 import '../../../../../../domain/repositories/wishlist_repository.dart';
 import '../../../../../core/enums.dart';
-part 'wishlist_page_state.dart';
-part 'wishlist_page_cubit.freezed.dart';
+part 'wishlist_state.dart';
+part 'wishlist_cubit.freezed.dart';
 
 @injectable
-class WishlistPageCubit extends Cubit<WishlistPageState> {
-  WishlistPageCubit(this._wishlistRepository) : super(WishlistPageState());
+class WishlistCubit extends Cubit<WishlistState> {
+  WishlistCubit(this._wishlistRepository) : super(WishlistState());
 
   final WishlistRepository _wishlistRepository;
 
@@ -20,11 +20,11 @@ class WishlistPageCubit extends Cubit<WishlistPageState> {
       {required String documentID, required String itemURL}) async {
     try {
       _wishlistRepository.update(id: documentID, itemURL: itemURL);
-      emit(WishlistPageState(
+      emit(WishlistState(
         status: Status.updated,
       ));
     } catch (error) {
-      emit(WishlistPageState(
+      emit(WishlistState(
         status: Status.error,
         errorMessage: error.toString(),
       ));
@@ -36,11 +36,11 @@ class WishlistPageCubit extends Cubit<WishlistPageState> {
   }) async {
     try {
       _wishlistRepository.deleteFromFirebase(id: documentID);
-      emit(WishlistPageState(
+      emit(WishlistState(
         status: Status.deleted,
       ));
     } catch (error) {
-      emit(WishlistPageState(
+      emit(WishlistState(
         status: Status.error,
         errorMessage: error.toString(),
       ));
@@ -52,11 +52,11 @@ class WishlistPageCubit extends Cubit<WishlistPageState> {
   }) async {
     try {
       _wishlistRepository.deleteFromStorage(url: url);
-      emit(WishlistPageState(
+      emit(WishlistState(
         status: Status.deleted,
       ));
     } catch (error) {
-      emit(WishlistPageState(
+      emit(WishlistState(
         status: Status.error,
         errorMessage: error.toString(),
       ));
@@ -64,16 +64,17 @@ class WishlistPageCubit extends Cubit<WishlistPageState> {
   }
 
   Future<void> start() async {
-    emit(WishlistPageState());
+    emit(WishlistState(status: Status.loading));
 
     _streamSubscription =
         _wishlistRepository.getWishlistItemStream().listen((wishlist) {
-      emit(WishlistPageState(
+      emit(WishlistState(
         items: wishlist,
+        status: Status.success,
       ));
     })
           ..onError((error) {
-            emit(WishlistPageState(
+            emit(WishlistState(
               status: Status.error,
               errorMessage: error.toString(),
             ));

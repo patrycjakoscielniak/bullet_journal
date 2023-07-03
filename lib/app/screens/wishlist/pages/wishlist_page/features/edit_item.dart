@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_bullet_journal/app/screens/wishlist/pages/wishlist_page/cubit/wishlist_page_cubit.dart';
-
-import '../../../../../../domain/models/wishlist_item_model.dart';
+import 'package:my_bullet_journal/app/screens/wishlist/pages/wishlist_page/cubit/wishlist_cubit.dart';
+import '../../../../../../data/models/wishlist_item_model.dart';
 
 class EditItem extends StatefulWidget {
   const EditItem({
@@ -28,7 +27,20 @@ class _EditItemState extends State<EditItem> {
             builder: (BuildContext context) {
               return SimpleDialog(
                 children: [
-                  Image.network(widget.itemModel.imageURL),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          icon: const Icon(Icons.close)),
+                    ],
+                  ),
+                  Image.network(
+                    widget.itemModel.imageURL,
+                    height: MediaQuery.of(context).size.width * (5 / 6),
+                  ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextField(
@@ -37,14 +49,18 @@ class _EditItemState extends State<EditItem> {
                       },
                       decoration: InputDecoration(
                         hintText: widget.itemModel.itemURL,
-                        label: const Text('Add/Change Item URL Address'),
+                        label: const Center(
+                          child: Text(
+                            'Add/Change Item URL Address',
+                          ),
+                        ),
                       ),
                     ),
                   ),
                   IconButton(
                     key: ValueKey(widget.itemModel.id),
                     onPressed: () {
-                      context.read<WishlistPageCubit>().updateItem(
+                      context.read<WishlistCubit>().updateItem(
                           documentID: widget.itemModel.id, itemURL: itemURL);
                       Navigator.of(context).pop();
                     },

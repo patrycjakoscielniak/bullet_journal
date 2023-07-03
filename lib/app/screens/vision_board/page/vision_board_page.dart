@@ -6,11 +6,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:my_bullet_journal/app/core/enums.dart';
 import 'package:my_bullet_journal/app/core/injection_container.dart';
 import 'package:my_bullet_journal/app/screens/vision_board/cubit/vision_board_cubit.dart';
-import 'package:my_bullet_journal/domain/models/vision_board_model.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_tile.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../../data/models/vision_board_model.dart';
 import '../features/delete_vision_board_image.dart';
 
 class VisionBoardPage extends StatefulWidget {

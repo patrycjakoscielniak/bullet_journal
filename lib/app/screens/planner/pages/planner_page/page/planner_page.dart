@@ -7,7 +7,7 @@ import 'package:my_bullet_journal/app/core/injection_container.dart';
 import 'package:my_bullet_journal/app/screens/planner/pages/add/page/add_event_page.dart';
 import 'package:my_bullet_journal/app/screens/planner/pages/details/page/event_details_page.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-import '../../../../../../domain/models/planner_item_model.dart';
+import '../../../../../../data/models/planner_item_model.dart';
 import '../cubit/planner_cubit.dart';
 import '../features/calendar_data_source.dart';
 

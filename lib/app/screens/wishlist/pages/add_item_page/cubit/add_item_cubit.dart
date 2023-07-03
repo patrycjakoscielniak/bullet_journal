@@ -5,12 +5,12 @@ import 'package:injectable/injectable.dart';
 import '../../../../../../domain/repositories/wishlist_repository.dart';
 import '../../../../../core/enums.dart';
 
-part 'add_item_page_state.dart';
-part 'add_item_page_cubit.freezed.dart';
+part 'add_item_state.dart';
+part 'add_item_cubit.freezed.dart';
 
 @injectable
-class AddItemPageCubit extends Cubit<AddItemPageState> {
-  AddItemPageCubit(this._wishlistRepository) : super(AddItemPageState());
+class AddItemCubit extends Cubit<AddItemState> {
+  AddItemCubit(this._wishlistRepository) : super(AddItemState());
 
   final WishlistRepository _wishlistRepository;
 
@@ -21,11 +21,11 @@ class AddItemPageCubit extends Cubit<AddItemPageState> {
   ) async {
     try {
       await _wishlistRepository.add(name, imageURL, itemURL);
-      emit(AddItemPageState(
+      emit(AddItemState(
         status: Status.saved,
       ));
     } catch (error) {
-      emit(AddItemPageState(
+      emit(AddItemState(
         status: Status.error,
         errorMessage: error.toString(),
       ));
@@ -36,10 +36,9 @@ class AddItemPageCubit extends Cubit<AddItemPageState> {
       XFile image, String name, String itemURL) async {
     try {
       await _wishlistRepository.addItem(image, name, itemURL);
-      emit(AddItemPageState(status: Status.saved));
+      emit(AddItemState(status: Status.saved));
     } catch (error) {
-      emit(AddItemPageState(
-          status: Status.error, errorMessage: error.toString()));
+      emit(AddItemState(status: Status.error, errorMessage: error.toString()));
     }
   }
 }

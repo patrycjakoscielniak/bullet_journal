@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../cubit/add_item_page_cubit.dart';
+import '../cubit/add_item_cubit.dart';
 
 class AddItemWithImageURL extends StatelessWidget {
   const AddItemWithImageURL({
@@ -23,7 +23,7 @@ class AddItemWithImageURL extends StatelessWidget {
       onPressed: itemName.isEmpty || imageURL.isEmpty
           ? null
           : () {
-              context.read<AddItemPageCubit>().addItemwithImageURL(
+              context.read<AddItemCubit>().addItemwithImageURL(
                     itemName,
                     imageURL,
                     itemURL,

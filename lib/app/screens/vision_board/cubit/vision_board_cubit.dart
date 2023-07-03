@@ -6,8 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
 import 'package:my_bullet_journal/app/core/enums.dart';
 import 'package:my_bullet_journal/domain/repositories/vision_board_repository.dart';
-
-import '../../../../domain/models/vision_board_model.dart';
+import '../../../../data/models/vision_board_model.dart';
 
 part 'vision_board_state.dart';
 part 'vision_board_cubit.freezed.dart';

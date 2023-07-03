@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
-import '../models/vision_board_model.dart';
+import '../../data/models/vision_board_model.dart';
 
 @injectable
 class VisionBoardRepository {

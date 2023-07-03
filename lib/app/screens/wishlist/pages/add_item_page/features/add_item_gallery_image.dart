@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../cubit/add_item_page_cubit.dart';
+import '../cubit/add_item_cubit.dart';
 
 class AddItemWithGalleryImage extends StatelessWidget {
   const AddItemWithGalleryImage({
@@ -24,7 +24,7 @@ class AddItemWithGalleryImage extends StatelessWidget {
           : () {
               if (itemImage != null) {
                 context
-                    .read<AddItemPageCubit>()
+                    .read<AddItemCubit>()
                     .addItemWithGalleryImage(itemImage!, itemName, itemURL);
               }
               Navigator.of(context).pop();

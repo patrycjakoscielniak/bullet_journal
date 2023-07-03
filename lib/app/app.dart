@@ -7,8 +7,8 @@ import 'package:my_bullet_journal/app/screens/planner/pages/details/cubit/event_
 import 'package:my_bullet_journal/app/screens/planner/pages/edit/cubit/edit_event_cubit.dart';
 import 'package:my_bullet_journal/app/screens/planner/pages/planner_page/cubit/planner_cubit.dart';
 import 'package:my_bullet_journal/app/screens/vision_board/cubit/vision_board_cubit.dart';
-import 'package:my_bullet_journal/app/screens/wishlist/pages/add_item_page/cubit/add_item_page_cubit.dart';
-import 'package:my_bullet_journal/app/screens/wishlist/pages/wishlist_page/cubit/wishlist_page_cubit.dart';
+import 'package:my_bullet_journal/app/screens/wishlist/pages/add_item_page/cubit/add_item_cubit.dart';
+import 'package:my_bullet_journal/app/screens/wishlist/pages/wishlist_page/cubit/wishlist_cubit.dart';
 import '../auth/auth_gate.dart';
 import 'core/global_variables.dart';
 
@@ -24,8 +24,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => getIt<EventDetailsCubit>()),
         BlocProvider(create: (context) => getIt<AddEventCubit>()),
         BlocProvider(create: (context) => getIt<VisionBoardCubit>()),
-        BlocProvider(create: (context) => getIt<WishlistPageCubit>()),
-        BlocProvider(create: (context) => getIt<AddItemPageCubit>())
+        BlocProvider(create: (context) => getIt<WishlistCubit>()),
+        BlocProvider(create: (context) => getIt<AddItemCubit>())
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

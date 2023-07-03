@@ -4,7 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:my_bullet_journal/app/screens/wishlist/pages/add_item_page/features/add_item_with_image_url.dart';
 import '../../../../../core/enums.dart';
 import '../../../../../core/global_variables.dart';
-import '../cubit/add_item_page_cubit.dart';
+import '../cubit/add_item_cubit.dart';
 import '../features/add_item_gallery_image.dart';
 
 class AddItemPage extends StatefulWidget {
@@ -27,7 +27,7 @@ class _AddItemPageState extends State<AddItemPage> {
     return DefaultTabController(
       initialIndex: 0,
       length: 2,
-      child: BlocConsumer<AddItemPageCubit, AddItemPageState>(
+      child: BlocConsumer<AddItemCubit, AddItemState>(
         listener: (context, state) {
           if (state.status == Status.error) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(

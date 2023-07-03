@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../../../../domain/models/wishlist_item_model.dart';
+import '../../../../../../data/models/wishlist_item_model.dart';
 import '../../../../../core/global_variables.dart';
-import '../cubit/wishlist_page_cubit.dart';
+import '../cubit/wishlist_cubit.dart';
 
 class DeleteItem extends StatelessWidget {
   const DeleteItem({
@@ -52,12 +51,12 @@ class DeleteItem extends StatelessWidget {
                                     if (itemModel.itemURL
                                         .contains('firebasestorage')) {
                                       context
-                                          .read<WishlistPageCubit>()
+                                          .read<WishlistCubit>()
                                           .deleteItemFromStorage(
                                               url: itemModel.itemURL);
                                     }
                                     context
-                                        .read<WishlistPageCubit>()
+                                        .read<WishlistCubit>()
                                         .deleteItemFromFirebase(
                                           documentID: itemModel.id,
                                         );
