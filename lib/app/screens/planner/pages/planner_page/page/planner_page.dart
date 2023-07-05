@@ -76,8 +76,10 @@ class _PlannerPageState extends State<PlannerPage> {
                 recurrenceRule: task.recurrenceRule,
               ));
             }
-            _dataSource.appointments?.addAll(appointments);
           }
+          _dataSource.appointments?.addAll(appointments);
+          _dataSource.notifyListeners(
+              CalendarDataSourceAction.reset, _dataSource.appointments!);
           return Scaffold(
             body: Column(
               children: [
@@ -115,7 +117,7 @@ class _PlannerPageState extends State<PlannerPage> {
                         showAgenda: true,
                         appointmentDisplayMode:
                             MonthAppointmentDisplayMode.indicator),
-                    dataSource: getData,
+                    dataSource: _dataSource,
                     showNavigationArrow: true,
                     showDatePickerButton: true,
                     firstDayOfWeek: 1,
@@ -133,14 +135,6 @@ class _PlannerPageState extends State<PlannerPage> {
         },
       ),
     );
-  }
-
-  SfCalendarDataSource get getData {
-    if (displayHolidays) {
-      return _dataSource;
-    } else {
-      return SfCalendarDataSource(appointments);
-    }
   }
 
   void updateAppointments() async {

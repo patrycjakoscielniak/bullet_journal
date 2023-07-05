@@ -2,14 +2,14 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
+import 'package:my_bullet_journal/data/remote_data_sources/planner_remote_data_source.dart';
 import '../../data/models/event_model.dart';
-import 'package:http/http.dart' as http;
-
 import '../../data/models/holidays_model.dart';
 
 @injectable
 class PlannerRepository {
-  PlannerRepository();
+  PlannerRepository(this._plannerRemoteDataSource);
+  final PlannerRemoteDataSource _plannerRemoteDataSource;
 
   final firebaseRef = FirebaseFirestore.instance
       .collection('users')
@@ -35,30 +35,12 @@ class PlannerRepository {
     });
   }
 
-  Future<List<HolidayModel>> fetchHolidays() async {
-    final years = [
-      '2023',
-      '2024',
-      '2025',
-      '2026',
-      '2027',
-      '2028',
-      '2029',
-      '2030'
-    ];
-    final List<HolidayModel> holidaysList = [];
-    for (final year in years) {
-      final url = Uri.parse('https://public-holiday.p.rapidapi.com/$year/PL');
-      final response = await http.get(url, headers: {
-        "X-RapidAPI-Key": "139e0b9fa2msh89a1ebdff767cf4p156932jsn676885f8ec26",
-        "X-RapidAPI-Host": "public-holiday.p.rapidapi.com"
-      });
-      var dynamic = jsonDecode(response.body);
-      final list =
-          (dynamic as List).map((data) => HolidayModel.fromJson(data)).toList();
-      holidaysList.addAll(list);
-    }
-    return holidaysList;
+  Future<List<HolidayModel>> getHolidays() async {
+    final response = await _plannerRemoteDataSource.fetchHolidays();
+    var dynamic = jsonDecode(response);
+    final list =
+        (dynamic as List).map((data) => HolidayModel.fromJson(data)).toList();
+    return list;
   }
 
   Future<void> add(
