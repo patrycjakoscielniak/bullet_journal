@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:my_bullet_journal/domain/repositories/planner_repository.dart';
-import '../../../../../../data/models/planner_item_model.dart';
+import '../../../../../../data/models/event_model.dart';
+import '../../../../../../data/models/holidays_model.dart';
 import '../../../../../core/enums.dart';
 
 part 'planner_state.dart';
@@ -17,12 +18,12 @@ class PlannerCubit extends Cubit<PlannerState> {
 
   StreamSubscription? _streamSubscription;
 
-  Future<List<Holidays>> getHolidays() async {
-    final holidays = await _plannerRepository.fetchHolidays();
+  Future<List<HolidayModel>> getHolidays() async {
+    final result = await _plannerRepository.fetchHolidays();
     emit(PlannerState(
       status: Status.success,
     ));
-    return holidays;
+    return result;
   }
 
   Future<void> start() async {

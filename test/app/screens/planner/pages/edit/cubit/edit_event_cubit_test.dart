@@ -5,7 +5,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:my_bullet_journal/app/core/enums.dart';
 import 'package:my_bullet_journal/app/core/global_variables.dart';
 import 'package:my_bullet_journal/app/screens/planner/pages/edit/cubit/edit_event_cubit.dart';
-import 'package:my_bullet_journal/data/models/planner_item_model.dart';
+import 'package:my_bullet_journal/data/models/event_model.dart';
 import 'package:my_bullet_journal/domain/repositories/planner_repository.dart';
 
 class MockPlannerRepository extends Mock implements PlannerRepository {}
@@ -33,7 +33,7 @@ void main() {
                 frequency: 'frequency',
                 recurrenceRuleEnding: 'recurrenceRuleEnding',
                 eventName: 'name')).thenAnswer((_) async => [
-              PlannerModel(
+              EventModel(
                   eventName: 'eventName',
                   id: '123',
                   startTime: Timestamp.fromDate(DateTime(2022, 1, 1)),

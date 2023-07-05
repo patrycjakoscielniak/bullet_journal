@@ -5,7 +5,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:my_bullet_journal/app/core/enums.dart';
 import 'package:my_bullet_journal/app/core/global_variables.dart';
 import 'package:my_bullet_journal/app/screens/planner/pages/planner_page/cubit/planner_cubit.dart';
-import 'package:my_bullet_journal/data/models/planner_item_model.dart';
+import 'package:my_bullet_journal/data/models/event_model.dart';
 import 'package:my_bullet_journal/domain/repositories/planner_repository.dart';
 
 class MockPlannerRepository extends Mock implements PlannerRepository {}
@@ -24,14 +24,14 @@ void main() {
         when(() => repository.getAppointments())
             .thenAnswer((_) => Stream.fromIterable([
                   [
-                    PlannerModel(
+                    EventModel(
                         id: '1',
                         eventName: 'name',
                         startTime: Timestamp.fromDate(DateTime(2022, 1, 1)),
                         endTime: Timestamp.fromDate(DateTime(2022, 1, 1)),
                         isAllDay: true,
                         colorValue: appGrey.value),
-                    PlannerModel(
+                    EventModel(
                         id: '2',
                         eventName: 'name2',
                         startTime: Timestamp.fromDate(DateTime(2022, 1, 1)),
@@ -48,14 +48,14 @@ void main() {
         expect: () => [
           PlannerState(status: Status.loading),
           PlannerState(status: Status.success, appointments: [
-            PlannerModel(
+            EventModel(
                 id: '1',
                 eventName: 'name',
                 startTime: Timestamp.fromDate(DateTime(2022, 1, 1)),
                 endTime: Timestamp.fromDate(DateTime(2022, 1, 1)),
                 isAllDay: true,
                 colorValue: appGrey.value),
-            PlannerModel(
+            EventModel(
                 id: '2',
                 eventName: 'name2',
                 startTime: Timestamp.fromDate(DateTime(2022, 1, 1)),

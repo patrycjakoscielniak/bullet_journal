@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,7 +8,8 @@ import 'package:my_bullet_journal/app/core/injection_container.dart';
 import 'package:my_bullet_journal/app/screens/planner/pages/add/page/add_event_page.dart';
 import 'package:my_bullet_journal/app/screens/planner/pages/details/page/event_details_page.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-import '../../../../../../data/models/planner_item_model.dart';
+import '../../../../../../data/models/event_model.dart';
+import '../../../../../../data/models/holidays_model.dart';
 import '../cubit/planner_cubit.dart';
 import '../features/calendar_data_source.dart';
 
@@ -25,8 +25,8 @@ class PlannerPage extends StatefulWidget {
 class _PlannerPageState extends State<PlannerPage> {
   List<Appointment> appointments = [];
   List<Appointment> holidays = [];
-  List<Holidays> holidaysList = [];
-  List<PlannerModel> eventsList = [];
+  List<HolidayModel> holidaysList = [];
+  List<EventModel> eventsList = [];
   bool displayHolidays = false;
   final SfCalendarDataSource _dataSource =
       SfCalendarDataSource(<Appointment>[]);

@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'planner_item_model.dart';
+part of 'event_model.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,7 +15,7 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-mixin _$PlannerModel {
+mixin _$EventModel {
   String get eventName => throw _privateConstructorUsedError;
   String get id => throw _privateConstructorUsedError;
   Timestamp get startTime => throw _privateConstructorUsedError;
@@ -28,15 +28,15 @@ mixin _$PlannerModel {
   String? get recurrenceRuleEnding => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $PlannerModelCopyWith<PlannerModel> get copyWith =>
+  $EventModelCopyWith<EventModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $PlannerModelCopyWith<$Res> {
-  factory $PlannerModelCopyWith(
-          PlannerModel value, $Res Function(PlannerModel) then) =
-      _$PlannerModelCopyWithImpl<$Res, PlannerModel>;
+abstract class $EventModelCopyWith<$Res> {
+  factory $EventModelCopyWith(
+          EventModel value, $Res Function(EventModel) then) =
+      _$EventModelCopyWithImpl<$Res, EventModel>;
   @useResult
   $Res call(
       {String eventName,
@@ -52,9 +52,9 @@ abstract class $PlannerModelCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$PlannerModelCopyWithImpl<$Res, $Val extends PlannerModel>
-    implements $PlannerModelCopyWith<$Res> {
-  _$PlannerModelCopyWithImpl(this._value, this._then);
+class _$EventModelCopyWithImpl<$Res, $Val extends EventModel>
+    implements $EventModelCopyWith<$Res> {
+  _$EventModelCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -122,7 +122,7 @@ class _$PlannerModelCopyWithImpl<$Res, $Val extends PlannerModel>
 
 /// @nodoc
 abstract class _$$_PlannerModelCopyWith<$Res>
-    implements $PlannerModelCopyWith<$Res> {
+    implements $EventModelCopyWith<$Res> {
   factory _$$_PlannerModelCopyWith(
           _$_PlannerModel value, $Res Function(_$_PlannerModel) then) =
       __$$_PlannerModelCopyWithImpl<$Res>;
@@ -143,7 +143,7 @@ abstract class _$$_PlannerModelCopyWith<$Res>
 
 /// @nodoc
 class __$$_PlannerModelCopyWithImpl<$Res>
-    extends _$PlannerModelCopyWithImpl<$Res, _$_PlannerModel>
+    extends _$EventModelCopyWithImpl<$Res, _$_PlannerModel>
     implements _$$_PlannerModelCopyWith<$Res> {
   __$$_PlannerModelCopyWithImpl(
       _$_PlannerModel _value, $Res Function(_$_PlannerModel) _then)
@@ -247,7 +247,7 @@ class _$_PlannerModel extends _PlannerModel {
 
   @override
   String toString() {
-    return 'PlannerModel(eventName: $eventName, id: $id, startTime: $startTime, endTime: $endTime, isAllDay: $isAllDay, colorValue: $colorValue, notes: $notes, recurrenceRule: $recurrenceRule, frequency: $frequency, recurrenceRuleEnding: $recurrenceRuleEnding)';
+    return 'EventModel(eventName: $eventName, id: $id, startTime: $startTime, endTime: $endTime, isAllDay: $isAllDay, colorValue: $colorValue, notes: $notes, recurrenceRule: $recurrenceRule, frequency: $frequency, recurrenceRuleEnding: $recurrenceRuleEnding)';
   }
 
   @override
@@ -295,7 +295,7 @@ class _$_PlannerModel extends _PlannerModel {
       __$$_PlannerModelCopyWithImpl<_$_PlannerModel>(this, _$identity);
 }
 
-abstract class _PlannerModel extends PlannerModel {
+abstract class _PlannerModel extends EventModel {
   factory _PlannerModel(
       {required final String eventName,
       required final String id,

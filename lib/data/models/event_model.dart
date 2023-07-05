@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'planner_item_model.freezed.dart';
+part 'event_model.freezed.dart';
 
 @freezed
-class PlannerModel with _$PlannerModel {
-  const PlannerModel._();
-  factory PlannerModel({
+class EventModel with _$EventModel {
+  const EventModel._();
+  factory EventModel({
     required String eventName,
     required String id,
     required Timestamp startTime,
@@ -25,17 +25,5 @@ class PlannerModel with _$PlannerModel {
 
   DateTime get end {
     return endTime.toDate();
-  }
-}
-
-class Holidays {
-  String name;
-  DateTime date;
-
-  Holidays({required this.name, required this.date});
-  factory Holidays.fromJson(Map<String, dynamic> parsedJson) {
-    return Holidays(
-        name: parsedJson['localName'].toString(),
-        date: DateTime.parse(parsedJson['date']));
   }
 }

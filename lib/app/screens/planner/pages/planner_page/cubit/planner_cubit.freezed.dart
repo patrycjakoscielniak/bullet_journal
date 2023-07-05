@@ -16,8 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$PlannerState {
-  List<Holidays> get holidays => throw _privateConstructorUsedError;
-  List<PlannerModel> get appointments => throw _privateConstructorUsedError;
+  List<EventModel> get appointments => throw _privateConstructorUsedError;
   Status get status => throw _privateConstructorUsedError;
   String? get errorMessage => throw _privateConstructorUsedError;
 
@@ -33,10 +32,7 @@ abstract class $PlannerStateCopyWith<$Res> {
       _$PlannerStateCopyWithImpl<$Res, PlannerState>;
   @useResult
   $Res call(
-      {List<Holidays> holidays,
-      List<PlannerModel> appointments,
-      Status status,
-      String? errorMessage});
+      {List<EventModel> appointments, Status status, String? errorMessage});
 }
 
 /// @nodoc
@@ -52,20 +48,15 @@ class _$PlannerStateCopyWithImpl<$Res, $Val extends PlannerState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? holidays = null,
     Object? appointments = null,
     Object? status = null,
     Object? errorMessage = freezed,
   }) {
     return _then(_value.copyWith(
-      holidays: null == holidays
-          ? _value.holidays
-          : holidays // ignore: cast_nullable_to_non_nullable
-              as List<Holidays>,
       appointments: null == appointments
           ? _value.appointments
           : appointments // ignore: cast_nullable_to_non_nullable
-              as List<PlannerModel>,
+              as List<EventModel>,
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -87,10 +78,7 @@ abstract class _$$_PlannerStateCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {List<Holidays> holidays,
-      List<PlannerModel> appointments,
-      Status status,
-      String? errorMessage});
+      {List<EventModel> appointments, Status status, String? errorMessage});
 }
 
 /// @nodoc
@@ -104,20 +92,15 @@ class __$$_PlannerStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? holidays = null,
     Object? appointments = null,
     Object? status = null,
     Object? errorMessage = freezed,
   }) {
     return _then(_$_PlannerState(
-      holidays: null == holidays
-          ? _value._holidays
-          : holidays // ignore: cast_nullable_to_non_nullable
-              as List<Holidays>,
       appointments: null == appointments
           ? _value._appointments
           : appointments // ignore: cast_nullable_to_non_nullable
-              as List<PlannerModel>,
+              as List<EventModel>,
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -134,26 +117,15 @@ class __$$_PlannerStateCopyWithImpl<$Res>
 
 class _$_PlannerState implements _PlannerState {
   _$_PlannerState(
-      {final List<Holidays> holidays = const [],
-      final List<PlannerModel> appointments = const [],
+      {final List<EventModel> appointments = const [],
       this.status = Status.initial,
       this.errorMessage})
-      : _holidays = holidays,
-        _appointments = appointments;
+      : _appointments = appointments;
 
-  final List<Holidays> _holidays;
+  final List<EventModel> _appointments;
   @override
   @JsonKey()
-  List<Holidays> get holidays {
-    if (_holidays is EqualUnmodifiableListView) return _holidays;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_holidays);
-  }
-
-  final List<PlannerModel> _appointments;
-  @override
-  @JsonKey()
-  List<PlannerModel> get appointments {
+  List<EventModel> get appointments {
     if (_appointments is EqualUnmodifiableListView) return _appointments;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_appointments);
@@ -167,7 +139,7 @@ class _$_PlannerState implements _PlannerState {
 
   @override
   String toString() {
-    return 'PlannerState(holidays: $holidays, appointments: $appointments, status: $status, errorMessage: $errorMessage)';
+    return 'PlannerState(appointments: $appointments, status: $status, errorMessage: $errorMessage)';
   }
 
   @override
@@ -175,7 +147,6 @@ class _$_PlannerState implements _PlannerState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_PlannerState &&
-            const DeepCollectionEquality().equals(other._holidays, _holidays) &&
             const DeepCollectionEquality()
                 .equals(other._appointments, _appointments) &&
             (identical(other.status, status) || other.status == status) &&
@@ -184,12 +155,8 @@ class _$_PlannerState implements _PlannerState {
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(_holidays),
-      const DeepCollectionEquality().hash(_appointments),
-      status,
-      errorMessage);
+  int get hashCode => Object.hash(runtimeType,
+      const DeepCollectionEquality().hash(_appointments), status, errorMessage);
 
   @JsonKey(ignore: true)
   @override
@@ -200,15 +167,12 @@ class _$_PlannerState implements _PlannerState {
 
 abstract class _PlannerState implements PlannerState {
   factory _PlannerState(
-      {final List<Holidays> holidays,
-      final List<PlannerModel> appointments,
+      {final List<EventModel> appointments,
       final Status status,
       final String? errorMessage}) = _$_PlannerState;
 
   @override
-  List<Holidays> get holidays;
-  @override
-  List<PlannerModel> get appointments;
+  List<EventModel> get appointments;
   @override
   Status get status;
   @override

@@ -2,8 +2,10 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
-import '../../data/models/planner_item_model.dart';
+import '../../data/models/event_model.dart';
 import 'package:http/http.dart' as http;
+
+import '../../data/models/holidays_model.dart';
 
 @injectable
 class PlannerRepository {
@@ -14,10 +16,10 @@ class PlannerRepository {
       .doc(FirebaseAuth.instance.currentUser?.uid)
       .collection('planner');
 
-  Stream<List<PlannerModel>> getAppointments() {
+  Stream<List<EventModel>> getAppointments() {
     return firebaseRef.snapshots().map((snapshots) {
       return snapshots.docs.map((doc) {
-        return PlannerModel(
+        return EventModel(
           isAllDay: doc.data()['isAllDay'],
           notes: doc.data()['notes'],
           startTime: (doc.data()['startTime']),
@@ -33,7 +35,7 @@ class PlannerRepository {
     });
   }
 
-  Future<List<Holidays>> fetchHolidays() async {
+  Future<List<HolidayModel>> fetchHolidays() async {
     final years = [
       '2023',
       '2024',
@@ -44,7 +46,7 @@ class PlannerRepository {
       '2029',
       '2030'
     ];
-    final List<Holidays> holidaysList = [];
+    final List<HolidayModel> holidaysList = [];
     for (final year in years) {
       final url = Uri.parse('https://public-holiday.p.rapidapi.com/$year/PL');
       final response = await http.get(url, headers: {
@@ -53,7 +55,7 @@ class PlannerRepository {
       });
       var dynamic = jsonDecode(response.body);
       final list =
-          (dynamic as List).map((data) => Holidays.fromJson(data)).toList();
+          (dynamic as List).map((data) => HolidayModel.fromJson(data)).toList();
       holidaysList.addAll(list);
     }
     return holidaysList;

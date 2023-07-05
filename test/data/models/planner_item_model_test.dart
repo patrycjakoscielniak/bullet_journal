@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:my_bullet_journal/app/core/global_variables.dart';
-import 'package:my_bullet_journal/data/models/planner_item_model.dart';
+import 'package:my_bullet_journal/data/models/event_model.dart';
 
 void main() {
   test('should getter start return startTime converted to DateTime', () {
-    final model = PlannerModel(
+    final model = EventModel(
       eventName: '',
       id: '',
       startTime: Timestamp.fromDate(DateTime(2022, 1, 1, 12, 0)),
@@ -17,7 +17,7 @@ void main() {
     expect(result, DateTime(2022, 1, 1, 12, 0));
   });
   test('should getter end return endTime converted to DateTime', () {
-    final model = PlannerModel(
+    final model = EventModel(
       eventName: '',
       id: '',
       startTime: Timestamp.now(),
