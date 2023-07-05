@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
 import '../../data/models/planner_item_model.dart';
+import 'package:http/http.dart' as http;
 
 @injectable
 class PlannerRepository {
@@ -29,6 +31,32 @@ class PlannerRepository {
         );
       }).toList();
     });
+  }
+
+  Future<List<Holidays>> fetchHolidays() async {
+    final years = [
+      '2023',
+      '2024',
+      '2025',
+      '2026',
+      '2027',
+      '2028',
+      '2029',
+      '2030'
+    ];
+    final List<Holidays> holidaysList = [];
+    for (final year in years) {
+      final url = Uri.parse('https://public-holiday.p.rapidapi.com/$year/PL');
+      final response = await http.get(url, headers: {
+        "X-RapidAPI-Key": "139e0b9fa2msh89a1ebdff767cf4p156932jsn676885f8ec26",
+        "X-RapidAPI-Host": "public-holiday.p.rapidapi.com"
+      });
+      var dynamic = jsonDecode(response.body);
+      final list =
+          (dynamic as List).map((data) => Holidays.fromJson(data)).toList();
+      holidaysList.addAll(list);
+    }
+    return holidaysList;
   }
 
   Future<void> add(

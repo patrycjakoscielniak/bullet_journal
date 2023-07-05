@@ -27,3 +27,15 @@ class PlannerModel with _$PlannerModel {
     return endTime.toDate();
   }
 }
+
+class Holidays {
+  String name;
+  DateTime date;
+
+  Holidays({required this.name, required this.date});
+  factory Holidays.fromJson(Map<String, dynamic> parsedJson) {
+    return Holidays(
+        name: parsedJson['localName'].toString(),
+        date: DateTime.parse(parsedJson['date']));
+  }
+}
