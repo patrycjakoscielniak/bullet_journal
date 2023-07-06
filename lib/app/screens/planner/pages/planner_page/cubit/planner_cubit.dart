@@ -18,8 +18,8 @@ class PlannerCubit extends Cubit<PlannerState> {
 
   StreamSubscription? _streamSubscription;
 
-  Future<List<HolidayModel>> getHolidays() async {
-    final result = await _plannerRepository.getHolidays();
+  Future<List<HolidayModel>> getHolidays(String country) async {
+    final result = await _plannerRepository.getHolidays(country);
     emit(PlannerState(
       status: Status.success,
     ));

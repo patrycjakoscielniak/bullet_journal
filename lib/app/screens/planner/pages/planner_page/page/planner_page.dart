@@ -7,6 +7,7 @@ import 'package:my_bullet_journal/app/core/global_variables.dart';
 import 'package:my_bullet_journal/app/core/injection_container.dart';
 import 'package:my_bullet_journal/app/screens/planner/pages/add/page/add_event_page.dart';
 import 'package:my_bullet_journal/app/screens/planner/pages/details/page/event_details_page.dart';
+import 'package:my_bullet_journal/app/screens/planner/variables/planner_variables.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../../../../../../data/models/event_model.dart';
 import '../../../../../../data/models/holidays_model.dart';
@@ -86,10 +87,9 @@ class _PlannerPageState extends State<PlannerPage> {
                 Row(
                   children: [
                     Switch.adaptive(
-                      activeColor: Platform.isAndroid
-                          ? Colors.white30
-                          : const Color.fromARGB(255, 216, 45, 33),
-                      activeTrackColor: const Color.fromARGB(255, 216, 45, 33),
+                      activeColor:
+                          Platform.isAndroid ? Colors.white30 : holidaysColor,
+                      activeTrackColor: holidaysColor,
                       onChanged: (value) {
                         setState(() {
                           displayHolidays = value;
@@ -98,7 +98,7 @@ class _PlannerPageState extends State<PlannerPage> {
                       },
                       value: displayHolidays,
                     ),
-                    const Text('Display Polish National Holidays')
+                    const Text('Display National Holidays')
                   ],
                 ),
                 Expanded(
@@ -139,17 +139,22 @@ class _PlannerPageState extends State<PlannerPage> {
 
   void updateAppointments() async {
     if (displayHolidays) {
+      String defaultLocale = Platform.localeName;
+      String countryCode = defaultLocale.substring(defaultLocale.length - 2);
       _dataSource.appointments?.clear();
-      holidaysList = await context.read<PlannerCubit>().getHolidays();
+      holidaysList =
+          await context.read<PlannerCubit>().getHolidays(countryCode);
       if (holidaysList.isNotEmpty) {
         for (final holiday in holidaysList) {
-          holidays.add(Appointment(
-            subject: holiday.name,
-            startTime: holiday.date,
-            endTime: holiday.date,
-            isAllDay: true,
-            color: const Color.fromARGB(255, 216, 45, 33),
-          ));
+          if (holiday.type == 'Public') {
+            holidays.add(Appointment(
+              subject: holiday.name,
+              startTime: holiday.date,
+              endTime: holiday.date,
+              isAllDay: true,
+              color: holidaysColor,
+            ));
+          }
         }
         _dataSource.appointments?.addAll(holidays);
       }

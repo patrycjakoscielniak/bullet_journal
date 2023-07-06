@@ -7,11 +7,13 @@ class HolidayModel with _$HolidayModel {
   factory HolidayModel({
     required String name,
     required DateTime date,
+    required String type,
   }) = _HolidayModel;
 
   factory HolidayModel.fromJson(Map<String, dynamic> parsedJson) {
     return HolidayModel(
         name: parsedJson['localName'].toString(),
-        date: DateTime.parse(parsedJson['date']));
+        date: DateTime.parse(parsedJson['date']),
+        type: parsedJson['type'].toString());
   }
 }

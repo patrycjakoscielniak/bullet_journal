@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$HolidayModel {
   String get name => throw _privateConstructorUsedError;
   DateTime get date => throw _privateConstructorUsedError;
+  String get type => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $HolidayModelCopyWith<HolidayModel> get copyWith =>
@@ -30,7 +31,7 @@ abstract class $HolidayModelCopyWith<$Res> {
           HolidayModel value, $Res Function(HolidayModel) then) =
       _$HolidayModelCopyWithImpl<$Res, HolidayModel>;
   @useResult
-  $Res call({String name, DateTime date});
+  $Res call({String name, DateTime date, String type});
 }
 
 /// @nodoc
@@ -48,6 +49,7 @@ class _$HolidayModelCopyWithImpl<$Res, $Val extends HolidayModel>
   $Res call({
     Object? name = null,
     Object? date = null,
+    Object? type = null,
   }) {
     return _then(_value.copyWith(
       name: null == name
@@ -58,6 +60,10 @@ class _$HolidayModelCopyWithImpl<$Res, $Val extends HolidayModel>
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -70,7 +76,7 @@ abstract class _$$_HolidayModelCopyWith<$Res>
       __$$_HolidayModelCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String name, DateTime date});
+  $Res call({String name, DateTime date, String type});
 }
 
 /// @nodoc
@@ -86,6 +92,7 @@ class __$$_HolidayModelCopyWithImpl<$Res>
   $Res call({
     Object? name = null,
     Object? date = null,
+    Object? type = null,
   }) {
     return _then(_$_HolidayModel(
       name: null == name
@@ -96,6 +103,10 @@ class __$$_HolidayModelCopyWithImpl<$Res>
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -103,16 +114,19 @@ class __$$_HolidayModelCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_HolidayModel extends _HolidayModel {
-  _$_HolidayModel({required this.name, required this.date}) : super._();
+  _$_HolidayModel({required this.name, required this.date, required this.type})
+      : super._();
 
   @override
   final String name;
   @override
   final DateTime date;
+  @override
+  final String type;
 
   @override
   String toString() {
-    return 'HolidayModel(name: $name, date: $date)';
+    return 'HolidayModel(name: $name, date: $date, type: $type)';
   }
 
   @override
@@ -121,11 +135,12 @@ class _$_HolidayModel extends _HolidayModel {
         (other.runtimeType == runtimeType &&
             other is _$_HolidayModel &&
             (identical(other.name, name) || other.name == name) &&
-            (identical(other.date, date) || other.date == date));
+            (identical(other.date, date) || other.date == date) &&
+            (identical(other.type, type) || other.type == type));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, name, date);
+  int get hashCode => Object.hash(runtimeType, name, date, type);
 
   @JsonKey(ignore: true)
   @override
@@ -137,13 +152,16 @@ class _$_HolidayModel extends _HolidayModel {
 abstract class _HolidayModel extends HolidayModel {
   factory _HolidayModel(
       {required final String name,
-      required final DateTime date}) = _$_HolidayModel;
+      required final DateTime date,
+      required final String type}) = _$_HolidayModel;
   _HolidayModel._() : super._();
 
   @override
   String get name;
   @override
   DateTime get date;
+  @override
+  String get type;
   @override
   @JsonKey(ignore: true)
   _$$_HolidayModelCopyWith<_$_HolidayModel> get copyWith =>

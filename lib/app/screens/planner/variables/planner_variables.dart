@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+const holidaysColor = Color.fromARGB(255, 79, 226, 113);
 final elevatedButtonStyle = ElevatedButton.styleFrom(
   fixedSize: const Size(400, 25),
   backgroundColor: Colors.white,

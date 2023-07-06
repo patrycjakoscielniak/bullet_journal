@@ -18,6 +18,7 @@ void main() {
     repository = MockPlannerRepository();
     sut = PlannerCubit(repository);
   });
+  group('getHolidays', () {});
   group('start', () {
     group('success', () {
       setUp(() {

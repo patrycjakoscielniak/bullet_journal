@@ -35,8 +35,8 @@ class PlannerRepository {
     });
   }
 
-  Future<List<HolidayModel>> getHolidays() async {
-    final response = await _plannerRemoteDataSource.fetchHolidays();
+  Future<List<HolidayModel>> getHolidays(String country) async {
+    final response = await _plannerRemoteDataSource.fetchHolidays(country);
     var dynamic = jsonDecode(response);
     final list =
         (dynamic as List).map((data) => HolidayModel.fromJson(data)).toList();
