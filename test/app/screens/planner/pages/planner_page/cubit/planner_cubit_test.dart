@@ -6,23 +6,46 @@ import 'package:my_bullet_journal/app/core/enums.dart';
 import 'package:my_bullet_journal/app/core/global_variables.dart';
 import 'package:my_bullet_journal/app/screens/planner/pages/planner_page/cubit/planner_cubit.dart';
 import 'package:my_bullet_journal/data/models/event_model.dart';
-import 'package:my_bullet_journal/domain/repositories/planner_repository.dart';
+import 'package:my_bullet_journal/data/models/holidays_model.dart';
+import 'package:my_bullet_journal/domain/repositories/planner_event_repository.dart';
+import 'package:my_bullet_journal/domain/repositories/planner_holidays_repository.dart';
 
-class MockPlannerRepository extends Mock implements PlannerRepository {}
+class MockPlannerEventsRepository extends Mock
+    implements PlannerEventRepository {}
+
+class MockPlannerHolidaysRepository extends Mock
+    implements PlannerHolidaysRepository {}
 
 void main() {
-  late MockPlannerRepository repository;
+  late MockPlannerEventsRepository eventRepository;
+  late MockPlannerHolidaysRepository holidaysRepository;
   late PlannerCubit sut;
 
   setUp(() {
-    repository = MockPlannerRepository();
-    sut = PlannerCubit(repository);
+    eventRepository = MockPlannerEventsRepository();
+    holidaysRepository = MockPlannerHolidaysRepository();
+    sut = PlannerCubit(eventRepository, holidaysRepository);
   });
-  group('getHolidays', () {});
+  group('getHolidays', () {
+    setUp(() {
+      when(() => holidaysRepository.getHolidays('US')).thenAnswer((_) async => [
+            HolidayModel(
+                name: 'name1', date: DateTime(2022, 1, 1), type: 'type1'),
+            HolidayModel(
+                name: 'name2', date: DateTime(2023, 1, 1), type: 'type2'),
+          ]);
+    });
+    blocTest(
+      'return List and emit Status.success',
+      build: () => sut,
+      act: (cubit) => cubit.getHolidays('US'),
+      expect: () => [PlannerState(status: Status.success)],
+    );
+  });
   group('start', () {
     group('success', () {
       setUp(() {
-        when(() => repository.getAppointments())
+        when(() => eventRepository.getAppointments())
             .thenAnswer((_) => Stream.fromIterable([
                   [
                     EventModel(
@@ -69,7 +92,7 @@ void main() {
     });
     group('error', () {
       setUp(() {
-        when(() => repository.getAppointments())
+        when(() => eventRepository.getAppointments())
             .thenAnswer((_) => Stream.error(Exception('test-exception-error')));
       });
       blocTest(

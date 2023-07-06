@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
-import 'package:my_bullet_journal/domain/repositories/planner_repository.dart';
+import 'package:my_bullet_journal/domain/repositories/planner_event_repository.dart';
 import '../../../../../core/enums.dart';
 
 part 'add_event_state.dart';
@@ -11,7 +11,7 @@ part 'add_event_cubit.freezed.dart';
 class AddEventCubit extends Cubit<AddEventState> {
   AddEventCubit(this._plannerRepository) : super(AddEventState());
 
-  final PlannerRepository _plannerRepository;
+  final PlannerEventRepository _plannerRepository;
 
   Future<void> addEvent(
     String name,

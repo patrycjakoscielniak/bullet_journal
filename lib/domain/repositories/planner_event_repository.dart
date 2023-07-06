@@ -1,16 +1,10 @@
-import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
-import 'package:my_bullet_journal/data/remote_data_sources/planner_remote_data_source.dart';
 import '../../data/models/event_model.dart';
-import '../../data/models/holidays_model.dart';
 
 @injectable
-class PlannerRepository {
-  PlannerRepository(this._plannerRemoteDataSource);
-  final PlannerRemoteDataSource _plannerRemoteDataSource;
-
+class PlannerEventRepository {
   final firebaseRef = FirebaseFirestore.instance
       .collection('users')
       .doc(FirebaseAuth.instance.currentUser?.uid)
@@ -33,14 +27,6 @@ class PlannerRepository {
         );
       }).toList();
     });
-  }
-
-  Future<List<HolidayModel>> getHolidays(String country) async {
-    final response = await _plannerRemoteDataSource.fetchHolidays(country);
-    var dynamic = jsonDecode(response);
-    final list =
-        (dynamic as List).map((data) => HolidayModel.fromJson(data)).toList();
-    return list;
   }
 
   Future<void> add(

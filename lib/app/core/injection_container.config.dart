@@ -18,7 +18,7 @@ import 'package:my_bullet_journal/app/screens/planner/pages/details/cubit/event_
 import 'package:my_bullet_journal/app/screens/planner/pages/edit/cubit/edit_event_cubit.dart'
     as _i9;
 import 'package:my_bullet_journal/app/screens/planner/pages/planner_page/cubit/planner_cubit.dart'
-    as _i11;
+    as _i14;
 import 'package:my_bullet_journal/app/screens/vision_board/cubit/vision_board_cubit.dart'
     as _i12;
 import 'package:my_bullet_journal/app/screens/wishlist/pages/add_item_page/cubit/add_item_cubit.dart'
@@ -26,9 +26,11 @@ import 'package:my_bullet_journal/app/screens/wishlist/pages/add_item_page/cubit
 import 'package:my_bullet_journal/app/screens/wishlist/pages/wishlist_page/cubit/wishlist_cubit.dart'
     as _i13;
 import 'package:my_bullet_journal/data/remote_data_sources/planner_remote_data_source.dart'
-    as _i3;
-import 'package:my_bullet_journal/domain/repositories/planner_repository.dart'
     as _i4;
+import 'package:my_bullet_journal/domain/repositories/planner_event_repository.dart'
+    as _i3;
+import 'package:my_bullet_journal/domain/repositories/planner_holidays_repository.dart'
+    as _i11;
 import 'package:my_bullet_journal/domain/repositories/vision_board_repository.dart'
     as _i5;
 import 'package:my_bullet_journal/domain/repositories/wishlist_repository.dart'
@@ -45,26 +47,29 @@ extension GetItInjectableX on _i1.GetIt {
       environment,
       environmentFilter,
     );
-    gh.factory<_i3.PlannerRemoteDataSource>(
-        () => _i3.PlannerRemoteDataSource());
-    gh.factory<_i4.PlannerRepository>(
-        () => _i4.PlannerRepository(gh<_i3.PlannerRemoteDataSource>()));
+    gh.factory<_i3.PlannerEventRepository>(() => _i3.PlannerEventRepository());
+    gh.factory<_i4.PlannerRemoteDataSource>(
+        () => _i4.PlannerRemoteDataSource());
     gh.factory<_i5.VisionBoardRepository>(() => _i5.VisionBoardRepository());
     gh.factory<_i6.WishlistRepository>(() => _i6.WishlistRepository());
     gh.factory<_i7.AddEventCubit>(
-        () => _i7.AddEventCubit(gh<_i4.PlannerRepository>()));
+        () => _i7.AddEventCubit(gh<_i3.PlannerEventRepository>()));
     gh.factory<_i8.AddItemCubit>(
         () => _i8.AddItemCubit(gh<_i6.WishlistRepository>()));
     gh.factory<_i9.EditEventCubit>(
-        () => _i9.EditEventCubit(gh<_i4.PlannerRepository>()));
+        () => _i9.EditEventCubit(gh<_i3.PlannerEventRepository>()));
     gh.factory<_i10.EventDetailsCubit>(
-        () => _i10.EventDetailsCubit(gh<_i4.PlannerRepository>()));
-    gh.factory<_i11.PlannerCubit>(
-        () => _i11.PlannerCubit(gh<_i4.PlannerRepository>()));
+        () => _i10.EventDetailsCubit(gh<_i3.PlannerEventRepository>()));
+    gh.factory<_i11.PlannerHolidaysRepository>(() =>
+        _i11.PlannerHolidaysRepository(gh<_i4.PlannerRemoteDataSource>()));
     gh.factory<_i12.VisionBoardCubit>(
         () => _i12.VisionBoardCubit(gh<_i5.VisionBoardRepository>()));
     gh.factory<_i13.WishlistCubit>(
         () => _i13.WishlistCubit(gh<_i6.WishlistRepository>()));
+    gh.factory<_i14.PlannerCubit>(() => _i14.PlannerCubit(
+          gh<_i3.PlannerEventRepository>(),
+          gh<_i11.PlannerHolidaysRepository>(),
+        ));
     return this;
   }
 }

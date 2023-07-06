@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
-import 'package:my_bullet_journal/domain/repositories/planner_repository.dart';
+import 'package:my_bullet_journal/domain/repositories/planner_event_repository.dart';
 
 import '../../../../../core/enums.dart';
 
@@ -12,7 +12,7 @@ part 'edit_event_cubit.freezed.dart';
 class EditEventCubit extends Cubit<EditEventState> {
   EditEventCubit(this._plannerRepository) : super(EditEventState());
 
-  final PlannerRepository _plannerRepository;
+  final PlannerEventRepository _plannerRepository;
 
   Future<void> updateEvent({
     required String id,

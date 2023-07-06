@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
-import 'package:my_bullet_journal/domain/repositories/planner_repository.dart';
+import 'package:my_bullet_journal/domain/repositories/planner_event_repository.dart';
 import '../../../../../core/enums.dart';
 
 part 'event_details_state.dart';
@@ -11,7 +11,7 @@ part 'event_details_cubit.freezed.dart';
 class EventDetailsCubit extends Cubit<EventDetailsState> {
   EventDetailsCubit(this._plannerRepository) : super(EventDetailsState());
 
-  final PlannerRepository _plannerRepository;
+  final PlannerEventRepository _plannerRepository;
 
   Future<void> deleteEvent({required String documentID}) async {
     try {

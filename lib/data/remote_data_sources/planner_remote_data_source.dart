@@ -25,6 +25,9 @@ class PlannerRemoteDataSource {
         "X-RapidAPI-Key": "139e0b9fa2msh89a1ebdff767cf4p156932jsn676885f8ec26",
         "X-RapidAPI-Host": "public-holiday.p.rapidapi.com"
       });
+      if (getData.body.isEmpty) {
+        return '';
+      }
       response =
           '$response${getData.body.substring(1, getData.body.length - 1)},';
     }

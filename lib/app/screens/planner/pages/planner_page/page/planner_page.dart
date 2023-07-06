@@ -157,7 +157,7 @@ class _PlannerPageState extends State<PlannerPage> {
           }
         }
         _dataSource.appointments?.addAll(holidays);
-      }
+      } else {}
     } else {
       _dataSource.appointments?.clear();
       holidays.clear();

@@ -6,9 +6,9 @@ import 'package:my_bullet_journal/app/core/enums.dart';
 import 'package:my_bullet_journal/app/core/global_variables.dart';
 import 'package:my_bullet_journal/app/screens/planner/pages/edit/cubit/edit_event_cubit.dart';
 import 'package:my_bullet_journal/data/models/event_model.dart';
-import 'package:my_bullet_journal/domain/repositories/planner_repository.dart';
+import 'package:my_bullet_journal/domain/repositories/planner_event_repository.dart';
 
-class MockPlannerRepository extends Mock implements PlannerRepository {}
+class MockPlannerRepository extends Mock implements PlannerEventRepository {}
 
 void main() {
   late MockPlannerRepository repository;
