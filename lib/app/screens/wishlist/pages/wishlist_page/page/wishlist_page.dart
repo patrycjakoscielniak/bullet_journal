@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:my_bullet_journal/app/core/global_variables.dart';
 import 'package:my_bullet_journal/app/core/injection_container.dart';
 import 'package:my_bullet_journal/app/screens/wishlist/pages/wishlist_page/features/edit_item.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -87,31 +87,39 @@ class WishlistPage extends StatelessWidget {
 
   Scaffold _initialDisplay(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Center(
-            child: Text(
-              'Add First Item To Your Wishlist',
-              style: GoogleFonts.tangerine(
-                  fontSize: 25, fontWeight: FontWeight.w600),
-            ),
-          ),
-          ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const AddItemPage(),
+            child: Stack(alignment: Alignment.center, children: [
+              const Image(image: AssetImage('assets/images/3.png')),
+              Column(
+                children: [
+                  Text(
+                    'Add First Item To Your Wishlist',
+                    style: initialdiplaysTextStyle,
                   ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.black,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30))),
-              child: const Icon(Icons.add))
+                  const SizedBox(height: 60),
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const AddItemPage(),
+                          ),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          foregroundColor: appPurple,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30))),
+                      child: const Icon(Icons.add))
+                ],
+              ),
+            ]),
+          ),
         ],
       ),
     );

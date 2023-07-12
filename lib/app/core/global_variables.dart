@@ -11,3 +11,5 @@ final dialogContainerDecoration = BoxDecoration(
 final mainTextStyle = GoogleFonts.amaticSc(
     textStyle: const TextStyle(fontWeight: FontWeight.w400, fontSize: 22));
 const space = SizedBox(height: 15), empty = SizedBox();
+final initialdiplaysTextStyle = GoogleFonts.tangerine(
+    fontSize: 28, fontWeight: FontWeight.w400, color: appGrey);

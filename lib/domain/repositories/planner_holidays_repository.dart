@@ -14,7 +14,6 @@ class PlannerHolidaysRepository {
     if (response == '') {
       return [];
     }
-    print(response);
     var dynamic = jsonDecode(response);
     final list =
         (dynamic as List).map((data) => HolidayModel.fromJson(data)).toList();

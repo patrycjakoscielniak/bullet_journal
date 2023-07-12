@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:my_bullet_journal/app/core/enums.dart';
+import 'package:my_bullet_journal/app/core/global_variables.dart';
 import 'package:my_bullet_journal/app/core/injection_container.dart';
 import 'package:my_bullet_journal/app/screens/vision_board/cubit/vision_board_cubit.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
@@ -101,37 +101,50 @@ class _VisionBoardPageState extends State<VisionBoardPage> {
 
   Scaffold _initialDisplay(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Center(
-            child: Text(
-              'Create Your Vision Board',
-              style: GoogleFonts.tangerine(
-                  fontSize: 25, fontWeight: FontWeight.w600),
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                const Image(image: AssetImage('assets/images/2.png')),
+                Column(
+                  children: [
+                    Text(
+                      'Create Your Vision Board',
+                      style: initialdiplaysTextStyle,
+                    ),
+                    empty,
+                    ElevatedButton(
+                        onPressed: () async {
+                          XFile? file = await ImagePicker()
+                              .pickImage(source: ImageSource.gallery);
+                          setState(
+                            () {
+                              pickedFile = file;
+                              if (pickedFile != null) {
+                                context
+                                    .read<VisionBoardCubit>()
+                                    .addImage(pickedFile!);
+                              } else {
+                                return;
+                              }
+                            },
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            foregroundColor: appPurple,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30))),
+                        child: const Icon(Icons.add_a_photo_outlined))
+                  ],
+                ),
+              ],
             ),
           ),
-          ElevatedButton(
-              onPressed: () async {
-                XFile? file =
-                    await ImagePicker().pickImage(source: ImageSource.gallery);
-                setState(
-                  () {
-                    pickedFile = file;
-                    if (pickedFile != null) {
-                      context.read<VisionBoardCubit>().addImage(pickedFile!);
-                    } else {
-                      return;
-                    }
-                  },
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.black,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30))),
-              child: const Icon(Icons.add_a_photo_outlined))
         ],
       ),
     );
@@ -206,7 +219,9 @@ class _VisionBoardPageState extends State<VisionBoardPage> {
     }
   }
 
-  FloatingActionButton addImage(BuildContext context) {
+  FloatingActionButton addImage(
+    BuildContext context,
+  ) {
     return FloatingActionButton(
       onPressed: () async {
         XFile? file =
