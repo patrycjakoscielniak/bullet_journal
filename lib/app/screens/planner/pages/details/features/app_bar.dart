@@ -18,13 +18,15 @@ class EventDetailsAppBarWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            eventName,
-            textAlign: TextAlign.center,
-            style: GoogleFonts.marckScript(
-                color: Color(colorValue),
-                fontWeight: FontWeight.w400,
-                fontSize: 28),
+          Expanded(
+            child: Text(
+              eventName,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.marckScript(
+                  color: Color(colorValue),
+                  fontWeight: FontWeight.w400,
+                  fontSize: 28),
+            ),
           ),
           IconButton(
               onPressed: () {

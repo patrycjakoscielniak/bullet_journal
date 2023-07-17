@@ -28,6 +28,7 @@ class DeleteImage extends StatelessWidget {
       foregroundColor: Colors.blueGrey,
       child: const Icon(
         Icons.delete,
+        size: 25,
       ),
     );
   }
