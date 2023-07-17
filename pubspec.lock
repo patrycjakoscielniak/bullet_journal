@@ -137,14 +137,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "8.5.0"
-  calendar_view:
-    dependency: "direct main"
-    description:
-      name: calendar_view
-      sha256: "58a8b851ac0a2d62770fd06ad30f06683bd40848a5dd1a1eca332f5a6064bd82"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.3"
   characters:
     dependency: transitive
     description:
@@ -470,14 +462,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.1"
-  flutter_expandable_fab:
-    dependency: "direct main"
-    description:
-      name: flutter_expandable_fab
-      sha256: "403b69dd4f70a994b203bbf64938ac90727e3e34d7de90797809c6d6ffa250fb"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.8.0"
   flutter_launcher_icons:
     dependency: "direct dev"
     description:
@@ -495,7 +479,7 @@ packages:
     source: hosted
     version: "2.0.1"
   flutter_localizations:
-    dependency: "direct main"
+    dependency: transitive
     description: flutter
     source: sdk
     version: "0.0.0"
@@ -781,14 +765,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.7"
-  open_file_plus:
-    dependency: "direct main"
-    description:
-      name: open_file_plus
-      sha256: f087e32722ffe4bac71925e7a1a9848a1008fd789e47c6628da3ed7845922227
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.4.1"
   package_config:
     dependency: transitive
     description:
@@ -798,7 +774,7 @@ packages:
     source: hosted
     version: "2.1.0"
   path:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: path
       sha256: "8829d8a55c13fc0e37127c29fedf290c102f4e40ae94ada574091fe0ff96c917"
@@ -814,7 +790,7 @@ packages:
     source: hosted
     version: "1.0.1"
   path_provider:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: path_provider
       sha256: "3087813781ab814e4157b172f1a11c46be20179fcc9bea043e0fba36bc0acaa2"
