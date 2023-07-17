@@ -217,6 +217,7 @@ class _AddEventState extends State<AddEventPage> {
                 'from ${DateFormat('dd MMM hh : mm').format(widget.eventStartTime)}  to  ${DateFormat('dd MMM hh : mm').format(widget.eventEndTime)}',
                 style: mainTextStyle)),
         space,
+        space,
       ],
     );
   }

@@ -191,37 +191,43 @@ class _EditEventPageState extends State<EditEventPage> {
     );
   }
 
-  ElevatedButton editEventDateTime(BuildContext context) {
-    return ElevatedButton(
-      style: elevatedButtonStyle,
-      onPressed: () async {
-        List<DateTime>? dateTimeList = await showOmniDateTimeRangePicker(
-          context: context,
-          isForce2Digits: true,
-          startInitialDate: widget.eventStartTime,
-          startFirstDate: DateTime(1900),
-          startLastDate: DateTime.now().add(
-            const Duration(days: 3652),
-          ),
-          endInitialDate: widget.eventEndTime,
-          endFirstDate: DateTime(1900),
-          endLastDate: DateTime.now().add(
-            const Duration(days: 3652),
-          ),
-          borderRadius: BorderRadius.circular(15),
-        );
-        if (dateTimeList != null) {
-          setState(() {
-            widget.eventStartTime = dateTimeList.first;
-          });
-          setState(() {
-            widget.eventEndTime = dateTimeList.last;
-          });
-        }
-      },
-      child: Text(
-          'from ${DateFormat('dd MMM hh : mm').format(widget.eventStartTime)}  to  ${DateFormat('dd MMM hh : mm').format(widget.eventEndTime)}',
-          style: mainTextStyle),
+  Column editEventDateTime(BuildContext context) {
+    return Column(
+      children: [
+        ElevatedButton(
+          style: elevatedButtonStyle,
+          onPressed: () async {
+            List<DateTime>? dateTimeList = await showOmniDateTimeRangePicker(
+              context: context,
+              isForce2Digits: true,
+              startInitialDate: widget.eventStartTime,
+              startFirstDate: DateTime(1900),
+              startLastDate: DateTime.now().add(
+                const Duration(days: 3652),
+              ),
+              endInitialDate: widget.eventEndTime,
+              endFirstDate: DateTime(1900),
+              endLastDate: DateTime.now().add(
+                const Duration(days: 3652),
+              ),
+              borderRadius: BorderRadius.circular(15),
+            );
+            if (dateTimeList != null) {
+              setState(() {
+                widget.eventStartTime = dateTimeList.first;
+              });
+              setState(() {
+                widget.eventEndTime = dateTimeList.last;
+              });
+            }
+          },
+          child: Text(
+              'from ${DateFormat('dd MMM hh : mm').format(widget.eventStartTime)}  to  ${DateFormat('dd MMM hh : mm').format(widget.eventEndTime)}',
+              style: mainTextStyle),
+        ),
+        space,
+        space,
+      ],
     );
   }
 
