@@ -1,6 +1,6 @@
 # bullet_journal
 
-Application that is supposed to replace or complement traditional Bullet Journal. Ultimately it will have 5 or more pages, 2 of whitch are a work in progress for now. After registration each user can store data and images that no one else has access to.
+Application that is supposed to replace or complement traditional Bullet Journal. Ultimately it will have 5 or more pages, 2 of whitch are a work in progress for now. After registration each user can store data and images that no one else have access to.
 
 <img width="355" alt="register" src="https://github.com/patrycjakoscielniak/bullet_journal/assets/126174009/2cf84574-4599-48f6-ad13-e2555e91ec16">
 <img width="352" alt="sing_in" src="https://github.com/patrycjakoscielniak/bullet_journal/assets/126174009/791bd6c5-cb2d-43ff-92f4-4d1fcb6de0b9">
